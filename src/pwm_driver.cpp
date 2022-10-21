@@ -11,7 +11,7 @@
 
 void Pwm_driver::SetPwm(uint16_t value)
 {
-    pwm_set_chan_level(this->slice_num, pwm_gpio_to_channel(this->pin), value);
+    pwm_set_chan_level(this->slice_num, pwm_gpio_to_channel(this->pin), value + calibrationValue);
 }
 
 Pwm_driver::Pwm_driver(uint8_t pin)

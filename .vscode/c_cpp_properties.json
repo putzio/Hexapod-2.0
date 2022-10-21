@@ -10,6 +10,11 @@
             "includePath": [
                 "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/include",
                 "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/src",
+                "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest",
+                "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googlemock",
+                "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googlemock/include",
+                "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googletest",
+                "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googletest/include",
                 "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/lib",
                 "C:/Users/krzysiu/.platformio/packages/framework-wizio-pico/wizio/pico",
                 "C:/Users/krzysiu/.platformio/packages/framework-wizio-pico/wizio/newlib",
@@ -35,6 +40,11 @@
                 "path": [
                     "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/include",
                     "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/src",
+                    "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest",
+                    "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googlemock",
+                    "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googlemock/include",
+                    "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googletest",
+                    "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/libdeps/raspberry-pi-pico/googletest/googletest/include",
                     "c:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/lib",
                     "C:/Users/krzysiu/.platformio/packages/framework-wizio-pico/wizio/pico",
                     "C:/Users/krzysiu/.platformio/packages/framework-wizio-pico/wizio/newlib",
@@ -67,6 +77,7 @@
                 "BAREMETAL",
                 ""
             ],
+            "cppStandard": "c++11",
             "compilerPath": "C:/Users/krzysiu/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin/arm-none-eabi-gcc.exe",
             "compilerArgs": [
                 "-march=armv6-m",

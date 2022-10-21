@@ -8,7 +8,34 @@
 				"$platformio"
 			],
 			"group": "build",
-			"label": "PlatformIO: Build"
+			"label": "PlatformIO: Build",
+			"dependsOn": [
+				"Check (raspberry-pi-pico)"
+			]
+		},
+		{
+			"type": "PlatformIO",
+			"task": "Check (raspberry-pi-pico)",
+			"problemMatcher": [
+				"$platformio"
+			],
+			"label": "PlatformIO: Check (raspberry-pi-pico)"
+		},
+		{
+			"type": "PlatformIO",
+			"task": "Test",
+			"problemMatcher": [
+				"$platformio"
+			],
+			"group": "test",
+			"label": "PlatformIO: Test",
+			"dependsOn": "TEST_DEFINITION"
+		},
+		{
+			"type":"cppbuild",
+			"label": "TEST_DEFINITION",
+			"group": "test",
+			"command": "DEFINE_TEST=1"
 		}
 	]
 }

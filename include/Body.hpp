@@ -1,5 +1,5 @@
 #pragma once
-#include "Leg.hpp"
+#include "Logic/Leg.hpp"
 #include "ListOfSteps.h"
 #include "enum_types.h"
 
