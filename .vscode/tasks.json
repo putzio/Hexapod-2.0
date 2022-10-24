@@ -9,9 +9,6 @@
 			],
 			"group": "build",
 			"label": "PlatformIO: Build",
-			// "dependsOn": [
-			// 	"Check (raspberry-pi-pico)"
-			// ]
 		},
 		{
 			"type": "PlatformIO",
@@ -29,7 +26,6 @@
 			],
 			"group": "test",
 			"label": "PlatformIO: Test",
-			"dependsOn": "TEST_DEFINITION"
 		},
 		// {
 		// 	"type":"cppbuild",

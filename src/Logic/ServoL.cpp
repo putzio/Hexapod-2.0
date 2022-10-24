@@ -30,16 +30,13 @@ void ServoL::WriteMs()
 
 ServoL::ServoL(bool leftServo)
 {
-    velocity = MIN_VELOCITY;
-    maxVelocity = MAX_VELOCITY;
-    minVelocity = MIN_VELOCITY;
     currentPosition = (SERVO_MIN_MS + SERVO_MAX_MS) / 2;
     done = true;
 }
 
 void ServoL::GoToPosition()
 {
-    CalculateVelocity();
+    CalculateVelocity(currentPosition - msPosition);
     if (!done)
     {
         // this->currentPosition+=((this->currentPosition-this->msPosition)/300);
@@ -62,31 +59,31 @@ void ServoL::GoToPosition()
     }
 }
 
-void ServoL::ChangeVelocityLimits(int v)
-{
-    minVelocity = v;
-    maxVelocity = 3 * v + 5;
-}
-void ServoL::CalculateVelocity()
-{
-    // if(currentPosition - msPosition < DISTANCE_DECCELERATION &&
-    //     currentPosition - msPosition > - DISTANCE_DECCELERATION )
-    if (IS_BETWEEN(currentPosition - msPosition, -DISTANCE_DECCELERATION, DISTANCE_DECCELERATION))
-    {
-        // deccelerate
-        velocity -= DECCELERATION;
-    }
-    else
-    {
-        // accelerate
-        velocity += ACCELERATION;
-    }
+// void ServoL::ChangeVelocityLimits(int v)
+// {
+//     minVelocity = v;
+//     maxVelocity = 3 * v + 5;
+// }
+// void ServoL::CalculateVelocity()
+// {
+//     // if(currentPosition - msPosition < DISTANCE_DECCELERATION &&
+//     //     currentPosition - msPosition > - DISTANCE_DECCELERATION )
+//     if (IS_BETWEEN(currentPosition - msPosition, -DISTANCE_DECCELERATION, DISTANCE_DECCELERATION))
+//     {
+//         // deccelerate
+//         velocity -= DECCELERATION;
+//     }
+//     else
+//     {
+//         // accelerate
+//         velocity += ACCELERATION;
+//     }
 
-    if (velocity < minVelocity)
-        velocity = minVelocity;
-    if (velocity > maxVelocity)
-        velocity = maxVelocity;
-}
+//     if (velocity < minVelocity)
+//         velocity = minVelocity;
+//     if (velocity > maxVelocity)
+//         velocity = maxVelocity;
+// }
 void ServoL::ChangePosition(uint8_t pos)
 {
     msPosition = map(pos, 0, 180, SERVO_MIN_MS, SERVO_MAX_MS);
