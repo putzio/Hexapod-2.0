@@ -1,6 +1,9 @@
 #pragma once
+
 #include "Logic/ServoL.hpp"
 #include "enum_types.h"
+#include "Logic/SlaveServo.hpp"
+
 // SERVO POSITIONS
 #define MASTER_SERVO_MIN_POS 100
 #define MASTER_SERVO_MAX_POS 130
@@ -28,7 +31,7 @@ public:
     void InitLeg();
 
 public:
-    Leg(bool leftLeg = false, bool sBack = true, int16_t calibrationMaster = 0, int16_t calibrationSlave = 0);
+    Leg(bool leftLeg = false, bool sBack = true);
     void ChangeLegVelocityLimits(int v);
     // Writes master position and if the slave is enabled slave adjusts its angle,
     // so the height of the leg does not change
@@ -46,5 +49,5 @@ public:
     void ChooseMove(State s, bool enableSlave);
     bool Move();
     bool MoveDone();
-    void DisableLeg();
+    // void DisableLeg();
 };

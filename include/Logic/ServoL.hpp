@@ -21,7 +21,7 @@
 
 uint16_t map(float x, uint16_t sMin, uint16_t sMax, uint16_t dMin, uint16_t dMax);
 
-class ServoL:BasicServo
+class ServoL: public BasicServo
 {
 private:
     uint16_t pwmValue;
@@ -43,14 +43,14 @@ protected:
 public:
     bool done;
     float position; // position given by the user
-    // int currentPosition;
 
     ServoL(bool leftServo = false);
-
     void GoToPosition();
-
     void ChangeVelocityLimits(int v);
     void CalculateVelocity();
     void ChangePosition(uint8_t pos);
     void Write(uint8_t newPosition);
+    const uint16_t& GetPwmValue();
+
+
 };

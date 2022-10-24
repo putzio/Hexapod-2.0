@@ -1,6 +1,11 @@
 #include "Logic/ServoL.hpp"
 #include "pico/double.h"
 
+uint16_t map(float x, uint16_t sMin, uint16_t sMax, uint16_t dMin, uint16_t dMax)
+{
+    return ((x - (float)sMin) * (dMax - dMin) / (sMax - sMin) + dMin);
+}
+
 uint16_t ServoL::CalculateLeft(uint16_t pos)
 {
     int pos90 = map(90, 0, 180, SERVO_MIN_MS, SERVO_MAX_MS);
@@ -98,39 +103,10 @@ void ServoL::Write(uint8_t newPosition)
         WriteMs();
     }
 }
-
-SlaveServo::SlaveServo(bool leftServo, bool sBack)
-    : ServoL(leftServo)
+const uint16_t& ServoL::GetPwmValue()
 {
-    slaveBack = sBack;
-}
-uint8_t SlaveServo::Calculate(int masterPosition)
-{
-    float alfa = masterPosition - 90.0;
-    if (alfa < 0)
-        alfa = -alfa;
-    float rad = 3.1415 / 180.0;
-    float sinPosNAlfa = (h - cos((float)alfa * rad));
-    // position = asin(sinPosNAlfa)/rad - alfa;
-    // float calculatedH = cos(alfa * rad) + sin((position + alfa) * rad);
-    // sinPosNAlfa += (h - calculatedH);
-    if (slaveBack)
-        position = asin(sinPosNAlfa) / rad - alfa;
-    else
-        position = 180.0 - asin(sinPosNAlfa) / rad + alfa;
-    return position;
-}
-// sets SlaveServo at the right position, so the leg heigth does not change
-void SlaveServo::SlavePosition(float masterPosition)
-{
-    if (enableSlave)
-    {
-        position = Calculate(masterPosition);
-        Write(position);
-    }
+    return pwmValue;
 }
 
-uint16_t map(float x, uint16_t sMin, uint16_t sMax, uint16_t dMin, uint16_t dMax)
-{
-    return ((x - (float)sMin) * (dMax - dMin) / (sMax - sMin) + dMin);
-}
+
+

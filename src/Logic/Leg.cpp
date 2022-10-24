@@ -1,10 +1,10 @@
 #include "Logic/Leg.hpp"
 
 
-Leg::Leg(int pinMaster, int pinSlave, bool leftLeg, bool sBack , int16_t calibrationMaster, int16_t calibrationSlave)
+Leg::Leg(bool leftLeg, bool sBack)
 {
-    master = Servo(pinMaster, leftLeg, calibrationMaster);
-        slave = SlaveServo(pinSlave, leftLeg, calibrationSlave, sBack);
+    master = ServoL(leftLeg);
+        slave = SlaveServo(leftLeg, sBack);
         if (!sBack)
         {
             maxPos = 180 - MASTER_SERVO_MIN_POS;
@@ -14,11 +14,11 @@ Leg::Leg(int pinMaster, int pinSlave, bool leftLeg, bool sBack , int16_t calibra
 }
 
 void Leg::InitLeg(){
-    master.Enable();
-    master.Write(90);
-    slave.enableSlave = true;
-    slave.Enable();
-    slave.SlavePosition(master.position);
+    // master.Enable();
+    // master.Write(90);
+    // slave.enableSlave = true;
+    // slave.Enable();
+    // slave.SlavePosition(master.position);
 }
 
 void Leg::ChangeLegVelocityLimits(int v)
@@ -120,8 +120,8 @@ bool Leg::MoveDone()
     else
         return false;
 }
-void Leg::DisableLeg()
-{
-    master.Disable();
-    slave.Disable();
-}
+// void Leg::DisableLeg()
+// {
+//     master.Disable();
+//     slave.Disable();
+// }
