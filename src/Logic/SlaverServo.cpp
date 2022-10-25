@@ -1,5 +1,7 @@
 #include "Logic/SlaveServo.hpp"
-#include "pico/double.h"
+// #include "pico/double.h"
+#include "cmath"
+
 
 SlaveServo::SlaveServo(bool leftServo, bool sBack)
     : ServoL(leftServo)

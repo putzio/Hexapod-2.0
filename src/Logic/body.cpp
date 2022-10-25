@@ -12,7 +12,7 @@ Body::Body()
     for (int i = 0; i < ARRAY_SIZE(legs); i++)
     {
         legs[i].InitLeg();
-        sleep_ms(POS_90_TIME);
+        // sleep_ms(POS_90_TIME);
     }
 }
 void Body::ChangeBodyVelocityLimits(int v)

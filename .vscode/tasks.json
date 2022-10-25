@@ -10,14 +10,14 @@
 			"group": "build",
 			"label": "PlatformIO: Build",
 		},
-		{
-			"type": "PlatformIO",
-			"task": "Check (raspberry-pi-pico)",
-			"problemMatcher": [
-				"$platformio"
-			],
-			"label": "PlatformIO: Check (raspberry-pi-pico)"
-		},
+		// {
+		// 	"type": "PlatformIO",
+		// 	"task": "Check (raspberry-pi-pico)",
+		// 	"problemMatcher": [
+		// 		"$platformio"
+		// 	],
+		// 	"label": "PlatformIO: Check (raspberry-pi-pico)"
+		// },
 		{
 			"type": "PlatformIO",
 			"task": "Test",
