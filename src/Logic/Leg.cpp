@@ -21,10 +21,10 @@ void Leg::InitLeg(){
     // slave.SlavePosition(master.position);
 }
 
-void Leg::ChangeLegVelocityLimits(int v)
+void Leg::ChangeLegVelocityLimits(int vMin, int vMax)
 {
-    master.ChangeVelocityLimits(v);
-    slave.ChangeVelocityLimits(v);
+    master.ChangeVelocityLimits(vMin, vMax);
+    slave.ChangeVelocityLimits(vMin, vMax);
 }
 
 void Leg::WriteMaster(int position, bool slaveEnabled)

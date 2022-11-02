@@ -9,9 +9,11 @@ ServoVelocity::ServoVelocity()
     minVelocity = MIN_VELOCITY;
 }
 
-void ServoVelocity::ChangeVelocityLimits(int v){
-    minVelocity = v;
-    maxVelocity = 3 * v + 5;
+void ServoVelocity::ChangeVelocityLimits(int vMin, int vMax){
+    if(IS_BETWEEN(vMin, 1, 20))
+        minVelocity = vMin;
+    if(IS_BETWEEN(vMax, 1, 20))
+        maxVelocity = vMax;
 }
 void ServoVelocity::CalculateVelocity(int16_t distance){
     // if(currentPosition - msPosition < DISTANCE_DECCELERATION &&
@@ -31,4 +33,15 @@ void ServoVelocity::CalculateVelocity(int16_t distance){
         velocity = minVelocity;
     if (velocity > maxVelocity)
         velocity = maxVelocity;
+}
+
+float ServoVelocity::GetVelocity()
+{
+    return velocity;
+}
+
+void ServoVelocity::VelocityLimitGetter(int *velocities)
+{
+    velocities[0] = minVelocity;
+    velocities[1] = maxVelocity;
 }

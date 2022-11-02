@@ -12,15 +12,15 @@
 class ServoVelocity
 {
 private:
-    /* data */
-    
-public:
     float velocity;  // is changed and calculated in CalculateVelocity() method
     int maxVelocity; // privte?
     int minVelocity;
+public:
     ServoVelocity();
-    void ChangeVelocityLimits(int v);
+    void ChangeVelocityLimits(int vMin, int vMax);
     void CalculateVelocity(int16_t distance);
+    float GetVelocity();
+    void VelocityLimitGetter(int *velocities);
 };
 
 

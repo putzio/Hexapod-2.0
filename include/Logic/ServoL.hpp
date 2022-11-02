@@ -26,33 +26,33 @@ class ServoL: public BasicServo, public ServoVelocity
 {
 private:
     uint16_t pwmValue;
-    void SetPwm(uint16_t value);
-    friend class TestServo;
-protected:
-    bool left = false; // if the servo is on the other side it has to move the opposite way -> left = true
+    
     // msPosition:
     // calculated from position in the Write() method of destination
     //      OR
     // Changes value in the ChangePosition() method and then moves servo from currentPosition
     // to the changed one by using GoToPosition() method
     volatile uint16_t msPosition;
-    // float velocity;  // is changed and calculated in CalculateVelocity() method
-    // int maxVelocity; // privte?
-    // int minVelocity;
-    uint16_t CalculateLeft(uint16_t pos);
-    void WriteMs();
+    // friend class Leg;
+protected:
+    bool left = false; // if the servo is on the other side it has to move the opposite way -> left = true
 
 public:
     bool done;
     float position; // position given by the user
 
+private:
+    void SetPwm(uint16_t value);
+protected:
+    uint16_t CalculateLeft(uint16_t pos);
+    void WriteMs();
+public:
     ServoL(bool leftServo = false);
+    
     void GoToPosition();
-
-    // void ChangeVelocityLimits(int v);
-    // void CalculateVelocity();
-
     void ChangePosition(uint8_t pos);
     void Write(uint8_t newPosition);
-    const uint16_t& GetPwmValue();
+    
+    uint16_t GetPwmValue();
+    uint16_t GetMsPosition();
 };

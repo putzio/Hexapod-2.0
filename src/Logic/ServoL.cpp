@@ -28,9 +28,10 @@ void ServoL::WriteMs()
         SetPwm(currentPosition);
 }
 
-ServoL::ServoL(bool leftServo)
+ServoL::ServoL(bool leftServo):ServoVelocity()
 {
     currentPosition = (SERVO_MIN_MS + SERVO_MAX_MS) / 2;
+    msPosition = currentPosition;
     done = true;
 }
 
@@ -41,13 +42,13 @@ void ServoL::GoToPosition()
     {
         // this->currentPosition+=((this->currentPosition-this->msPosition)/300);
         if (this->currentPosition > this->msPosition)
-            this->currentPosition -= this->velocity;
+            this->currentPosition -= GetVelocity();
         else
-            this->currentPosition += this->velocity;
+            this->currentPosition += GetVelocity();
 
         // if(currentPosition - msPosition < velocity &&
         //    currentPosition - msPosition > -velocity)
-        if (IS_BETWEEN(currentPosition - msPosition, -velocity, velocity))
+        if (IS_BETWEEN(currentPosition - msPosition, -GetVelocity(), GetVelocity()))
             this->currentPosition = this->msPosition;
 
         // Move servo
@@ -100,9 +101,15 @@ void ServoL::Write(uint8_t newPosition)
         WriteMs();
     }
 }
-const uint16_t& ServoL::GetPwmValue()
+
+uint16_t ServoL::GetPwmValue()
 {
     return pwmValue;
+}
+
+uint16_t ServoL::GetMsPosition()
+{
+    return msPosition;
 }
 
 

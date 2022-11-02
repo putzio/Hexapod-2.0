@@ -4,7 +4,7 @@
 TEST(ServoVelocity, test_initialises_Servo_Velocity){
     // initialise the right servo
     ServoVelocity velocity;
-    ASSERT_EQ(MIN_VELOCITY, velocity.velocity);
+    ASSERT_EQ(MIN_VELOCITY, velocity.GetVelocity());
 }
 
 TEST(ServoVelocity, test_calculates_servo_velocity)
@@ -13,27 +13,27 @@ TEST(ServoVelocity, test_calculates_servo_velocity)
     
     int16_t distance = 0;
     velocity.CalculateVelocity(distance);
-    ASSERT_EQ(MIN_VELOCITY, velocity.velocity);
+    ASSERT_EQ(MIN_VELOCITY, velocity.GetVelocity());
 
     distance = DISTANCE_DECCELERATION + 1;
     velocity.CalculateVelocity(distance);
-    ASSERT_EQ(float(MIN_VELOCITY + ACCELERATION), velocity.velocity);
+    ASSERT_EQ(float(MIN_VELOCITY + ACCELERATION), velocity.GetVelocity());
 
     distance = 0;
     velocity.CalculateVelocity(distance);
-    ASSERT_EQ(MIN_VELOCITY, velocity.velocity);
+    ASSERT_EQ(MIN_VELOCITY, velocity.GetVelocity());
     
-    velocity.velocity = MAX_VELOCITY;
-    distance = DISTANCE_DECCELERATION + 2;
-    ASSERT_EQ(MAX_VELOCITY,velocity.velocity);
+    // velocity.GetVelocity() = MAX_VELOCITY;
+    // distance = DISTANCE_DECCELERATION + 2;
+    // ASSERT_EQ(MAX_VELOCITY,velocity.GetVelocity());
 }
 TEST(ServoVelocity, test_change_velocity)
 {
     ServoVelocity velocity;
-    int16_t v = 10;
-    velocity.ChangeVelocityLimits(v);
-    ASSERT_EQ(v, velocity.minVelocity);
-
-    v = v * 3 + 5;
-    ASSERT_EQ(v, velocity.maxVelocity);
+    int16_t v1 = 10, v2 = 20;
+    int velocities[2];
+    velocity.ChangeVelocityLimits(v1,v2);
+    velocity.VelocityLimitGetter(velocities);
+    ASSERT_EQ(v1, velocities[0]);
+    ASSERT_EQ(v2, velocities[1]);
 }

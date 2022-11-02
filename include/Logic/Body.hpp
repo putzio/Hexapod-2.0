@@ -23,7 +23,7 @@ public:
     int step = 0;
     bool reset = false;
     Body();
-    void ChangeBodyVelocityLimits(int v);
+    void ChangeBodyVelocityLimits(int vMin, int vMax);
     void ChangeToForward();
     void ChangeToBack();
     void ChangeToLeft();

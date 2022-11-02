@@ -32,7 +32,7 @@ public:
 
 public:
     Leg(bool leftLeg = false, bool sBack = true);
-    void ChangeLegVelocityLimits(int v);
+    void ChangeLegVelocityLimits(int vMin, int vMax);
     // Writes master position and if the slave is enabled slave adjusts its angle,
     // so the height of the leg does not change
     void WriteMaster(int position, bool slaveEnabled);

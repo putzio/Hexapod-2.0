@@ -15,11 +15,11 @@ Body::Body()
         // sleep_ms(POS_90_TIME);
     }
 }
-void Body::ChangeBodyVelocityLimits(int v)
+void Body::ChangeBodyVelocityLimits(int vMin, int vMax)
 {
-    for (int i = 0; i < ARRAY_SIZE(legs); i++)
+    for (Leg l : legs)
     {
-        legs[i].ChangeLegVelocityLimits(v);
+        l.ChangeLegVelocityLimits(vMin, vMax);
     }
 }
 void Body::ChangeToForward()

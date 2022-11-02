@@ -67,7 +67,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60104",
+                "PLATFORMIO=60105",
                 "PICO_CYW43_ARCH_POLL",
                 "NDEBUG",
                 "PICO_ON_DEVICE=1",
