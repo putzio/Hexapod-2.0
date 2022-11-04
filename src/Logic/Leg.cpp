@@ -1,10 +1,10 @@
 #include "Logic/Leg.hpp"
 
 
-Leg::Leg(bool leftLeg, bool sBack)
+Leg::Leg(ServoL::ServoSide side, SlaveServo::ServoPosition sBack)
 {
-    master = ServoL(leftLeg);
-        slave = SlaveServo(leftLeg, sBack);
+    master = ServoL(side);
+        slave = SlaveServo(side, sBack);
         if (!sBack)
         {
             maxPos = 180 - MASTER_SERVO_MIN_POS;
@@ -33,7 +33,7 @@ void Leg::WriteMaster(int position, bool slaveEnabled)
     if (slaveEnabled)
     {
         slave.enableSlave = true;
-        slave.SlavePosition(position);
+        slave.UpdateSlavePosition(position);
     }
     else
     {
@@ -50,7 +50,7 @@ void Leg::ChangePosition(uint8_t pos, bool slaveEnabled)
 void Leg::GoToPositionMaster()
 {
     master.GoToPosition();
-    slave.SlavePosition(map(master.currentPosition, SERVO_MIN_MS, SERVO_MAX_MS, 0.0, 180.0));
+    slave.UpdateSlavePosition(master.MapMsToPosition(master.position));//map(master.currentPosition, SERVO_MIN_MS, SERVO_MAX_MS, 0.0, 180.0));
 }
 // Changes only Slave desired position
 void Leg::ChangePositionSlave(uint8_t pos)
@@ -78,7 +78,8 @@ void Leg::ChooseMove(State s, bool enableSlave)
     }
     case Down:
     {
-        ChangePositionSlave(slave.Calculate(master.position));
+        // ChangePositionSlave(slave.CalculatePosition(master.position));
+        slave.UpdateSlavePosition(master.position);
         break;
     }
     case Back:

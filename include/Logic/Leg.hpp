@@ -31,7 +31,7 @@ public:
     void InitLeg();
 
 public:
-    Leg(bool leftLeg = false, bool sBack = true);
+    Leg(ServoL::ServoSide side = ServoL::rightServo, SlaveServo::ServoPosition sBack = SlaveServo::slaveBack);
     void ChangeLegVelocityLimits(int vMin, int vMax);
     // Writes master position and if the slave is enabled slave adjusts its angle,
     // so the height of the leg does not change

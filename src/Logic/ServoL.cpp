@@ -1,14 +1,14 @@
 #include "Logic/ServoL.hpp"
 // #include "pico/double.h"
 
-uint16_t map(float x, uint16_t sMin, uint16_t sMax, uint16_t dMin, uint16_t dMax)
+static inline uint16_t map(float x, uint16_t sMin, uint16_t sMax, uint16_t dMin, uint16_t dMax)
 {
     return ((x - (float)sMin) * (dMax - dMin) / (sMax - sMin) + dMin);
 }
 
 uint16_t ServoL::CalculateLeft(uint16_t pos)
 {
-    int pos90 = map(90, 0, 180, SERVO_MIN_MS, SERVO_MAX_MS);
+    int pos90 = MapPositionToMs(90);
     // get the distance from 90 degrees
     int distance = pos90 - pos;
     // return another direction
@@ -19,20 +19,31 @@ void ServoL::SetPwm(uint16_t value)
     pwmValue = value;
 }
 
+uint16_t ServoL::MapPositionToMs(uint8_t position)
+{
+    return map(position, 0, 180, SERVO_MIN_MS, SERVO_MAX_MS);
+}
+
+uint16_t ServoL::MapMsToPosition(uint16_t msPosition)
+{
+    return map(position, SERVO_MIN_MS, SERVO_MAX_MS, 0, 180);
+}
+
 void ServoL::WriteMs()
 {
-    if (left)
+    if (servoSide == leftServo)
         SetPwm(CalculateLeft(currentPosition));
     else
         // Set channel output high for one cycle before dropping
         SetPwm(currentPosition);
 }
 
-ServoL::ServoL(bool leftServo):ServoVelocity()
+ServoL::ServoL(ServoSide side):ServoVelocity()
 {
     currentPosition = (SERVO_MIN_MS + SERVO_MAX_MS) / 2;
     msPosition = currentPosition;
     done = true;
+    servoSide = side;
 }
 
 void ServoL::GoToPosition()
@@ -41,21 +52,21 @@ void ServoL::GoToPosition()
     if (!done)
     {
         // this->currentPosition+=((this->currentPosition-this->msPosition)/300);
-        if (this->currentPosition > this->msPosition)
-            this->currentPosition -= GetVelocity();
+        if (currentPosition > msPosition)
+            currentPosition -= GetVelocity();
         else
-            this->currentPosition += GetVelocity();
+            currentPosition += GetVelocity();
 
         // if(currentPosition - msPosition < velocity &&
         //    currentPosition - msPosition > -velocity)
         if (IS_BETWEEN(currentPosition - msPosition, -GetVelocity(), GetVelocity()))
-            this->currentPosition = this->msPosition;
+            currentPosition = msPosition;
 
         // Move servo
         WriteMs();
 
         // If the servo has reached the final position move is done
-        if (this->currentPosition == this->msPosition)
+        if (currentPosition == msPosition)
             done = true;
     }
 }
@@ -87,7 +98,7 @@ void ServoL::GoToPosition()
 // }
 void ServoL::ChangePosition(uint8_t pos)
 {
-    msPosition = map(pos, 0, 180, SERVO_MIN_MS, SERVO_MAX_MS);
+    msPosition = MapPositionToMs(pos);
     position = pos;
     done = false;
 }
@@ -96,7 +107,7 @@ void ServoL::Write(uint8_t newPosition)
     if (newPosition <= 180 && newPosition >= 0)
     {
         this->position = newPosition;
-        this->msPosition = map(this->position, 0, 180, SERVO_MIN_MS, SERVO_MAX_MS);
+        this->msPosition = MapPositionToMs(position);
         currentPosition = msPosition;
         WriteMs();
     }

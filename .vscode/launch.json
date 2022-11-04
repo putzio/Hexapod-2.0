@@ -9,6 +9,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "gdb",
+            "name": "test debug",
+            "request": "launch",
+            "program": "C:/Users/krzysiu/Documents/PlatformIO/Projects/Hexapod/.pio/build/native/program.exe"
+        },
+        {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",

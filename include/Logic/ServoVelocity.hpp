@@ -19,6 +19,7 @@ public:
     ServoVelocity();
     void ChangeVelocityLimits(int vMin, int vMax);
     void CalculateVelocity(int16_t distance);
+    
     float GetVelocity();
     void VelocityLimitGetter(int *velocities);
 };

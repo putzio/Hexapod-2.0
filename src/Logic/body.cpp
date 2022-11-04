@@ -4,9 +4,9 @@ Body::Body()
 {
     for (int i = 0; i < ARRAY_SIZE(legs); i++)
     {
-        bool left = (i % 2 == 1);      // left legs are leg 1,3,5
+        ServoL::ServoSide side = (ServoL::ServoSide)(i % 2);      // left legs are leg 1,3,5
         bool oppositeSlave = !(i < 4); // for first 4 legs the slave servo is positioned the opposite way
-        legs[i] = Leg(left, oppositeSlave);
+        legs[i] = Leg(side, (SlaveServo::ServoPosition) oppositeSlave);
     }
 
     for (int i = 0; i < ARRAY_SIZE(legs); i++)

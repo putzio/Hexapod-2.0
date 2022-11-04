@@ -10,9 +10,9 @@ ServoVelocity::ServoVelocity()
 }
 
 void ServoVelocity::ChangeVelocityLimits(int vMin, int vMax){
-    if(IS_BETWEEN(vMin, 1, 20))
+    if(IS_BETWEEN(vMin, MIN_VELOCITY, MAX_VELOCITY))
         minVelocity = vMin;
-    if(IS_BETWEEN(vMax, 1, 20))
+    if(IS_BETWEEN(vMax, MIN_VELOCITY, MAX_VELOCITY))
         maxVelocity = vMax;
 }
 void ServoVelocity::CalculateVelocity(int16_t distance){

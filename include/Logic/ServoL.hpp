@@ -20,10 +20,14 @@
 #define ARRAY_SIZE(a) sizeof(a) / sizeof(a[0])
 #define IS_BETWEEN(x, min, max) (x > min && x < max)
 
-uint16_t map(float x, uint16_t sMin, uint16_t sMax, uint16_t dMin, uint16_t dMax);
-
 class ServoL: public BasicServo, public ServoVelocity 
 {
+public:
+enum ServoSide {
+    leftServo,
+    rightServo
+};
+
 private:
     uint16_t pwmValue;
     
@@ -35,11 +39,11 @@ private:
     volatile uint16_t msPosition;
     // friend class Leg;
 protected:
-    bool left = false; // if the servo is on the other side it has to move the opposite way -> left = true
-
+    // bool left = false; // if the servo is on the other side it has to move the opposite way -> left = true
+    ServoSide servoSide = rightServo;
 public:
     bool done;
-    float position; // position given by the user
+    uint8_t position; // position given by the user
 
 private:
     void SetPwm(uint16_t value);
@@ -47,12 +51,15 @@ protected:
     uint16_t CalculateLeft(uint16_t pos);
     void WriteMs();
 public:
-    ServoL(bool leftServo = false);
+    ServoL(ServoSide side = rightServo);
     
     void GoToPosition();
     void ChangePosition(uint8_t pos);
     void Write(uint8_t newPosition);
     
+    uint16_t MapPositionToMs(uint8_t position);
+    uint16_t MapMsToPosition(uint16_t msPosition);
+
     uint16_t GetPwmValue();
     uint16_t GetMsPosition();
 };
