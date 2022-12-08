@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "Result.hpp"
 
 #define ACCELLERATION_PER_S 50.0
 #define ACCELERATION 0.2 // ACCELERATION_PER_S*CYCLE_TIME *(SERVO_MAX_MS - SERVO_MIN_MS)/180
@@ -13,15 +14,14 @@ class ServoVelocity
 {
 private:
     float velocity;  // is changed and calculated in CalculateVelocity() method
-    int maxVelocity; // privte?
-    int minVelocity;
+    int16_t velocityLimits[2];
 public:
     ServoVelocity();
-    void ChangeVelocityLimits(int vMin, int vMax);
+    Result ChangeVelocityLimits(int vMin, int vMax);
     void CalculateVelocity(int16_t distance);
     
     float GetVelocity();
-    void VelocityLimitGetter(int *velocities);
+    const int16_t* GetVelocityLimits();
 };
 
 

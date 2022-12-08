@@ -5,17 +5,18 @@
 ServoVelocity::ServoVelocity()
 {
     velocity = MIN_VELOCITY;
-    maxVelocity = MAX_VELOCITY;
-    minVelocity = MIN_VELOCITY;
+    velocityLimits[1] = MAX_VELOCITY;
+    velocityLimits[0] = MIN_VELOCITY;
 }
 
-void ServoVelocity::ChangeVelocityLimits(int vMin, int vMax){
-    if(IS_BETWEEN(vMin, MIN_VELOCITY, MAX_VELOCITY))
-        minVelocity = vMin;
-    if(IS_BETWEEN(vMax, MIN_VELOCITY, MAX_VELOCITY))
-        maxVelocity = vMax;
+Result ServoVelocity::ChangeVelocityLimits(int vMin, int vMax){
+    if(!IS_BETWEEN(vMin, MIN_VELOCITY, MAX_VELOCITY) && !IS_BETWEEN(vMax, MIN_VELOCITY, MAX_VELOCITY))
+        return kVelocityOutOfRange;
+    velocityLimits[0] = vMin;
+    velocityLimits[1] = vMax;
+    return kOkResult;
 }
-void ServoVelocity::CalculateVelocity(int16_t distance){
+void ServoVelocity::CalculateVelocity(int16_t distance){//CHECK
     // if(currentPosition - msPosition < DISTANCE_DECCELERATION &&
     //     currentPosition - msPosition > - DISTANCE_DECCELERATION )
     if (IS_BETWEEN(distance, -DISTANCE_DECCELERATION, DISTANCE_DECCELERATION))
@@ -29,19 +30,17 @@ void ServoVelocity::CalculateVelocity(int16_t distance){
         velocity += ACCELERATION;
     }
 
-    if (velocity < minVelocity)
-        velocity = minVelocity;
-    if (velocity > maxVelocity)
-        velocity = maxVelocity;
+    if (velocity < velocityLimits[0])
+        velocity = velocityLimits[0];
+    if (velocity > velocityLimits[1])
+        velocity = velocityLimits[1];
 }
 
 float ServoVelocity::GetVelocity()
 {
     return velocity;
 }
-
-void ServoVelocity::VelocityLimitGetter(int *velocities)
+const int16_t* ServoVelocity::GetVelocityLimits()
 {
-    velocities[0] = minVelocity;
-    velocities[1] = maxVelocity;
+    return velocityLimits;
 }

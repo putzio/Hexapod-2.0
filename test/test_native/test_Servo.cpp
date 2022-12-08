@@ -43,8 +43,7 @@ TEST(Servo, test_ChangePosition_to_0_and_GoToPosition)
     servo.GoToPosition();
     uint8_t v = 2;
     servo.ChangeVelocityLimits(v,v);
-    int limits[2];
-    servo.VelocityLimitGetter(limits);
+    const int16_t* limits = servo.GetVelocityLimits();
 
     //expected = current position
     uint16_t expected = (SERVO_MIN_MS + SERVO_MAX_MS) / 2;

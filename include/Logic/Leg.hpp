@@ -20,19 +20,41 @@
 */
 class Leg
 {
+    private:    
     float calibrationValue = 0;
-public:
     ServoL master;
     SlaveServo slave;
+    int16_t velocityLimits[2] = {MIN_VELOCITY, MAX_VELOCITY};//struct???
+
+    public:
+    enum LegPosition
+    {
+        kBack,
+        kBackDown,
+        kBackUp,
+        kForward,
+        kForwardDown,
+        kForwardUp
+    };
+    
     int maxPos = MASTER_SERVO_MAX_POS;
     int minPos = MASTER_SERVO_MIN_POS;
     int upPos = SLAVE_UP_POSITION;
 
-    void InitLeg();
-
 public:
+
     Leg(ServoL::ServoSide side = ServoL::rightServo, SlaveServo::ServoPosition sBack = SlaveServo::slaveBack);
+    void InitLeg();
     void ChangeLegVelocityLimits(int vMin, int vMax);
+    const int16_t* GetVelocityLimits();
+    // void ChangeHight(uint16_t hight);
+    // void LegPeriodicProcess()
+    // {
+
+    // }
+
+
+
     // Writes master position and if the slave is enabled slave adjusts its angle,
     // so the height of the leg does not change
     void WriteMaster(int position, bool slaveEnabled);

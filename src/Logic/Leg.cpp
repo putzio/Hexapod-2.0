@@ -23,9 +23,22 @@ void Leg::InitLeg(){
 
 void Leg::ChangeLegVelocityLimits(int vMin, int vMax)
 {
-    master.ChangeVelocityLimits(vMin, vMax);
-    slave.ChangeVelocityLimits(vMin, vMax);
+    if(master.ChangeVelocityLimits(vMin, vMax) == kOkResult
+        && slave.ChangeVelocityLimits(vMin, vMax) == kOkResult)
+    velocityLimits[0] = vMin;
+    velocityLimits[1] = vMax;
 }
+
+const int16_t* Leg::GetVelocityLimits()
+{
+   return velocityLimits;
+}
+
+// void Leg::ChangeHight(uint16_t hight)
+// {
+//     slave.ChangeHight()
+// }
+
 
 void Leg::WriteMaster(int position, bool slaveEnabled)
 {

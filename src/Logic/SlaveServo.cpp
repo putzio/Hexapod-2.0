@@ -41,7 +41,7 @@ void SlaveServo::UpdateSlavePosition(uint8_t masterPosition)
 //bool? Result?
 Result SlaveServo::ChangeHight(uint16_t newHight)
 {
-    if(newHight > 10000 && newHight < 19000)
+    if(newHight > 10000 && newHight < 19000)//CHECK
     {
         hight = newHight;
         return kOkResult;

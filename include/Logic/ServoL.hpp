@@ -42,8 +42,8 @@ protected:
     // bool left = false; // if the servo is on the other side it has to move the opposite way -> left = true
     ServoSide servoSide = rightServo;
 public:
-    bool done;
-    uint8_t position; // position given by the user
+    bool done;//CHECK
+    uint8_t position; // position given by the user//CHECK
 
 private:
     void SetPwm(uint16_t value);

@@ -2,5 +2,6 @@
 
 enum Result{
     kOkResult,
-    kHightOutOfRange
+    kHightOutOfRange,
+    kVelocityOutOfRange
 };

@@ -18,7 +18,7 @@ private:
     uint8_t CalculatePosition(int masterPosition);
 
 public:
-    bool enableSlave = false;
+    bool enableSlave = false;//CHECK
     SlaveServo(ServoSide side = rightServo, ServoPosition position = slaveForward);    
     // sets SlaveServo at the right position, so the leg heigth does not change
     void UpdateSlavePosition(uint8_t masterPosition);

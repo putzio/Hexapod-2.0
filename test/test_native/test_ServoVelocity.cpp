@@ -31,9 +31,9 @@ TEST(ServoVelocity, test_change_velocity)
 {
     ServoVelocity velocity;
     int16_t v1 = 10, v2 = 20;
-    int velocities[2];
+    
     velocity.ChangeVelocityLimits(v1,v2);
-    velocity.VelocityLimitGetter(velocities);
+    const int16_t* velocities = velocity.GetVelocityLimits();
     ASSERT_EQ(v1, velocities[0]);
     ASSERT_EQ(v2, velocities[1]);
 }
