@@ -1,5 +1,5 @@
 #pragma once
-enum Mode
+enum Mode:uint8_t
 {
     StopMode,
     ForwardMode,
@@ -29,7 +29,7 @@ enum Mode
 //     ResetSlave,
 // };
 //change to body states???
-enum State
+enum State:uint8_t
 {
     Stop,
     Forward,

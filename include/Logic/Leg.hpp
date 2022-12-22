@@ -21,10 +21,10 @@
 class Leg
 {
     private:    
-    float calibrationValue = 0;
     ServoL master;
     SlaveServo slave;
     int16_t velocityLimits[2] = {MIN_VELOCITY, MAX_VELOCITY};//struct???
+    int16_t legXVelocity = 10;//mm/s
 
     public:
     enum LegPosition
@@ -36,7 +36,7 @@ class Leg
         kForwardDown,
         kForwardUp
     };
-    
+    static const uint16_t legLength = 700;//mm
     int maxPos = MASTER_SERVO_MAX_POS;
     int minPos = MASTER_SERVO_MIN_POS;
     int upPos = SLAVE_UP_POSITION;
@@ -47,6 +47,9 @@ public:
     void InitLeg();
     void ChangeLegVelocityLimits(int vMin, int vMax);
     const int16_t* GetVelocityLimits();
+
+
+    
     // void ChangeHight(uint16_t hight);
     // void LegPeriodicProcess()
     // {

@@ -20,14 +20,14 @@
 #define ARRAY_SIZE(a) sizeof(a) / sizeof(a[0])
 #define IS_BETWEEN(x, min, max) (x > min && x < max)
 
-class ServoL: public BasicServo, public ServoVelocity 
+class ServoL: public ServoVelocity 
 {
 public:
 enum ServoSide {
     leftServo,
     rightServo
 };
-
+uint16_t currentPosition;
 private:
     uint16_t pwmValue;
     
@@ -46,7 +46,7 @@ public:
     uint8_t position; // position given by the user//CHECK
 
 private:
-    void SetPwm(uint16_t value);
+    void SetPwm(uint16_t value);//???
 protected:
     uint16_t CalculateLeft(uint16_t pos);
     void WriteMs();

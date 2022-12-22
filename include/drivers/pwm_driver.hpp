@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "BasicServo.hpp"
 
-class Pwm_driver:BasicServo
+class Pwm_driver
 {
 protected:
     bool enabled;
