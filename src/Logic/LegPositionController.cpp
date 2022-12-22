@@ -6,15 +6,7 @@ LegPositionController::LegPositionController(){
 }
 
 LegPositionController::LegPositionController(int16_t xPos, uint16_t yPos){
-    y = yPos;
-    x = xPos;
-}
-
-int16_t LegPositionController::GetX(){
-    return x;
-}
-uint16_t LegPositionController::GetY(){
-    return y;
+    SetNewXYPosition(xPos, yPos);
 }
 
 void LegPositionController::CalculateYPosition(const int16_t &xPos){
@@ -30,21 +22,46 @@ uint16_t LegPositionController::MapXInRange(const int16_t &xPos){
     return (xPos - xRange[0]) * 10000 / (xRange[1] - xRange[0]);
 }
 
-ServosPositions LegPositionController::CalculateServoPositions(int16_t newX, uint16_t newY){
+ServosPositions LegPositionController::CalculateServoPositions(int16_t xNew, uint16_t yNew){
     ServosPositions servosPositions;
     //x = xNew; y = yNew;
-    float dSquared = pow(newX / 10000.0, 2) + pow(newY / 10000.0, 2);
+    float dSquared = pow(xNew / 10000.0, 2) + pow(yNew / 10000.0, 2);
     float gamma = acos((2-dSquared)/2);
     float alpha;
-    if(newX == 0){
+    if(xNew == 0){
         alpha =  gamma/2;
     }
     else{
-        alpha = atan((double)newY/(double)newX) - (PI - gamma)/2;
+        alpha = atan((double)yNew/(double)xNew) - (PI - gamma)/2;
     }    
 
     servosPositions.UpperServoAngle = PI - alpha;
     servosPositions.LowerServoAngle = gamma - (PI / 2.0);
 
     return servosPositions;
+}
+
+int16_t LegPositionController::GetX(){
+    return x;
+}
+uint16_t LegPositionController::GetY(){
+    return y;
+}
+
+void LegPositionController::SetNewXYPosition(int16_t xNew, uint16_t yNew){
+    SetX(xNew);
+    SetY(yNew);
+}
+
+void LegPositionController::SetX(int16_t xNew){
+    if(xNew < xRange[0] && xNew > xRange[1]){
+        return;
+    }
+    x = xNew;
+}
+void LegPositionController::SetY(uint16_t yNew){
+    if(yNew < yRange[0] && yNew > yRange[1]){
+        return;
+    }
+    y = yNew;
 }

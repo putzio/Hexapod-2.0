@@ -27,9 +27,15 @@ class LegPositionController{
     LegPositionController();
     LegPositionController(int16_t xPos, uint16_t yPos);
 
-    int16_t GetX();
-    uint16_t GetY();
-
+    /**
+      *   \brief Calculate the y position when the leg is up
+      *   When the leg is up, the foot's path is a sin function
+      *   
+      *   \param xPos the x position of the end of the leg
+      *   The point (0,0) is in the Upper servomotor joint
+      *   \return struct ServoPositions with values of angles for both servomotors
+      *
+      **/
     void CalculateYPosition(const int16_t &xPos);    
     uint16_t MapXInRange(const int16_t &xPos);
     /**
@@ -40,5 +46,12 @@ class LegPositionController{
       *   \return struct ServoPositions with values of angles for both servomotors
       *
       **/
-    ServosPositions CalculateServoPositions(int16_t newX, uint16_t newY);
+    ServosPositions CalculateServoPositions(int16_t xNew, uint16_t yNew);
+
+    int16_t GetX();
+    uint16_t GetY();
+    void SetNewXYPosition(int16_t xNew, uint16_t yNew);
+    private:
+    void SetX(int16_t xNew);
+    void SetY(uint16_t yNew);
 };
