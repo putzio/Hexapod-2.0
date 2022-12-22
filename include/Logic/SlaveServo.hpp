@@ -2,7 +2,7 @@
 #include "Result.hpp"
 
 #define DEFAULT_HIGHT 17000 // max = 1,76, min = 1,5???
-#define PI 3.1415
+#define PI 3.14159265
 
 class SlaveServo : public ServoL
 {

@@ -53,6 +53,11 @@ void LegPositionController::SetNewXYPosition(int16_t xNew, uint16_t yNew){
     SetY(yNew);
 }
 
+void LegPositionController::FindXYPosition(const ServosPositions& positions){
+    x = (sin(positions.UpperServoAngle - PI / 2) - sin(PI - positions.UpperServoAngle - positions.LowerServoAngle)) * 10000 + 0.5;
+    y = (cos(positions.UpperServoAngle - PI / 2) + cos(PI - positions.UpperServoAngle - positions.LowerServoAngle)) * 10000 + 0.5;
+}
+
 void LegPositionController::SetX(int16_t xNew){
     if(xNew < xRange[0] && xNew > xRange[1]){
         return;

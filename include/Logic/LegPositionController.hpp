@@ -15,10 +15,10 @@ typedef struct ServosPositions{
 
 
 class LegPositionController{  
-
+    private:
     int16_t x;
     uint16_t y;
-    // double H;
+
     public:
     const uint16_t yRange[2] = {12000, 17000};
     const int16_t xRange[2] = {-5285, 2857};
@@ -51,6 +51,8 @@ class LegPositionController{
     int16_t GetX();
     uint16_t GetY();
     void SetNewXYPosition(int16_t xNew, uint16_t yNew);
+    
+    void FindXYPosition(const ServosPositions& positions);
     private:
     void SetX(int16_t xNew);
     void SetY(uint16_t yNew);
