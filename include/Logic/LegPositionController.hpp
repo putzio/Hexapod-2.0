@@ -15,16 +15,16 @@ typedef struct ServosPositions{
 
 class LegPositionController{  
     private:
-    int16_t x;
-    uint16_t y;
+    float x;
+    float y;
 
     public:
-    const uint16_t yRange[2] = {12000, 17000};
-    const int16_t xRange[2] = {-5285, 2857};
+    const float yRange[2] = {1.2, 1.7};
+    const float xRange[2] = {-0.5285, 0.2857};
 
     public:
     LegPositionController();
-    LegPositionController(int16_t xPos, uint16_t yPos);
+    LegPositionController(float xPos, float yPos);
 
     /**
       *   \brief Calculate the y position when the leg is up
@@ -35,9 +35,9 @@ class LegPositionController{
       *   \return struct ServoPositions with values of angles for both servomotors
       *
       **/
-    void CalculateYPosition(const int16_t &xPos);  
+    void CalculateYPosition(const float &xPos);  
 
-    uint16_t MapXInRange(const int16_t &xPos);
+    float MapXInRange(const float &xPos);
     /**
       *   \brief Calculate the servomotors positions
       *   
@@ -46,14 +46,14 @@ class LegPositionController{
       *   \return struct ServoPositions with values of angles for both servomotors
       *
       **/
-    ServosPositions CalculateServoPositions(int16_t xNew, uint16_t yNew);
+    ServosPositions CalculateServoPositions(float xNew, float yNew);
 
-    int16_t GetX();
-    uint16_t GetY();
-    void SetNewXYPosition(int16_t xNew, uint16_t yNew);
+    float GetX();
+    float GetY();
+    void SetNewXYPosition(float xNew, float yNew);
     
     void FindXYPosition(const ServosPositions& positions);
     private:
-    void SetX(int16_t xNew);
-    void SetY(uint16_t yNew);
+    void SetX(float xNew);
+    void SetY(float yNew);
 };
