@@ -2,7 +2,9 @@
 
 #include <stdint.h>
 #include <cmath>
-#include "constants.h"
+
+#d
+,efine PI 3.14159265
 
 typedef struct ServosPositions{
   float UpperServoAngle;
