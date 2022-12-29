@@ -36,7 +36,7 @@ void Servo::SetServoAngle(float angle){
 }
 
 
-uint16_t Servo::GetServoAngleInMs(){
+const uint16_t Servo::GetServoAngleInMs()const{
     uint16_t msValue;
     //map the angle value in the angle range
     msValue = (p_currentAngle - ANGLE_RANGE[0]) / (ANGLE_RANGE[1] - ANGLE_RANGE[0])
@@ -49,12 +49,12 @@ uint16_t Servo::GetServoAngleInMs(){
 }
 
 
-const float Servo::GetServoAngle(){
+const float Servo::GetServoAngle()const{
     return p_currentAngle;
 }
-const float Servo::GetTargetAngle(){
+const float Servo::GetTargetAngle()const{
     return p_targetAngle;
 }
-const float Servo::GetAngleChangingStep(){
+const float Servo::GetAngleChangingStep()const{
     return p_angleChangingStep;
 }

@@ -24,9 +24,9 @@ class Servo{
     void SetTargetAngle(float targetAngle, float angleChangingStep);
     void SetServoAngle(float servoAngle);
 
-    const float GetServoAngle();
-    const float GetTargetAngle();
-    const float GetAngleChangingStep();
+    const float GetServoAngle()const;
+    const float GetTargetAngle()const;
+    const float GetAngleChangingStep()const;
 
-    uint16_t GetServoAngleInMs();
+    const uint16_t GetServoAngleInMs()const;
 };
