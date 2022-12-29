@@ -31,12 +31,12 @@ TEST(LegPositionController, test_calculateServoPositions){
     float x =  0.5000; 
     float y = 1.8660;//1+sin(60*)
     ServosPositions expected;
-    expected.LowerServoAngle = PI / 3.0;
-    expected.UpperServoAngle = 2.0 * PI / 3.0;
+    expected.lowerServoAngle = PI / 3.0;
+    expected.upperServoAngle = 2.0 * PI / 3.0;
 
     ServosPositions actual = controller.CalculateServoPositions(x,y);
-    ASSERT_NEAR(expected.LowerServoAngle, actual.LowerServoAngle, 0.01);//error-> 0.5deg
-    ASSERT_NEAR(expected.UpperServoAngle, actual.UpperServoAngle, 0.01);
+    ASSERT_NEAR(expected.lowerServoAngle, actual.lowerServoAngle, 0.01);//error-> 0.5deg
+    ASSERT_NEAR(expected.upperServoAngle, actual.upperServoAngle, 0.01);
     ASSERT_EQ(1, expected == actual);
 }
 
@@ -45,12 +45,12 @@ TEST(LegPositionController, test_calculateServoPositions_x_eq_zero){
     float x = 0; 
     float y = 1.0000;
     ServosPositions expected;
-    expected.LowerServoAngle = - PI / 6.0;
-    expected.UpperServoAngle = 5.0 * PI / 6.0;
+    expected.lowerServoAngle = - PI / 6.0;
+    expected.upperServoAngle = 5.0 * PI / 6.0;
 
     ServosPositions actual = controller.CalculateServoPositions(x,y);
-    ASSERT_NEAR(expected.LowerServoAngle, actual.LowerServoAngle, 0.01);//error-> 0.5deg
-    ASSERT_NEAR(expected.UpperServoAngle, actual.UpperServoAngle, 0.01);
+    ASSERT_NEAR(expected.lowerServoAngle, actual.lowerServoAngle, 0.01);//error-> 0.5deg
+    ASSERT_NEAR(expected.upperServoAngle, actual.upperServoAngle, 0.01);
     ASSERT_EQ(1, expected == actual);
 }
 
@@ -58,8 +58,8 @@ TEST(LegPositionController, test_Find_XY_Position){
     LegPositionController controller = LegPositionController();
     
     ServosPositions positions;
-    positions.UpperServoAngle = 5.0 * PI / 6.0;
-    positions.LowerServoAngle = - PI / 6.0;
+    positions.upperServoAngle = 5.0 * PI / 6.0;
+    positions.lowerServoAngle = - PI / 6.0;
     
     controller.FindXYPosition(positions);
     float expectedX = 0;

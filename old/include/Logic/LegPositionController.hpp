@@ -3,14 +3,13 @@
 #include <stdint.h>
 #include <cmath>
 
-#d
-,efine PI 3.14159265
+#define PI 3.14159265
 
 typedef struct ServosPositions{
-  float UpperServoAngle;
-  float LowerServoAngle;
+  float upperServoAngle;
+  float lowerServoAngle;
   bool operator==(const ServosPositions& other)const{
-    return abs(this->LowerServoAngle - other.LowerServoAngle) < 0.0001 && abs(this->UpperServoAngle - other.UpperServoAngle) < 0.0001;
+    return abs(this->lowerServoAngle - other.lowerServoAngle) < 0.0001 && abs(this->upperServoAngle - other.upperServoAngle) < 0.0001;
   }
 } ServosPositions;
 

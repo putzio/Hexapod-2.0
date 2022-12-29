@@ -1,8 +1,8 @@
 #include "Logic/LegPositionController.hpp"
 
 LegPositionController::LegPositionController(){
-    y = (sin(60.0*PI/180.0) * 2.0);
-    x=0;
+    p_coordinates.y = (sin(60.0*PI/180.0) * 2.0);
+    p_coordinates.x=0;
 }
 
 LegPositionController::LegPositionController(float xPos, float yPos){
@@ -14,7 +14,7 @@ void LegPositionController::CalculateYPosition(const float &xPos){
         return;
     else{
         float xMapped = MapXInRange(xPos);
-        y = (1.0 - sin(xMapped * 3.1415)) * (double)(yRange[1] - yRange[0]) + yRange[0];
+        p_coordinates.y = (1.0 - sin(xMapped * 3.1415)) * (double)(yRange[1] - yRange[0]) + yRange[0];
     }
 }
 
@@ -24,7 +24,7 @@ float LegPositionController::MapXInRange(const float &xPos){
 
 ServosPositions LegPositionController::CalculateServoPositions(float xNew, float yNew){
     ServosPositions servosPositions;
-    //x = xNew; y = yNew;
+    //p_coordinates.x = xNew; p_coordinates.y = yNew;
     float dSquared = pow(xNew, 2) + pow(yNew, 2);
     float gamma = acos((2-dSquared)/2);
     float alpha;
@@ -35,17 +35,24 @@ ServosPositions LegPositionController::CalculateServoPositions(float xNew, float
         alpha = atan((double)yNew/(double)xNew) - (PI - gamma)/2;
     }    
 
-    servosPositions.UpperServoAngle = PI - alpha;
-    servosPositions.LowerServoAngle = gamma - (PI / 2.0);
+    servosPositions.upperServoAngle = PI - alpha;
+    servosPositions.lowerServoAngle = gamma - (PI / 2.0);
 
     return servosPositions;
 }
+ServosPositions LegPositionController::CalculateServoPositions(const Coordinates &coordinates){
+    return CalculateServoPositions(coordinates.x, coordinates.y);
+}
 
 float LegPositionController::GetX(){
-    return x;
+    return p_coordinates.x;
 }
 float LegPositionController::GetY(){
-    return y;
+    return p_coordinates.y;
+}
+
+Coordinates LegPositionController::GetCoordinates(){
+    return p_coordinates;
 }
 
 void LegPositionController::SetNewXYPosition(float xNew, float yNew){
@@ -53,20 +60,28 @@ void LegPositionController::SetNewXYPosition(float xNew, float yNew){
     SetY(yNew);
 }
 
+void LegPositionController::SetNewXYPosition(const Coordinates &coordinates){
+    SetNewXYPosition(coordinates.x, coordinates.y);
+}
+
 void LegPositionController::FindXYPosition(const ServosPositions& positions){
-    x = (sin(positions.UpperServoAngle - PI / 2) - sin(PI - positions.UpperServoAngle - positions.LowerServoAngle));
-    y = (cos(positions.UpperServoAngle - PI / 2) + cos(PI - positions.UpperServoAngle - positions.LowerServoAngle));
+    Coordinates coordinates;
+    
+    coordinates.x = (sin(positions.upperServoAngle - PI / 2) - sin(PI - positions.upperServoAngle - positions.lowerServoAngle));
+    coordinates.y = (cos(positions.upperServoAngle - PI / 2) + cos(PI - positions.upperServoAngle - positions.lowerServoAngle));
+
+    SetNewXYPosition(coordinates);
 }
 
 void LegPositionController::SetX(float xNew){
     if(xNew < xRange[0] && xNew > xRange[1]){
         return;
     }
-    x = xNew;
+    p_coordinates.x = xNew;
 }
 void LegPositionController::SetY(float yNew){
     if(yNew < yRange[0] && yNew > yRange[1]){
         return;
     }
-    y = yNew;
+    p_coordinates.y = yNew;
 }
