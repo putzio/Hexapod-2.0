@@ -13,8 +13,8 @@ Leg::Leg(Side side, Side elbow, Servos &servos, LegPositionController &controlle
 
 void Leg::MoveLegToTheXYTarget(const Coordinates &coordinates){
     Coordinates rawCoordinates;
-    rawCoordinates.x = coordinates.x / (double) c_LEG_LENGTH;
-    rawCoordinates.y = coordinates.y / (double) c_LEG_LENGTH;
+    rawCoordinates.x = coordinates.x / (double) Constants::LEG_LENGTH;
+    rawCoordinates.y = coordinates.y / (double) Constants::LEG_LENGTH;
     ServosPositions positions = p_controller.CalculateServoPositions(rawCoordinates);
     p_servos.SetTargetAngle(positions.upperServoAngle, positions.lowerServoAngle);
 }

@@ -2,7 +2,7 @@
 
 #include "Logic/LegPositionController.hpp"
 #include "Logic/Servos_struct.hpp"
-#include "memory"
+#include "constants.hpp"
 
 enum Side:uint8_t{
     UNDEFINED,
@@ -12,7 +12,6 @@ enum Side:uint8_t{
     ELBOW_FRONT
 };
 
-
 class Leg{
     private:
     Servos p_servos;
@@ -21,7 +20,7 @@ class Leg{
     Side p_elbow;
 
     public:
-    const uint8_t c_LEG_LENGTH = 70;//mm 
+    // static const uint8_t c_LEG_LENGTH = 70;//mm 
 
     public:
     Leg(Side side, Side elbow);

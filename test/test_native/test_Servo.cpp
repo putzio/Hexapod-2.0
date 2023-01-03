@@ -11,15 +11,15 @@ TEST(Servo, test_servo_init){
 TEST(Servo, test_GoToTargetAngle){
     Servo servo = Servo();
     
-    float expectedAngle = PI / 3.0, expectedStep = PI / 60.0; 
-    float floatError = PI / 1800;//0.1 degree
+    float expectedAngle = Constants::PI / 3.0, expectedStep = Constants::PI / 60.0; 
+    float floatError = Constants::PI / 1800;//0.1 degree
     
     servo.SetTargetAngle(expectedAngle, expectedStep);
 
     ASSERT_NEAR(expectedAngle, servo.GetTargetAngle(), floatError);
     ASSERT_NEAR(expectedStep, servo.GetAngleChangingStep(), floatError);
     
-    expectedAngle = PI / 2.0;
+    expectedAngle = Constants::PI / 2.0;
     ASSERT_NEAR(expectedAngle, servo.GetServoAngle(), floatError);
     for(int i = 0; i < 10; i++)
     {
@@ -27,23 +27,23 @@ TEST(Servo, test_GoToTargetAngle){
         servo.GoToTargetAngle();
         ASSERT_NEAR(expectedAngle, servo.GetServoAngle(), floatError);
     }
-    //PI / 2  - PI / 6 * 10 = PI / 3
+    //Constants::PI / 2  - Constants::PI / 6 * 10 = Constants::PI / 3
     servo.GoToTargetAngle();//this method call should not change anything
-    expectedAngle = PI / 3;
+    expectedAngle = Constants::PI / 3;
     ASSERT_NEAR(expectedAngle, servo.GetServoAngle(), floatError);
 }
 
 TEST(Servo, test_GetAngleInMs){
     Servo servo = Servo();
     
-    uint16_t expected = (servo.ANGLE_RANGE_MS[1] + servo.ANGLE_RANGE_MS[0]) / 2;//90 deg
+    uint16_t expected = (Constants::ANGLE_RANGE_MS[1] + Constants::ANGLE_RANGE_MS[0]) / 2;//90 deg
     ASSERT_EQ(expected, servo.GetServoAngleInMs());
 
-    servo.SetServoAngle(servo.ANGLE_RANGE[0]);
-    expected = servo.ANGLE_RANGE_MS[0];
+    servo.SetServoAngle(Constants::ANGLE_RANGE[0]);
+    expected = Constants::ANGLE_RANGE_MS[0];
     ASSERT_EQ(expected, servo.GetServoAngleInMs());
 
-    servo.SetServoAngle(servo.ANGLE_RANGE[1]);
-    expected = servo.ANGLE_RANGE_MS[1];
+    servo.SetServoAngle(Constants::ANGLE_RANGE[1]);
+    expected = Constants::ANGLE_RANGE_MS[1];
     ASSERT_EQ(expected, servo.GetServoAngleInMs());
 }

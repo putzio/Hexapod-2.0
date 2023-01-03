@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include <cmath>
-#include "constants.h"
+#include "constants.hpp"
 
 typedef struct ServosPositions{
   float upperServoAngle;
@@ -14,6 +14,12 @@ typedef struct ServosPositions{
 
 typedef struct Coordinates{
   float x,y;
+  bool operator==(const Coordinates& other)const{
+    return abs(this->x - other.x) < 0.0001 && abs(this->y - other.y) < 0.0001;
+  }
+  bool operator!=(const Coordinates& other)const{
+    return !(*this == other);
+  }
 }Coordinates;
 
 
@@ -22,8 +28,8 @@ class LegPositionController{
     Coordinates p_coordinates;
 
     public:
-    const float yRange[2] = {1.2, 1.7};
-    const float xRange[2] = {-0.5285, 0.2857};
+    const float *yRange = Constants::Y_ABSOLUTE_RANGE;
+    const float *xRange = Constants::X_ABSOLUTE_RANGE;
 
     public:
     LegPositionController();

@@ -1,7 +1,7 @@
 #include "Logic/LegPositionController.hpp"
 
 LegPositionController::LegPositionController(){
-    p_coordinates.y = (sin(60.0*PI/180.0) * 2.0);
+    p_coordinates.y = (sin(60.0* Constants::PI/180.0) * 2.0);
     p_coordinates.x=0;
 }
 
@@ -32,11 +32,11 @@ ServosPositions LegPositionController::CalculateServoPositions(float xNew, float
         alpha =  gamma/2;
     }
     else{
-        alpha = atan((double)yNew/(double)xNew) - (PI - gamma)/2;
+        alpha = atan((double)yNew/(double)xNew) - (Constants::PI - gamma)/2;
     }    
 
-    servosPositions.upperServoAngle = PI - alpha;
-    servosPositions.lowerServoAngle = gamma - (PI / 2.0);
+    servosPositions.upperServoAngle = Constants::PI - alpha;
+    servosPositions.lowerServoAngle = gamma - (Constants::PI / 2.0);
 
     return servosPositions;
 }
@@ -67,8 +67,8 @@ void LegPositionController::SetNewXYPosition(const Coordinates &coordinates){
 void LegPositionController::FindXYPosition(const ServosPositions& positions){
     Coordinates coordinates;
     
-    coordinates.x = (sin(positions.upperServoAngle - PI / 2) - sin(PI - positions.upperServoAngle - positions.lowerServoAngle));
-    coordinates.y = (cos(positions.upperServoAngle - PI / 2) + cos(PI - positions.upperServoAngle - positions.lowerServoAngle));
+    coordinates.x = (sin(positions.upperServoAngle - Constants::PI / 2) - sin(Constants::PI - positions.upperServoAngle - positions.lowerServoAngle));
+    coordinates.y = (cos(positions.upperServoAngle - Constants::PI / 2) + cos(Constants::PI - positions.upperServoAngle - positions.lowerServoAngle));
 
     SetNewXYPosition(coordinates);
 }
