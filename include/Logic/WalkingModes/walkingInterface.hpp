@@ -28,11 +28,17 @@ class WalkingInterface{
      * 
      * @return ** Result 
      */
-    virtual Result GoToPosition();
-    // virtual void GoForeward();
-    // virtual void GoBackward();
-    // virtual void TurnRight();
-    // virtual void TurnLeft();
+    // virtual Result GoToPosition();
+    virtual Result GoForeward();
+    virtual Result GoBackward();
+    virtual Result TurnRight();
+    virtual Result TurnLeft();
+    Result GoToTheDefaultPosition();
+    /**
+     * @brief returns an enum representing the class(WalkingMode)
+     * 
+     * @return ** Result enum Mode
+     */
     virtual Mode GetWalkingMode();
     const LegContainer *GetTargetLegsPositionsPtr();
 
