@@ -1,21 +1,30 @@
 #include "Logic/LegPositionController.hpp"
 
 LegPositionController::LegPositionController(){
+    xRange[0] = Constants::X_ABSOLUTE_RANGE[0];
+    xRange[1] = Constants::X_ABSOLUTE_RANGE[1];
+    yRange[0] = Constants::Y_ABSOLUTE_RANGE[0];
+    yRange[1] = Constants::Y_ABSOLUTE_RANGE[1];
+
     p_coordinates.y = (sin(60.0* Constants::PI/180.0) * 2.0);
     p_coordinates.x=0;
 }
 
 LegPositionController::LegPositionController(float xPos, float yPos){
+    xRange[0] = Constants::X_ABSOLUTE_RANGE[0];
+    xRange[1] = Constants::X_ABSOLUTE_RANGE[1];
+    yRange[0] = Constants::Y_ABSOLUTE_RANGE[0];
+    yRange[1] = Constants::Y_ABSOLUTE_RANGE[1];
     SetNewXYPosition(xPos, yPos);
 }
 
-void LegPositionController::CalculateYPosition(const float &xPos){
-    if(xRange[0] > xPos || xRange[1] < xPos)
-        return;
-    else{
-        float xMapped = MapXInRange(xPos);
-        p_coordinates.y = (1.0 - sin(xMapped * 3.1415)) * (double)(yRange[1] - yRange[0]) + yRange[0];
+float LegPositionController::CalculateYPosition(const float &xPos){
+    if(xRange[0] > xPos || xRange[1] < xPos){
+        return -1;
     }
+    float xMapped = MapXInRange(xPos);
+    p_coordinates.y = (1.0 - sin(xMapped * 3.1415)) * (double)(yRange[1] - yRange[0]) + yRange[0];
+    return p_coordinates.y;
 }
 
 float LegPositionController::MapXInRange(const float &xPos){
@@ -64,13 +73,14 @@ void LegPositionController::SetNewXYPosition(const Coordinates &coordinates){
     SetNewXYPosition(coordinates.x, coordinates.y);
 }
 
-void LegPositionController::FindXYPosition(const ServosPositions& positions){
+Coordinates LegPositionController::FindXYPosition(const ServosPositions& positions){
     Coordinates coordinates;
     
     coordinates.x = (sin(positions.upperServoAngle - Constants::PI / 2) - sin(Constants::PI - positions.upperServoAngle - positions.lowerServoAngle));
     coordinates.y = (cos(positions.upperServoAngle - Constants::PI / 2) + cos(Constants::PI - positions.upperServoAngle - positions.lowerServoAngle));
 
     SetNewXYPosition(coordinates);
+    return coordinates;
 }
 
 void LegPositionController::SetX(float xNew){

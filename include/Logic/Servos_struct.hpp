@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Logic/Servo.hpp"
+#include "Logic/LegPositionController.hpp"
 
 typedef struct Servos
 {
@@ -9,5 +10,6 @@ typedef struct Servos
     void SetTargetAngle(float upperServoTargetAngle, float lowerServoTargetAngle);
     void SetTargetAngle(float upperServoTargetAngle, float upperServoAngleChangingStep, float lowerServoTargetAngle, float lowerServoAngleChangingStep);
 
-    void GoToTargetAngle();
+    Result GoToTargetAngle();
+    ServosPositions GetCurrentServoPositions();
 }Servos;

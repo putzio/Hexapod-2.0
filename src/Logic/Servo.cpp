@@ -6,15 +6,16 @@ Servo::Servo(float currentAngle){
 p_currentAngle = currentAngle;
 }
 
-void Servo::GoToTargetAngle(){
+Result Servo::GoToTargetAngle(){
     if(std::abs(p_currentAngle - p_targetAngle) < p_angleChangingStep)
-        return;
+        return RESULT_SERVO_IN_TARGET_POSITION;
     if(p_currentAngle < p_targetAngle){
         p_currentAngle += p_angleChangingStep;
     }
     else{
         p_currentAngle -= p_angleChangingStep;
     }
+    return RESULT_SERVO_MOVING;
 }
 
 void Servo::SetTargetAngle(float targetAngle){
@@ -29,7 +30,7 @@ void Servo::SetTargetAngle(float targetAngle, float angleChangingStep){
         p_angleChangingStep = angleChangingStep;
     }
 }
-void Servo::SetServoAngle(float angle){
+void Servo::SetCurrentAngle(float angle){
     if(angle < Constants::ANGLE_RANGE[0] || angle > Constants::ANGLE_RANGE[1])
         return;
     else
@@ -50,7 +51,7 @@ const uint16_t Servo::GetServoAngleInMs()const{
 }
 
 
-const float Servo::GetServoAngle()const{
+const float Servo::GetCurrentAngle()const{
     return p_currentAngle;
 }
 const float Servo::GetTargetAngle()const{

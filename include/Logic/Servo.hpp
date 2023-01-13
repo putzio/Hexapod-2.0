@@ -1,6 +1,7 @@
 #pragma once
 #include "stdint.h"
 #include "constants.hpp"
+#include "Results.h"
 
 #define DEFAULT_SERVO_ANGLE (Constants::PI / 2.0)
 
@@ -14,13 +15,13 @@ class Servo{
     public:
     Servo(float currentAngle = DEFAULT_SERVO_ANGLE);
 
-    void GoToTargetAngle();
+    Result GoToTargetAngle();
 
     void SetTargetAngle(float targetAngle);
     void SetTargetAngle(float targetAngle, float angleChangingStep);
-    void SetServoAngle(float servoAngle);
+    void SetCurrentAngle(float servoAngle);
 
-    const float GetServoAngle()const;
+    const float GetCurrentAngle()const;
     const float GetTargetAngle()const;
     const float GetAngleChangingStep()const;
 

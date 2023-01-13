@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <cmath>
 #include "constants.hpp"
+#include "Logic/Coordinates.hpp"
 
 typedef struct ServosPositions{
   float upperServoAngle;
@@ -12,24 +13,16 @@ typedef struct ServosPositions{
   }
 } ServosPositions;
 
-typedef struct Coordinates{
-  float x,y;
-  bool operator==(const Coordinates& other)const{
-    return abs(this->x - other.x) < 0.0001 && abs(this->y - other.y) < 0.0001;
-  }
-  bool operator!=(const Coordinates& other)const{
-    return !(*this == other);
-  }
-}Coordinates;
 
 
-class LegPositionController{  
+//back and front
+class LegPositionController{  //static???
     private:
-    Coordinates p_coordinates;
+    Coordinates p_coordinates;//no coorinates here?
 
     public:
-    const float *yRange = Constants::Y_ABSOLUTE_RANGE;
-    const float *xRange = Constants::X_ABSOLUTE_RANGE;
+    float yRange [2];
+    float xRange [2];
 
     public:
     LegPositionController();
@@ -44,7 +37,7 @@ class LegPositionController{
     *   \return struct ServoPositions with values of angles for both servomotors
     *
     **/
-    void CalculateYPosition(const float &xPos);  
+    float CalculateYPosition(const float &xPos);  
 
     float MapXInRange(const float &xPos);
     /**
@@ -80,7 +73,7 @@ class LegPositionController{
     *   \param positions resference to the servomotors positions
     *
     **/
-    void FindXYPosition(const ServosPositions& positions);
+    Coordinates FindXYPosition(const ServosPositions& positions);
     private:
     void SetX(float xNew);
     void SetY(float yNew);

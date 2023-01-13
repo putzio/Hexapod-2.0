@@ -10,7 +10,15 @@ void Servos::SetTargetAngle(float upperServoTargetAngle, float upperServoAngleCh
     lowerServo.SetTargetAngle(lowerServoTargetAngle, lowerServoAngleChangingStep);
 }
 
-void Servos::GoToTargetAngle(){
-    upperServo.GoToTargetAngle();
-    lowerServo.GoToTargetAngle();
+Result Servos::GoToTargetAngle(){
+    if(upperServo.GoToTargetAngle() == RESULT_SERVO_IN_TARGET_POSITION && lowerServo.GoToTargetAngle() == RESULT_SERVO_IN_TARGET_POSITION){
+        return RESULT_SERVO_IN_TARGET_POSITION;
+    }
+    return RESULT_SERVO_MOVING;
+}
+
+ServosPositions Servos::GetCurrentServoPositions(){
+    ServosPositions servos;
+    servos.lowerServoAngle = lowerServo.GetCurrentAngle();
+    servos.upperServoAngle = upperServo.GetCurrentAngle();
 }
