@@ -2,7 +2,7 @@
 
 
 ## Class diagram of the project 
-### Logic
+### Robot Logic:
 ```mermaid
 classDiagram
     %%Logic classes relations:    
@@ -14,12 +14,12 @@ classDiagram
     
     Leg <|-- LegServos
     Leg *-- LegPositionControllerInterface
-    Leg *-- FootTargetPosition
+    Leg o-- FootTargetPosition
     
     GaitInterface <|-- TripodGait
     GaitInterface <|-- CatepillarGait
-    GaitInterface <|-- MetachronicGait
-    GaitInterface *-- FootTargetPosition: 6
+    GaitInterface <|-- MetachronousGait
+    GaitInterface o-- FootTargetPosition: 6
 
     RobotLogic *-- Leg:6
     RobotLogic *-- GaitInterface
@@ -92,7 +92,7 @@ classDiagram
         + overwrite TurnRight()
         + overwrite TurnLeft()
     }
-    class MetachronicGait{
+    class MetachronousGait{
         + overwrite GoForeward()
         + overwrite GoBackward()
         + overwrite TurnRight()
@@ -116,13 +116,15 @@ classDiagram
     ServoDriverInterface <|-- RightServoDriver
 
     CurrentSensorDriver --|> SpiDriver
-    AccelerometerDriver --|> SpiDriver   
+    AccelerometerDriver --|> SpiDriver  
+
 
     RobotDriver *-- ServoDriverInterface: 12
     RobotDriver *-- CurrentSensorDriver: 3
     RobotDriver *-- AccelerometerDriver
     RobotDriver *-- UartDriver
     RobotDriver *-- RobotLogic
+    RobotDriver --|> DataPacket
 
     class PwmDriver{
         * pin: uint16_t
@@ -147,6 +149,12 @@ classDiagram
         + overwrite SetServoAngle()
     }
 
+    class CurrentSensorDriver{
+        -currentValues: uint16_t [8]
+        
+        + GetCurrentValuesPtr()
+    }
+
     class RobotLogic{
         * ServoCurrentAnglePtrs: const float* [12] 
         + PeriodicProcess()
@@ -157,5 +165,10 @@ classDiagram
         + PeriodicProcess()
         - UpdateServoDrivers()
         - 
+    }
+
+    class DataPacket{
+        + ReadReceivedData()
+        + CreatePacketToTransmit()
     }
 ```
