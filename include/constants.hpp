@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <math.h>
 
 namespace Constants
 {
@@ -17,6 +18,8 @@ namespace Constants
     // angle ranges
     const float ANGLE_RANGE [2] = {0, PI};
     const uint16_t ANGLE_RANGE_MS[2] = {500, 2500};
+
+    const float DEFAULT_LEG_HIGHT = (sin(60.0 * PI / 180.0) * 2.0);
 } // namespace Constants
 
 

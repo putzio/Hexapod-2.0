@@ -1,4 +1,4 @@
-#include "Logic/LegPositionController.hpp"
+#include "Logic/LegPositionControllerInterface.hpp"
 
 LegPositionController::LegPositionController(){
     y = (sin(60.0*PI/180.0) * 20000.0);

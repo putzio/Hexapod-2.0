@@ -11,6 +11,7 @@ classDiagram
     LegPositionControllerInterface <|-- LegPositionController_KneeUp
     LegPositionControllerInterface <|-- LegPositionController_KneeDown
     LegPositionControllerInterface *-- FootCoordinates
+    LegPositionControllerInterface *-- LegRange
     
     Leg <|-- LegServos
     Leg *-- LegPositionControllerInterface
@@ -31,8 +32,8 @@ classDiagram
         - p_angleChangingStep : float
 
         + GoToTargetAngle()
-        + SetTargetAngle()
         + GetCurrentAngle()
+        + SetTargetAngle()
     }
 
     class LegServos{
@@ -42,22 +43,26 @@ classDiagram
     }
 
     class LegPositionControllerInterface{
-        - legrange: LegRange
-
         + CalculateYPosition()
         + FindNextFootCoordinates()
         + virtual CalculateServoPositions()
     }
     class LegPositionController_KneeDown{
-        + overwrite CalculateServoPositions()
+        + override CalculateServoPositions()
     }
     class LegPositionController_KneeUp{
-        + overwrite CalculateServoPositions()
+        + override CalculateServoPositions()
     }
 
     class FootCoordinates{
         + x: float
         + y:float
+    }
+    class LegRange{
+        + x: float[2]
+        + y: float[2]
+
+        + ChangeLegHight()
     }
 
     class FootTargetPosition{
@@ -72,35 +77,34 @@ classDiagram
     }
 
     class GaitInterface{
-        + const enum Gait gait
-
+        + GoToTheDefaultPosition()
         + virtual GoForeward()
         + virtual GoBackward()
         + virtual TurnRight()
         + virtual TurnLeft()
-        + GoToTheDefaultPosition()
     }
     class TripodGait{
-        + overwrite GoForeward()
-        + overwrite GoBackward()
-        + overwrite TurnRight()
-        + overwrite TurnLeft()
+        + override GoForeward()
+        + override GoBackward()
+        + override TurnRight()
+        + override TurnLeft()
     }
     class CatepillarGait{
-        + overwrite GoForeward()
-        + overwrite GoBackward()
-        + overwrite TurnRight()
-        + overwrite TurnLeft()
+        + override GoForeward()
+        + override GoBackward()
+        + override TurnRight()
+        + override TurnLeft()
     }
     class MetachronousGait{
-        + overwrite GoForeward()
-        + overwrite GoBackward()
-        + overwrite TurnRight()
-        + overwrite TurnLeft()
+        + override GoForeward()
+        + override GoBackward()
+        + override TurnRight()
+        + override TurnLeft()
     }
 
     class RobotLogic{
-        * ServoCurrentAnglePtrs: const float* [12] 
+        + const enum Gait currentGait
+
         + PeriodicProcess()
         + ChangeGait()
     }
@@ -139,14 +143,14 @@ classDiagram
     class ServoDriverInterface{
         * calibrationValue: uint16_t
         
-        * overwrite InitPwm()
+        * override InitPwm()
         + virtual SetServoAngle()
     }
     class LeftServoDriver{
-        + overwrite SetServoAngle()
+        + override SetServoAngle()
     }
     class RightServoDriver{
-        + overwrite SetServoAngle()
+        + override SetServoAngle()
     }
 
     class CurrentSensorDriver{

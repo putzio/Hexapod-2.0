@@ -1,39 +1,41 @@
 #pragma once
 
-#include "Logic/LegPositionController.hpp"
-#include "Logic/Servos_struct.hpp"
+#include "Logic/LegPositionControllerInterface.hpp"
+#include "Logic/LegPositionController_KneeFront.hpp"
+#include "Logic/LegPositionController_KneeBack.hpp"
+#include "Logic/LegServos.hpp"
 #include "constants.hpp"
+#include <memory>
 
-enum Side:uint8_t{
+typedef enum Side:uint8_t {
     UNDEFINED,
-    LEFT,
-    RIGHT,
-    ELBOW_BACK,
-    ELBOW_FRONT
-};
+    KNEE_BACK,
+    KNEE_FRONT
+}Side;
 
-class Leg{
-    private:
-    Servos p_servos;
-    LegPositionController p_controller;
-    Side p_side; // in servo hardware?
-    Side p_elbow; //different LegPositionController classes?
-    Coordinates p_finalTargetPostion;
-    bool p_legUp;
+class Leg {
+private:
+    LegServos p_servos;
+    std::unique_ptr<LegPositionControllerInterface> p_controller;
+    FootTargetPosition p_finalTargetPostion;
 
-    Coordinates CalculateNewCoordinates(Coordinates &coordinates);
-    bool LegInFinalTargetPosition(const Coordinates &coordinates);
-    public:
-    // static const uint8_t c_LEG_LENGTH = 70;//mm 
+    bool LegInFinalTargetPosition(const FootCoordinates& coordinates);
+    void MoveLegToTheXYTarget();
 
-    public:
-    Leg(Side side, Side elbow);
-    Leg(Side side, Side elbow, Servos &servos, LegPositionController &controller);
+public:
+    Leg(Side knee);
+    Leg(LegServos& servos, LegPositionControllerInterface& controller);
 
-    void MoveLegToTheXYTarget(const Coordinates &coordinates);
     Result LegPeriodicProcess();   //TEst???
 
-    void SetNewTargetPosition(const Coordinates &coordinates, bool legUp);
+    /**
+     * @brief Set the New Target Position for leg
+     * and calculate coordinates from mm (devide by LEG_LENGTH)
+     *
+     * @param coordinates new coordinates
+     * @return Result if the new target position was set correctly
+     */
+    Result SetNewTargetPosition(const FootTargetPosition& coordinates);
 
-    const Servos* const GetServosPtr()const;
+    const FootTargetPosition& GetFootCoordinates() const;
 };

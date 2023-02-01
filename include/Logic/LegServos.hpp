@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Logic/Servo.hpp"
-#include "Logic/LegPositionController.hpp"
+#include "Logic/LegPositionControllerInterface.hpp"
 
-typedef struct Servos
+typedef struct LegServos
 {
     Servo upperServo;
     Servo lowerServo;
@@ -12,4 +12,4 @@ typedef struct Servos
 
     Result GoToTargetAngle();
     ServosPositions GetCurrentServoPositions();
-}Servos;
+}LegServos;

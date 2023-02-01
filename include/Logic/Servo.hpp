@@ -24,6 +24,4 @@ class Servo{
     const float GetCurrentAngle()const;
     const float GetTargetAngle()const;
     const float GetAngleChangingStep()const;
-
-    const uint16_t GetServoAngleInMs()const;
 };
