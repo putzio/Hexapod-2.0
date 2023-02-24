@@ -12,3 +12,9 @@ TEST(WalkingInterface, test_GoForward){
     
     ASSERT_EQ(Result::RESULT_WRONG_WALKING_INTERFACE_MODE, interface.GoForeward());
 }
+
+TEST(WalkingInterface, test_GetTargetPosition){
+    WalkingInterface interface;
+    
+    ASSERT_EQ(Result::RESULT_WRONG_WALKING_INTERFACE_MODE, interface.GoForeward());
+}
