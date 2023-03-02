@@ -14,6 +14,7 @@ add_subdirectory(WalkingModes)
 
 project(Hexapod C CXX)
 
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -24,12 +25,33 @@ pico_sdk_init()
 add_executable(${PROJECT_NAME} 
     ./src/hexapod.cpp
 )
+
 #libraries
 target_link_libraries(${PROJECT_NAME} 
     LOGIC
     DRIVERS
     WALKING_MODES
 ) 
-
 #Generates different file formats
 pico_add_extra_outputs(Hexapod)
+
+
+if(TEST_HARDWARE)
+    project(TEST_HARDWARE C CXX)
+    add_executable(TEST_HARDWARE 
+    ./test/test.cpp
+    )
+    add_library(TEST_HW)
+    add_subdirectory(./test/test_hw)
+    #libraries
+    target_link_libraries(TEST_HARDWARE 
+        DRIVERS
+        TEST_HW
+    ) 
+    #Generates different file formats
+    pico_add_extra_outputs(TEST_HARDWARE)
+# else()
+#     #add some other compilation flags
+endif(TEST_HARDWARE)
+unset(TEST_HARDWARE CACHE) # <---- this is the important!!
+

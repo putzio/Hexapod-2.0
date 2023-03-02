@@ -8,8 +8,8 @@ BodyDriver::BodyDriver(uint8_t pins[12]):Body() {
 
 void BodyDriver::PassCalculatedValuesToMotors() {
     for (int i = 0; i < 6; i++) {
-        drivers[i]->SetPwmForAngle(legs[i].p_servos.GetCurrentServoPositions().upperServoAngle);
-        drivers[i + 1]->SetPwmForAngle(legs[i].p_servos.GetCurrentServoPositions().lowerServoAngle);
+        // drivers[i]->SetPwmForAngle(legs[i].p_servos.GetCurrentServoPositions().upperServoAngle);
+        // drivers[i + 1]->SetPwmForAngle(legs[i].p_servos.GetCurrentServoPositions().lowerServoAngle);
     }
 }
 

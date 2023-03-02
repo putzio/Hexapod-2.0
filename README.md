@@ -120,7 +120,7 @@ classDiagram
     ServoDriverInterface <|-- RightServoDriver
 
     CurrentSensorDriver --|> SpiDriver
-    AccelerometerDriver --|> SpiDriver  
+    AccelerometerDriver --|> I2CDriver  
 
 
     RobotDriver *-- ServoDriverInterface: 12

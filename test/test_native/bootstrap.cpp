@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
-#include "global.hpp"
+// #include "global.hpp"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
     // if you plan to use GMock, replace the line above with
