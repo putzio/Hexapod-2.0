@@ -22,4 +22,5 @@ target_link_libraries(DRIVERS PUBLIC
     hardware_irq
     hardware_adc
     hardware_gpio
+    hardware_i2c
 ) 

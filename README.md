@@ -115,7 +115,7 @@ classDiagram
     classDiagram
     %%Driver classes relations:
 
-    ServoDriverInterface --|> PwmDriver
+    ServoDriverInterface o-- PwmDriver
     ServoDriverInterface <|-- LeftServoDriver
     ServoDriverInterface <|-- RightServoDriver
 
@@ -123,10 +123,10 @@ classDiagram
     AccelerometerDriver --|> I2CDriver  
 
 
-    RobotDriver *-- ServoDriverInterface: 12
-    RobotDriver *-- CurrentSensorDriver: 3
-    RobotDriver *-- AccelerometerDriver
-    RobotDriver *-- UartDriver
+    RobotDriver o-- ServoDriverInterface: 12
+    RobotDriver o-- CurrentSensorDriver: 3
+    RobotDriver o-- AccelerometerDriver
+    RobotDriver o-- UartDriver
     RobotDriver *-- RobotLogic
     RobotDriver --|> DataPacket
 

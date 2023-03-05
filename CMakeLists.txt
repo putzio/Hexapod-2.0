@@ -21,11 +21,15 @@ set(CMAKE_CXX_STANDARD 17)
 #inintialise the sdk
 pico_sdk_init()
 
+
+
 #Creating an executable target "Hexapod" from a single source hexapod.cpp
 add_executable(${PROJECT_NAME} 
     ./src/hexapod.cpp
 )
-
+# enable usb output, disable uart output
+pico_enable_stdio_usb(Hexapod 1)
+pico_enable_stdio_uart(Hexapod 0)
 #libraries
 target_link_libraries(${PROJECT_NAME} 
     LOGIC
@@ -38,16 +42,22 @@ pico_add_extra_outputs(Hexapod)
 
 if(TEST_HARDWARE)
     project(TEST_HARDWARE C CXX)
+    
     add_executable(TEST_HARDWARE 
     ./test/test.cpp
     )
+    # enable usb output, disable uart output
+    pico_enable_stdio_usb(TEST_HARDWARE 1)
+    pico_enable_stdio_uart(TEST_HARDWARE 0)
     add_library(TEST_HW)
     add_subdirectory(./test/test_hw)
     #libraries
     target_link_libraries(TEST_HARDWARE 
         DRIVERS
         TEST_HW
+        hardware_i2c
     ) 
+    
     #Generates different file formats
     pico_add_extra_outputs(TEST_HARDWARE)
 # else()
