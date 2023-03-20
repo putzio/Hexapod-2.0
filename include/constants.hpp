@@ -2,8 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-namespace Constants
-{
+namespace Constants {
     // mathematical constants
     const double PI = 3.14159265;
 
@@ -12,12 +11,12 @@ namespace Constants
     //Distance in the x axis for calculating the next positions by LegpositionController object
     const float DELTA_X = 5;//mm
     // Absolute ranges of the servo movements
-    const float X_ABSOLUTE_RANGE[2] = {-0.5285, 0.2857};
-    const float Y_ABSOLUTE_RANGE[2] = {1.2,1.7};
+    const float X_ABSOLUTE_RANGE[2] = { -0.5285, 0.2857 };
+    const float Y_ABSOLUTE_RANGE[2] = { 1.2f,1.7320f };//sin(60.0 * Constants::PI / 180.0) * 20000.0
 
     // angle ranges
-    const float ANGLE_RANGE [2] = {0, PI};
-    const uint16_t ANGLE_RANGE_MS[2] = {500, 2500};
+    const float ANGLE_RANGE[2] = { 0, PI };
+    const uint16_t ANGLE_RANGE_MS[2] = { 500, 2500 };
 
     const float DEFAULT_LEG_HIGHT = (sin(60.0 * PI / 180.0) * 2.0);
 } // namespace Constants

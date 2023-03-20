@@ -8,9 +8,9 @@ add_library(LOGIC)
 add_library(DRIVERS)
 add_library(WALKING_MODES)
 
-add_subdirectory(drivers)
-add_subdirectory(Logic)
-add_subdirectory(WalkingModes)
+add_subdirectory(src/drivers)
+add_subdirectory(src/Logic)
+add_subdirectory(src/WalkingModes)
 
 project(Hexapod C CXX)
 
@@ -21,7 +21,12 @@ set(CMAKE_CXX_STANDARD 17)
 #inintialise the sdk
 pico_sdk_init()
 
-
+target_include_directories(
+    LOGIC PUBLIC ./include
+    DRIVERS PUBLIC ./include
+    WALKING_MODES PUBLIC ./include
+    Hexapod PUBLIC ./include
+)
 
 #Creating an executable target "Hexapod" from a single source hexapod.cpp
 add_executable(${PROJECT_NAME} 
