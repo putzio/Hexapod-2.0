@@ -5,36 +5,36 @@
 extern float g_xCurrentRange[2];
 
 void TripodWalk::SetPositionBackDown(LegContainer& legContainer) {
-    legContainer.legs[LegContainer::LEFT_FRONT].SetLeg(g_xCurrentRange[0], false);
-    legContainer.legs[LegContainer::RIGHT_FRONT].SetLeg(g_xCurrentRange[1], true);
-    legContainer.legs[LegContainer::LEFT_MIDDLE].SetLeg(g_xCurrentRange[1], true);
-    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetLeg(g_xCurrentRange[0], false);
-    legContainer.legs[LegContainer::LEFT_BACK].SetLeg(g_xCurrentRange[0], false);
-    legContainer.legs[LegContainer::RIGHT_BACK].SetLeg(g_xCurrentRange[1], true);
+    legContainer.legs[LegContainer::LEFT_FRONT].SetCoordinates(g_xCurrentRange[0], false);
+    legContainer.legs[LegContainer::RIGHT_FRONT].SetCoordinates(g_xCurrentRange[1], true);
+    legContainer.legs[LegContainer::LEFT_MIDDLE].SetCoordinates(g_xCurrentRange[1], true);
+    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetCoordinates(g_xCurrentRange[0], false);
+    legContainer.legs[LegContainer::LEFT_BACK].SetCoordinates(g_xCurrentRange[0], false);
+    legContainer.legs[LegContainer::RIGHT_BACK].SetCoordinates(g_xCurrentRange[1], true);
 }
 void TripodWalk::SetPositionBackUp(LegContainer& legContainer) {
-    legContainer.legs[LegContainer::LEFT_FRONT].SetLeg(g_xCurrentRange[0], true);
-    legContainer.legs[LegContainer::RIGHT_FRONT].SetLeg(g_xCurrentRange[1], false);
-    legContainer.legs[LegContainer::LEFT_MIDDLE].SetLeg(g_xCurrentRange[1], false);
-    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetLeg(g_xCurrentRange[0], true);
-    legContainer.legs[LegContainer::LEFT_BACK].SetLeg(g_xCurrentRange[0], true);
-    legContainer.legs[LegContainer::RIGHT_BACK].SetLeg(g_xCurrentRange[1], false);
+    legContainer.legs[LegContainer::LEFT_FRONT].SetCoordinates(g_xCurrentRange[0], true);
+    legContainer.legs[LegContainer::RIGHT_FRONT].SetCoordinates(g_xCurrentRange[1], false);
+    legContainer.legs[LegContainer::LEFT_MIDDLE].SetCoordinates(g_xCurrentRange[1], false);
+    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetCoordinates(g_xCurrentRange[0], true);
+    legContainer.legs[LegContainer::LEFT_BACK].SetCoordinates(g_xCurrentRange[0], true);
+    legContainer.legs[LegContainer::RIGHT_BACK].SetCoordinates(g_xCurrentRange[1], false);
 }
 void TripodWalk::SetPositionFrontUp(LegContainer& legContainer) {
-    legContainer.legs[LegContainer::LEFT_FRONT].SetLeg(g_xCurrentRange[1], true);
-    legContainer.legs[LegContainer::RIGHT_FRONT].SetLeg(g_xCurrentRange[0], false);
-    legContainer.legs[LegContainer::LEFT_MIDDLE].SetLeg(g_xCurrentRange[0], false);
-    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetLeg(g_xCurrentRange[1], true);
-    legContainer.legs[LegContainer::LEFT_BACK].SetLeg(g_xCurrentRange[1], true);
-    legContainer.legs[LegContainer::RIGHT_BACK].SetLeg(g_xCurrentRange[0], false);
+    legContainer.legs[LegContainer::LEFT_FRONT].SetCoordinates(g_xCurrentRange[1], true);
+    legContainer.legs[LegContainer::RIGHT_FRONT].SetCoordinates(g_xCurrentRange[0], false);
+    legContainer.legs[LegContainer::LEFT_MIDDLE].SetCoordinates(g_xCurrentRange[0], false);
+    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetCoordinates(g_xCurrentRange[1], true);
+    legContainer.legs[LegContainer::LEFT_BACK].SetCoordinates(g_xCurrentRange[1], true);
+    legContainer.legs[LegContainer::RIGHT_BACK].SetCoordinates(g_xCurrentRange[0], false);
 }
 void TripodWalk::SetPositionFrontDown(LegContainer& legContainer) {
-    legContainer.legs[LegContainer::LEFT_FRONT].SetLeg(g_xCurrentRange[1], false);
-    legContainer.legs[LegContainer::RIGHT_FRONT].SetLeg(g_xCurrentRange[0], true);
-    legContainer.legs[LegContainer::LEFT_MIDDLE].SetLeg(g_xCurrentRange[0], true);
-    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetLeg(g_xCurrentRange[1], false);
-    legContainer.legs[LegContainer::LEFT_BACK].SetLeg(g_xCurrentRange[1], false);
-    legContainer.legs[LegContainer::RIGHT_BACK].SetLeg(g_xCurrentRange[0], true);
+    legContainer.legs[LegContainer::LEFT_FRONT].SetCoordinates(g_xCurrentRange[1], false);
+    legContainer.legs[LegContainer::RIGHT_FRONT].SetCoordinates(g_xCurrentRange[0], true);
+    legContainer.legs[LegContainer::LEFT_MIDDLE].SetCoordinates(g_xCurrentRange[0], true);
+    legContainer.legs[LegContainer::RIGHT_MIDDLE].SetCoordinates(g_xCurrentRange[1], false);
+    legContainer.legs[LegContainer::LEFT_BACK].SetCoordinates(g_xCurrentRange[1], false);
+    legContainer.legs[LegContainer::RIGHT_BACK].SetCoordinates(g_xCurrentRange[0], true);
 }
 
 LegContainer TripodWalk::ReturnSetPosition(void (TripodWalk::* SetPositionFunctionPtr)(LegContainer&)) {

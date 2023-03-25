@@ -5,16 +5,16 @@
 ### Robot Logic:
 ```mermaid
 classDiagram
-    %%Logic classes relations:    
+    %%Logic classes relations:     
     LegServos *-- Servo:2 
-    
-    LegPositionControllerInterface <|-- LegPositionController_KneeUp
-    LegPositionControllerInterface <|-- LegPositionController_KneeDown
-    LegPositionControllerInterface *-- FootCoordinates
-    LegPositionControllerInterface *-- LegRange
-    
+    FootCoordinates o-- SingleCoordinate:2
+    FootTargetPosition o-- SingleCoordinate:1
+
+    LegPositionController *-- FootCoordinates
+    LegPositionController *-- LegRange
+
     Leg <|-- LegServos
-    Leg *-- LegPositionControllerInterface
+    Leg *-- LegPositionController
     Leg o-- FootTargetPosition
     
     GaitInterface <|-- TripodGait
@@ -42,21 +42,24 @@ classDiagram
         + ServosPeriodicProcess()
     }
 
-    class LegPositionControllerInterface{
+    class LegPositionController{
         + CalculateYPosition()
+        + FindXYPosition()
         + FindNextFootCoordinates()
-        + virtual CalculateServoPositions()
+        + CalculateServoPositions()
+        - CalculateServoPositions_KneeBack()
+        - CalculateServoPositions_KneeFront()
+        - CalculateServoPositionsPointer
     }
-    class LegPositionController_KneeDown{
-        + override CalculateServoPositions()
+    class SingleCoordinate{
+        - value: float
+        + GetCoordinate()
+        + GetCoordinate_mm()
+        + SetCoordinate()
+        + SetCoordinate_mm()
+        + IsBetween()
     }
-    class LegPositionController_KneeUp{
-        + override CalculateServoPositions()
-    }
-
     class FootCoordinates{
-        + x: float
-        + y:float
     }
     class LegRange{
         + x: float[2]
@@ -66,7 +69,6 @@ classDiagram
     }
 
     class FootTargetPosition{
-        + x: float
         + footOnGround: bool
     }
 
@@ -74,6 +76,7 @@ classDiagram
 
         + PeriodicProcess()
         + SetNewTargetPosition()
+        + MoveJServos()
     }
 
     class GaitInterface{

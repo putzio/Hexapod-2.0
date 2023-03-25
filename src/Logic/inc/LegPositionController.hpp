@@ -15,21 +15,22 @@ typedef enum Side:uint8_t {
 }Side;
 
 // back and front
-class LegPositionControllerInterface {
+class LegPositionController {
 protected:
   FootCoordinates p_coordinates;
   LegRange p_legRange;
 
 private:
+  typedef ServosPositions(*CalculateServoPositionsFunctionPointer)(float xNew, float yNew);
   float MapXInRange(const float& xPos);
-  ServosPositions(LegPositionControllerInterface::* calculateServoPositionsPtr)(float xNew, float yNew);
-  ServosPositions CalculateServoPositions_KneeBack(float xNew, float yNew);
-  ServosPositions CalculateServoPositions_KneeFront(float xNew, float yNew);
+  CalculateServoPositionsFunctionPointer calculateServoPositionsPtr;
+  static ServosPositions CalculateServoPositions_KneeBack(float xNew, float yNew);
+  static ServosPositions CalculateServoPositions_KneeFront(float xNew, float yNew);
 
 public:
-
-  LegPositionControllerInterface(float x = 0, float y = Constants::Y_ABSOLUTE_RANGE[1], Side knee = Side::KNEE_BACK);
-  LegPositionControllerInterface(FootCoordinates coordinates, Side knee = Side::KNEE_BACK);
+  LegPositionController(Side knee = Side::KNEE_BACK): LegPositionController(0, Constants::Y_ABSOLUTE_RANGE[1], knee) {};
+  LegPositionController(FootCoordinates coordinates, Side knee = Side::KNEE_BACK):LegPositionController(coordinates.x, coordinates.y, knee) {};
+  LegPositionController(SingleCoordinate x, SingleCoordinate y, Side knee = Side::KNEE_BACK);
 
   /**
    *   \brief Calculate the y position when the leg is up
@@ -40,7 +41,7 @@ public:
    *   \return struct ServoPositions with values of angles for both servomotors
    *
    **/
-  float CalculateYPosition(const float& xPos);
+  SingleCoordinate CalculateYPosition(const SingleCoordinate& xPos);
 
   /**
    * @brief Calculates coordinates to set servos in,
@@ -52,7 +53,7 @@ public:
    *
    * @return float
    */
-  FootCoordinates FindNextCoordinates(const float& xTarget, const bool& footOnGround);
+  FootCoordinates FindNextCoordinates(const SingleCoordinate& xTarget, const bool& footOnGround);
   FootCoordinates FindNextCoordinates(const FootTargetPosition& target);
 
   /**
@@ -76,10 +77,8 @@ public:
   ServosPositions CalculateServoPositions(const FootCoordinates& coordinates);
   ServosPositions CalculateServoPositions();
 
-
-
-  float GetX();
-  float GetY();
+  SingleCoordinate GetX();
+  SingleCoordinate GetY();
   const FootCoordinates& GetCoordinates()const;
   const LegRange& GetLegRange()const;
 
@@ -90,10 +89,10 @@ public:
    *   The point (0,0) is in the Upper servomotor joint
    *
    **/
-  void SetNewXYPosition(float xNew, float yNew);
+  void SetNewXYPosition(SingleCoordinate xNew, SingleCoordinate yNew);
   void SetNewXYPosition(const FootCoordinates& coordinates);
 
 private:
-  void SetX(float xNew);
-  void SetY(float yNew);
+  void SetX(SingleCoordinate xNew);
+  void SetY(SingleCoordinate yNew);
 };

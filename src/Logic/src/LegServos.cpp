@@ -1,6 +1,7 @@
 #include "../inc/LegServos.hpp"
 
-void LegServos::SetTargetAngle(float upperServoTargetAngle, float lowerServoTargetAngle) {
+
+void LegServos::SetTargetAngle(const float upperServoTargetAngle, const float lowerServoTargetAngle) {
     upperServo.SetTargetAngle(upperServoTargetAngle);
     lowerServo.SetTargetAngle(lowerServoTargetAngle);
 }
@@ -11,8 +12,13 @@ void LegServos::SetTargetAngle(float upperServoTargetAngle, float upperServoAngl
 }
 
 Result LegServos::GoToTargetAngle() {
-    if (upperServo.GoToTargetAngle() == RESULT_SERVO_IN_TARGET_POSITION && lowerServo.GoToTargetAngle() == RESULT_SERVO_IN_TARGET_POSITION) {
+    Result upperResult = upperServo.GoToTargetAngle();
+    Result lowerResult = lowerServo.GoToTargetAngle();
+    if (upperResult == RESULT_SERVO_IN_TARGET_POSITION && lowerResult == RESULT_SERVO_IN_TARGET_POSITION) {
         return RESULT_SERVO_IN_TARGET_POSITION;
+    }
+    if (upperResult == RESULT_SERVO_VELOCITY_EQ_0 || lowerResult == RESULT_SERVO_VELOCITY_EQ_0) {
+        return RESULT_SERVO_VELOCITY_EQ_0;
     }
     return RESULT_SERVO_MOVING;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Logic/inc/LegPositionControllerInterface.hpp"
+#include "../../Logic/inc/LegPositionController.hpp"
 #include "LegContainer.hpp"
 #include "..\..\..\include\Results.h"
 #include "..\..\..\include\constants.hpp"

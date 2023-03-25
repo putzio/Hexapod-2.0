@@ -41,3 +41,13 @@ TEST(Servo, test_GoToTargetAngle) {
     expectedAngle = Constants::PI / 3;
     ASSERT_NEAR(expectedAngle, servo.GetCurrentAngle(), floatError);
 }
+
+TEST(Servo, test_GoToTargetAngle_Velocity_Eq_0) {
+    Servo servo = Servo();
+
+    float expectedAngle = Constants::PI / 3.0;
+    float floatError = Constants::PI / 1800;//0.1 degree
+    servo.SetTargetAngle(expectedAngle);
+    Result expected = Result::RESULT_SERVO_VELOCITY_EQ_0;
+    ASSERT_EQ(expected, servo.GoToTargetAngle());
+}

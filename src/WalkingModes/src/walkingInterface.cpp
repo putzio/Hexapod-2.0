@@ -13,8 +13,8 @@ Result WalkingInterface::TurnLeft() {
     return RESULT_WRONG_WALKING_INTERFACE_MODE;
 }
 Result WalkingInterface::GoToTheDefaultPosition() {
-    for (SimplifiedLeg leg : targetLegsPositions->legs) {
-        leg.legUp = false;
+    for (auto leg : targetLegsPositions->legs) {
+        leg.footOnGround = false;
         leg.x = 0;
     }
     return RESULT_OK;

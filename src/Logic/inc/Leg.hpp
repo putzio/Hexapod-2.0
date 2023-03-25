@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LegPositionControllerInterface.hpp"
+#include "LegPositionController.hpp"
 #include "FootCoordinates.hpp"
 #include "LegServos.hpp"
 #include "..\..\..\include\constants.hpp"
@@ -8,27 +8,46 @@
 
 class Leg {
 private:
+    float servosChangingStep = Constants::PI * 1.0 / 180.0f;
 
-    LegPositionControllerInterface p_controller;
     FootTargetPosition p_finalTargetPostion = FootTargetPosition(0, true);
+public:
+    LegPositionController p_controller;
+    LegServos p_servos;
+
+private:
     bool LegInFinalTargetPosition(const FootCoordinates& coordinates);
 
+
 public:
-    LegServos p_servos;
-    Leg(Side knee = Side::KNEE_BACK):p_controller(knee) {};
-    Leg(LegServos& servos, LegPositionControllerInterface& controller);
+    Leg(Side knee = Side::KNEE_BACK);
+    Leg(float upperServoCurrentAngle, float lowerServoCurrentAngle, Side knee = Side::KNEE_BACK);
+    // Leg(LegServos& servos, LegPositionController& controller);
 
-    Result LegPeriodicProcess();   //TEst???
-    void MoveLegToTheXYTarget(const ServosPositions* positions = nullptr);
-
+    Result LegPeriodicProcess();
     /**
      * @brief Set the New Target Position for leg
-     * and calculate coordinates from mm (devide by LEG_LENGTH)
+     * and optionally calculate coordinates from mm (devide by LEG_LENGTH)
      *
      * @param coordinates new coordinates
      * @return Result if the new target position was set correctly
      */
+
     Result SetNewTargetPosition(const FootTargetPosition& coordinates);
     Result SetNewTargetPosition(const FootCoordinates& coordinates);
-    const FootTargetPosition& GetFootCoordinates() const;
+    /**
+     * @brief Set the New Target Position for Servos
+     * The position controller does not calculate the steps on a way to it
+     * @param coordinates new coordinates
+     * @return Result if the new target position was set correctly
+     */
+    Result MoveJServos();
+    Result MoveJServos(const ServosPositions& positions);
+
+    const FootCoordinates& GetFootCoordinates() const;
+
+    const FootTargetPosition& GetFinalTargetPosition()const;
+
+    void SetChangingStep(float changingStep);
+    float GetChangingStep();
 };
