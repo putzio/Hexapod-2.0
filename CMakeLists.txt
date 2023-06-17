@@ -6,11 +6,9 @@ cmake_minimum_required(VERSION 3.19)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 add_library(LOGIC)
 add_library(DRIVERS)
-add_library(WALKING_MODES)
 
 add_subdirectory(src/drivers)
 add_subdirectory(src/Logic)
-add_subdirectory(src/WalkingModes)
 
 project(Hexapod C CXX)
 
@@ -26,7 +24,6 @@ target_include_directories(
     LOGIC PUBLIC ./src/Logic/inc
     DRIVERS PUBLIC ./include
     DRIVERS PUBLIC ./src/drivers/inc
-    WALKING_MODES PUBLIC ./include
     Hexapod PUBLIC ./include
 )
 
@@ -41,7 +38,6 @@ pico_enable_stdio_uart(Hexapod 0)
 target_link_libraries(${PROJECT_NAME} 
     LOGIC
     DRIVERS
-    WALKING_MODES
     hardware_spi
 ) 
 #Generates different file formats
