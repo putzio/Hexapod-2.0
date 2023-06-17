@@ -23,7 +23,9 @@ pico_sdk_init()
 
 target_include_directories(
     LOGIC PUBLIC ./include
+    LOGIC PUBLIC ./src/Logic/inc
     DRIVERS PUBLIC ./include
+    DRIVERS PUBLIC ./src/drivers/inc
     WALKING_MODES PUBLIC ./include
     Hexapod PUBLIC ./include
 )
@@ -40,6 +42,7 @@ target_link_libraries(${PROJECT_NAME}
     LOGIC
     DRIVERS
     WALKING_MODES
+    hardware_spi
 ) 
 #Generates different file formats
 pico_add_extra_outputs(Hexapod)

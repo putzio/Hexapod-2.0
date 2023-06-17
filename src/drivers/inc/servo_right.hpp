@@ -1,6 +1,6 @@
 #pragma once
 
-#include "servo_driver_interface.hpp"
+#include "servo_interface.hpp"
 
 // class ServoDriverRight: public Servo_DriverInterface {
 // public:
