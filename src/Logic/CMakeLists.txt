@@ -6,7 +6,7 @@ target_sources(LOGIC PUBLIC
     ./src/Leg.cpp
     ./src/LegPositioncontroller.cpp
     ./src/LegServos.cpp
-    ./src/MoveController.cpp
+    ./src/gaitController.cpp
     ./src/body.cpp
     ./src/Servo.cpp
 )

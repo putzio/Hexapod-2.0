@@ -11,12 +11,11 @@ namespace logic::gait {
             TRIPOD_WALK,
             CATEPILLAR_WALK,
             MONOCHROMATIC_WALKs
-        }Mode;
+        }Gait;
 
     protected:
         leg::LegContainer targetLegsPositions;
         uint8_t step = 0;
-        Mode walkingMode = NONE;
 
     public:
         /**
@@ -38,8 +37,8 @@ namespace logic::gait {
          *
          * @return ** Result enum Mode
          */
-        virtual Mode GetWalkingMode();
-        const leg::LegContainer& GetTargetLegsPositionsPtr() { return targetLegsPositions; };
+        Gait GetCurrentGait() { return NONE; };
+        const leg::LegContainer* const GetTargetLegsPositionsPtr() const { return &targetLegsPositions; };
     };
 } // namespace logic::gait
 
