@@ -9,6 +9,7 @@ target_sources(LOGIC PUBLIC
     ./src/gaitController.cpp
     ./src/body.cpp
     ./src/Servo.cpp
+    ./src/tripodGait.cpp
 )
 
     
