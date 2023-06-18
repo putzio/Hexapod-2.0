@@ -120,6 +120,7 @@ namespace logic::gait {
             break;
         }
         }
+        return RESULT_OK;
     }
 
     Result TripodGait::TurnRight() {
@@ -173,6 +174,7 @@ namespace logic::gait {
             break;
         }
         }
+        return RESULT_OK;
     }
 
     Result TripodGait::GoToTheDefaultPosition() {
