@@ -81,7 +81,7 @@ classDiagram
     }
 
     class GaitInterface{
-        + GoToTheDefaultPosition()
+        + virtual GoToTheDefaultPosition()
         + virtual GoForeward()
         + virtual GoBackward()
         + virtual TurnRight()
@@ -113,6 +113,24 @@ classDiagram
         + ChangeGait()
     }
 
+```
+
+#### Robot Leg State Machine:
+
+```mermaid
+stateDiagram-v2
+
+    [*] --> MOVE_TO_THE_NEW_TARGET_POSITION:SetFootTargetPosition()
+    MOVE_TO_THE_NEW_TARGET_POSITION --> FIND_THE_NEXT_COORDIANTES
+    state IF_STATE_FIND_THE_NEXT_COORDIANTES <<choice>>
+    FIND_THE_NEXT_COORDIANTES --> IF_STATE_FIND_THE_NEXT_COORDIANTES
+    IF_STATE_FIND_THE_NEXT_COORDIANTES --> MOVE_SERVOMOTORS:NEW_COORDINATES_FOUND
+    state IF_STATE_MOVE_SERVOMOTORS <<choice>>
+    MOVE_SERVOMOTORS -->IF_STATE_MOVE_SERVOMOTORS
+    IF_STATE_MOVE_SERVOMOTORS --> FIND_THE_NEXT_COORDIANTES:SERVO_IN_TARGET_POSITION
+    IF_STATE_MOVE_SERVOMOTORS --> MOVE_SERVOMOTORS:SERVO_MOVING
+
+    IF_STATE_FIND_THE_NEXT_COORDIANTES --> [*]:TARGET_POSITION_REACHED
 ```
 
 ### Drivers
