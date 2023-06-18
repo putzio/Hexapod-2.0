@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include"../../WalkingModes/inc/LegContainer.hpp"
+// #include"../../WalkingModes/inc/LegContainer.hpp"
 
 // TEST(SimplifiedLeg, test_init) {
 //     SimplifiedLeg legs[2];
