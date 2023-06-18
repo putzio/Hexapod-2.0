@@ -42,6 +42,8 @@ namespace logic {
             return p_ptr_gaitInterface->TurnRight();
         case TURN_LEFT:
             return p_ptr_gaitInterface->TurnLeft();
+        case DEFAULT_POSITION:
+            return p_ptr_gaitInterface->GoToTheDefaultPosition();
         default:
             return RESULT_UNDEFINED_ERROR;
         }

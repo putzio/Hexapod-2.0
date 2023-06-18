@@ -31,13 +31,13 @@ namespace logic::gait {
         virtual Result GoBackward();
         virtual Result TurnRight();
         virtual Result TurnLeft();
-        Result GoToTheDefaultPosition();
+        virtual Gait GetCurrentGait();
+        virtual Result GoToTheDefaultPosition();
         /**
          * @brief returns an enum representing the class(WalkingMode)
          *
          * @return ** Result enum Mode
          */
-        Gait GetCurrentGait() { return NONE; };
         const leg::LegContainer* const GetTargetLegsPositionsPtr() const { return &targetLegsPositions; };
     };
 } // namespace logic::gait

@@ -12,7 +12,8 @@ namespace logic {
             FOREWARD,
             BACKWARD,
             TURN_RIGHT,
-            TURN_LEFT
+            TURN_LEFT,
+            DEFAULT_POSITION
         } Direction;
     private:
         std::unique_ptr<gait::GaitInterface> p_ptr_gaitInterface;

@@ -33,6 +33,7 @@ namespace logic::leg {
     SingleCoordinate operator = (const float& other) { value = other;    return *this; }
     SingleCoordinate operator = (const SingleCoordinate& other) { value = other.GetCoordinate();    return *this; }
     bool operator==(const SingleCoordinate& other)const { return std::abs(value - other.GetCoordinate()) < 0.0001; }
+    bool operator!=(const SingleCoordinate& other)const { return !(*this == other); }
     bool operator>(const SingleCoordinate& other)const { return value > other.GetCoordinate(); }
     bool operator<(const SingleCoordinate& other)const { return value < other.GetCoordinate(); }
 
