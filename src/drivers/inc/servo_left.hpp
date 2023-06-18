@@ -5,13 +5,11 @@
 
 
 namespace pico_drivers {
-    class ServoLeft : public Servo_Interface {
+    class ServoLeft : public Servo_Interface, Pwm {
     public:
-        ServoLeft(uint8_t newPin);
-        ~ServoLeft() { delete pwm; };
-        void SetAngle(uint8_t angle) override;
-        void SetRadianAngle(float angle) override;
-        void Disable() override { pwm->Disable(); };
+        ServoLeft(uint8_t newPin) : Pwm(newPin) {};
+        ~ServoLeft() {};
+        void SetAngle(uint8_t angle);
         // void TestPWM() { SetPwm(10000); Enable(); }
     };
 }

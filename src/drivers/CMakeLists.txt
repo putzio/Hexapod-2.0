@@ -7,12 +7,12 @@ pico_sdk_init()
 
 target_sources(DRIVERS
     PUBLIC ./src/pwm.cpp
-    PUBLIC ./src/body.cpp
     PUBLIC ./src/gpio.cpp
     PUBLIC ./src/servo_interface.cpp
     PUBLIC ./src/servo_right.cpp
     PUBLIC ./src/servo_left.cpp
     PUBLIC ./src/mcp3008.cpp
+    PUBLIC ./src/spi.cpp
     )
 
 target_link_libraries(DRIVERS PUBLIC

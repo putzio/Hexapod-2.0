@@ -4,7 +4,7 @@ namespace pico_drivers {
     SPI::SPI(spi_inst_t* spi, uint32_t baudRate,
         uint8_t rxPin, uint8_t txPin, uint8_t sckPin, uint16_t csPin,
         uint8_t data_bits, spi_cpol_t clockPolarity, spi_cpha_t clockPhase, spi_order_t dataOrder) {
-        gpio_cs = new Gpio_driver(csPin, Gpio_driver::OUTPUT);
+        gpio_cs = new Gpio(csPin, Gpio::OUTPUT);
         gpio_cs->Write(1);
 
         spi_init(spi, baudRate);

@@ -1,12 +1,13 @@
-# Hexapod 
+# Hexapod
 
+## Class diagram of the project
 
-## Class diagram of the project 
 ### Robot Logic:
+
 ```mermaid
 classDiagram
-    %%Logic classes relations:     
-    LegServos *-- Servo:2 
+    %%Logic classes relations:
+    LegServos *-- Servo:2
     FootCoordinates o-- SingleCoordinate:2
     FootTargetPosition o-- SingleCoordinate:1
 
@@ -16,14 +17,14 @@ classDiagram
     Leg <|-- LegServos
     Leg *-- LegPositionController
     Leg o-- FootTargetPosition
-    
+
     GaitInterface <|-- TripodGait
     GaitInterface <|-- CatepillarGait
     GaitInterface <|-- MetachronousGait
     GaitInterface o-- FootTargetPosition: 6
 
-    RobotLogic *-- Leg:6
-    RobotLogic *-- GaitInterface
+    GaitController *-- Leg:6
+    GaitController *-- GaitInterface
 
     %%Logic classes:
     class Servo{
@@ -80,7 +81,7 @@ classDiagram
     }
 
     class GaitInterface{
-        + GoToTheDefaultPosition()
+        + virtual GoToTheDefaultPosition()
         + virtual GoForeward()
         + virtual GoBackward()
         + virtual TurnRight()
@@ -105,7 +106,7 @@ classDiagram
         + override TurnLeft()
     }
 
-    class RobotLogic{
+    class GaitController{
         + const enum Gait currentGait
 
         + PeriodicProcess()
@@ -113,7 +114,27 @@ classDiagram
     }
 
 ```
+
+#### Robot Leg State Machine:
+
+```mermaid
+stateDiagram-v2
+
+    [*] --> MOVE_TO_THE_NEW_TARGET_POSITION:SetFootTargetPosition()
+    MOVE_TO_THE_NEW_TARGET_POSITION --> FIND_THE_NEXT_COORDIANTES
+    state IF_STATE_FIND_THE_NEXT_COORDIANTES <<choice>>
+    FIND_THE_NEXT_COORDIANTES --> IF_STATE_FIND_THE_NEXT_COORDIANTES
+    IF_STATE_FIND_THE_NEXT_COORDIANTES --> MOVE_SERVOMOTORS:NEW_COORDINATES_FOUND
+    state IF_STATE_MOVE_SERVOMOTORS <<choice>>
+    MOVE_SERVOMOTORS -->IF_STATE_MOVE_SERVOMOTORS
+    IF_STATE_MOVE_SERVOMOTORS --> FIND_THE_NEXT_COORDIANTES:SERVO_IN_TARGET_POSITION
+    IF_STATE_MOVE_SERVOMOTORS --> MOVE_SERVOMOTORS:SERVO_MOVING
+
+    IF_STATE_FIND_THE_NEXT_COORDIANTES --> [*]:TARGET_POSITION_REACHED
+```
+
 ### Drivers
+
 ```mermaid
     classDiagram
     %%Driver classes relations:
@@ -123,14 +144,14 @@ classDiagram
     ServoDriverInterface <|-- RightServoDriver
 
     CurrentSensorDriver --|> SpiDriver
-    AccelerometerDriver --|> I2CDriver  
+    AccelerometerDriver --|> I2CDriver
 
 
     RobotDriver o-- ServoDriverInterface: 12
     RobotDriver o-- CurrentSensorDriver: 3
     RobotDriver o-- AccelerometerDriver
     RobotDriver o-- UartDriver
-    RobotDriver *-- RobotLogic
+    RobotDriver *-- GaitController
     RobotDriver --|> DataPacket
 
     class PwmDriver{
@@ -145,7 +166,7 @@ classDiagram
 
     class ServoDriverInterface{
         * calibrationValue: uint16_t
-        
+
         * override InitPwm()
         + virtual SetServoAngle()
     }
@@ -158,12 +179,12 @@ classDiagram
 
     class CurrentSensorDriver{
         -currentValues: uint16_t [8]
-        
+
         + GetCurrentValuesPtr()
     }
 
-    class RobotLogic{
-        * ServoCurrentAnglePtrs: const float* [12] 
+    class GaitController{
+        * ServoCurrentAnglePtrs: const float* [12]
         + PeriodicProcess()
         + ChangeGait()
     }
@@ -171,7 +192,7 @@ classDiagram
     class RobotDriver{
         + PeriodicProcess()
         - UpdateServoDrivers()
-        - 
+        -
     }
 
     class DataPacket{
