@@ -8,4 +8,8 @@ namespace pico_drivers {
     uint16_t Servo_Interface::MapAngleToPwmTime(uint8_t angle) {
         return (double)(angle * (Constants::ANGLE_RANGE_MS[1] - Constants::ANGLE_RANGE_MS[0])) / 180.0 + Constants::ANGLE_RANGE_MS[0];
     }
+
+    void Servo_Interface::SetRadianAngle(float angle) {
+        SetAngle((uint8_t)(angle * 180.0f / 3.14f));
+    }
 }
