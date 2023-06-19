@@ -3,7 +3,7 @@
 namespace logic {
     GaitController::GaitController() {
         for (int i = 0; i < legs.size(); i++) {
-            legs[i] = leg::Leg(leg::Side::KNEE_BACK);
+            legs[i] = leg::Leg(90.0, 90.0, leg::Side::KNEE_BACK);
         }
     }
 
@@ -60,7 +60,7 @@ namespace logic {
         }
 
         direction = newDirection;
-        SetNewTarget();
+        return SetNewTarget();
     }
     Result GaitController::ChangeGait(gait::GaitInterface::Gait newGait) {
         if (p_ptr_gaitInterface != nullptr && newGait == p_ptr_gaitInterface->GetCurrentGait()) {
@@ -70,14 +70,21 @@ namespace logic {
         // p_ptr_gaitInterface = std::make_unique<gait::GaitInterface>(newGait);
         typedef gait::GaitInterface::Gait Gait;
         switch (newGait) {
-        case Gait::TRIPOD_WALK: {
-            // p_ptr_gaitInterface = std::make_unique<gait::TripodWalk>();
+        case Gait::TRIPOD: {
+            p_ptr_gaitInterface = std::make_unique<gait::TripodGait>();
             break;
         }
         }
 
-
         targetLegsPositions = p_ptr_gaitInterface->GetTargetLegsPositionsPtr();
-        SetNewTarget();
+        return SetNewTarget();
+    }
+
+    std::array<leg::ServosPositions, 6> GaitController::GetSerovAngles() {
+        std::array<leg::ServosPositions, 6> result;
+        for (int i = 0; i < legs.size(); i++) {
+            result[i] = legs[i].p_servos.GetCurrentServoPositions();
+        }
+        return result;
     }
 }

@@ -8,9 +8,9 @@ namespace logic::gait {
         typedef enum Gait {
             NONE,
             DEFAULT_POSITION,
-            TRIPOD_WALK,
-            CATEPILLAR_WALK,
-            MONOCHROMATIC_WALKs
+            TRIPOD,
+            CATEPILLAR,
+            MONOCHROMATIC
         }Gait;
 
     protected:
@@ -19,7 +19,7 @@ namespace logic::gait {
 
     public:
         /**
-         * @brief depending on the walking mode and the step
+         * @brief depending on theing mode and the step
          *        the targetLegsPositions variable is set
          *
          *      If the position is achieved, the new positions are set
@@ -34,7 +34,7 @@ namespace logic::gait {
         virtual Gait GetCurrentGait();
         virtual Result GoToTheDefaultPosition();
         /**
-         * @brief returns an enum representing the class(WalkingMode)
+         * @brief returns an enum representing the classingMode)
          *
          * @return ** Result enum Mode
          */

@@ -5,13 +5,13 @@
 namespace logic::gait {
     class TripodGait : public GaitInterface {
     public:
-        TripodGait();
+        TripodGait() {};
         Result GoForeward() override;
         Result GoBackward() override;
         Result TurnRight() override;
         Result TurnLeft() override;
         Result GoToTheDefaultPosition() override;
-        Gait GetCurrentGait() override { return TRIPOD_WALK; };
+        Gait GetCurrentGait() override { return TRIPOD; };
     private:
         float xForeward = Constants::X_ABSOLUTE_RANGE[0];
         float xBackwards = Constants::X_ABSOLUTE_RANGE[1];

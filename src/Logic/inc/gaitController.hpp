@@ -2,11 +2,13 @@
 
 #include <memory>
 #include "gaitInterface.hpp"
+#include "tripodGait.hpp"
 #include "Results.h"
 #include "Leg.hpp"
 
 namespace logic {
     class GaitController {
+    public:
         typedef enum {
             NONE,
             FOREWARD,
@@ -28,5 +30,6 @@ namespace logic {
         Result ChangeDirection(Direction newDirection);
         Result ChangeGait(gait::GaitInterface::Gait newGait);
         Result PeriodicProcess();
+        std::array<leg::ServosPositions, 6> GetSerovAngles();
     };
 }
