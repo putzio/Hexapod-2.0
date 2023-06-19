@@ -13,6 +13,7 @@ target_sources(DRIVERS
     PUBLIC ./src/servo_left.cpp
     PUBLIC ./src/mcp3008.cpp
     PUBLIC ./src/spi.cpp
+    PUBLIC ./src/leg_controller.cpp
     )
 
 target_link_libraries(DRIVERS PUBLIC
@@ -26,4 +27,5 @@ target_link_libraries(DRIVERS PUBLIC
     hardware_gpio
     hardware_i2c
     hardware_spi
+    LOGIC
 ) 

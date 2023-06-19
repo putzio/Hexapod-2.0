@@ -79,6 +79,9 @@
 // #include "drivers/inc/UsbString.hpp"
 // #include "hardware/spi.h"
 #include "gpio.hpp"
+#include "servo_left.hpp"
+#include "leg_controller.hpp"
+#include "gaitController.hpp"
 // #include "../src/drivers/inc/servo_driver_left.hpp"
 // #include <vector>
 
@@ -150,6 +153,25 @@
 
 int main() {
     stdio_init_all();
+    // pico_drivers::ServoLeft servo = pico_drivers::ServoLeft(25);
+    pico_drivers::Gpio led = pico_drivers::Gpio(25, pico_drivers::Gpio::OUTPUT);
+    led.Write(true);
+    std::array<uint8_t, 12> pins;
+    for (int i; i < pins.size(); i++) {
+        pins[i] = i + 2;
+    }
+    pico_drivers::LegController legController = pico_drivers::LegController(pins);
+    legController.InitServos();
+    logic::GaitController gaitController = logic::GaitController();
+    gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD);
+    gaitController.ChangeDirection(logic::GaitController::DEFAULT_POSITION);
+    while (1) {
+        // printf("Hello, world!\n");
+        led.Toggle();
+        gaitController.PeriodicProcess();
+        legController.UpdateServos(gaitController.GetSerovAngles());
+        sleep_ms(100);
+    }
     // printf("SPI master example\n");
     // Gpio_driver gpio = Gpio_driver(25, Gpio_driver::OUTPUT);
     // MCP3008_SPI adc_spi_0 = MCP3008_SPI(spi0, 250000, 2, 3, 4, 5, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
@@ -187,12 +209,12 @@ int main() {
     //     servos.push_back(ServoDriverLeft(i + 2));
     //     servos[i].SetAngle(90);
     // }
-    using pico_drivers::Gpio;
-    Gpio led = Gpio(25, Gpio::OUTPUT);
-    while (1) {
-        led.Toggle();
-        sleep_ms(1000);
-    }
+    // using pico_drivers::Gpio;
+    // Gpio led = Gpio(25, Gpio::OUTPUT);
+    // while (1) {
+    //     led.Toggle();
+    //     sleep_ms(1000);
+    // }
 
 }
 
