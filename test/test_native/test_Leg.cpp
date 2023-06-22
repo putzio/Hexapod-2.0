@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../src/Logic/inc/Leg.hpp"
+#include "Leg.hpp"
 #include <memory>
 
 
@@ -9,12 +9,13 @@ namespace logic::leg {
     void PeriodicProcess(Leg& leg, ServosPositions target);
     void PeriodicProcess(Leg& leg);
     void FullPeriodicProcess(Leg& leg);
+    FootTargetPosition GoForeward(uint8_t& step);
 
     TEST(Leg, test_init) {
         Leg leg = Leg(Side::KNEE_BACK);
         FootCoordinates coordinates;
         coordinates.x = 0;
-        coordinates.y = Constants::Y_ABSOLUTE_RANGE[1];
+        coordinates.y = 1.7320f;//sin(60.0 * Constants::PI / 180.0) * 20000.0;
         ASSERT_EQ(coordinates.x, leg.GetFootCoordinates().x);
         ASSERT_EQ(coordinates.y, leg.GetFootCoordinates().y);
         ASSERT_NEAR(Constants::PI / 180.0f, leg.GetChangingStep(), 0.0001);
@@ -28,6 +29,9 @@ namespace logic::leg {
         ServosPositions positions;
         positions.upperServoAngle = Constants::PI * 2.0f / 3.0f;
         positions.lowerServoAngle = Constants::PI * 1.0f / 6.0f;
+        LegRange range = leg.GetRange();
+        range.y[1] = 2;
+        leg.SetLegRange(range);
         ServosPositions currentPositions = leg.p_servos.GetCurrentServoPositions();
         ASSERT_EQ(Result::RESULT_OK, leg.MoveJServos(positions));
         PeriodicProcess(leg, positions);
@@ -43,6 +47,16 @@ namespace logic::leg {
         ServosPositions positions = leg.p_servos.GetCurrentServoPositions();
         ServosPositions targetPositions = leg.p_controller.CalculateServoPositions(leg.p_controller.GetCoordinates());
         FullPeriodicProcess(leg);
+    }
+
+    TEST(Leg, test_tripod_movements) {
+        uint8_t step = 0;
+        Leg leg = Leg(Constants::PI / 2, Constants::PI / 2, Side::KNEE_BACK);
+        FootTargetPosition target = GoForeward(step);
+        leg.SetChangingStep(Constants::PI * 2.0 / 180.0f);
+        leg.SetNewTargetPosition(target);
+        FullPeriodicProcess(leg);
+        // ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
     }
 
     float CalculateNumberOfSteps(ServosPositions target, ServosPositions current, float changingStep) {
@@ -108,5 +122,30 @@ namespace logic::leg {
                 ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
             }
         }
+    }
+
+    FootTargetPosition GoForeward(uint8_t& step) {
+        typedef enum {
+            LIFT_LEGS_AND_MOVE_THEM_FORWARD,
+            LOWER_LEGS_MOVE_THEM_BACKWARD
+        } FirstGroupOfLegsSteps;
+        FootTargetPosition targetLegsPositions;
+        float xForeward = 2;
+        float xBackwards = -2;
+        switch (step) {
+        case LIFT_LEGS_AND_MOVE_THEM_FORWARD: {
+            targetLegsPositions.x = xForeward;
+            targetLegsPositions.footOnGround = false;
+            step = LOWER_LEGS_MOVE_THEM_BACKWARD;
+            break;
+        }
+        case LOWER_LEGS_MOVE_THEM_BACKWARD: {
+            targetLegsPositions.x = xBackwards;
+            targetLegsPositions.footOnGround = true;
+            step = LIFT_LEGS_AND_MOVE_THEM_FORWARD;
+            break;
+        }
+        }
+        return targetLegsPositions;
     }
 } // namespace logic::leg

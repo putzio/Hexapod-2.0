@@ -1,7 +1,7 @@
 #pragma once
 #include "stdint.h"
-#include "..\..\..\include\constants.hpp"
-#include "..\..\..\include\Results.h"
+#include "constants.hpp"
+#include "Results.h"
 
 #define DEFAULT_SERVO_ANGLE (Constants::PI / 2.0)
 
@@ -18,9 +18,9 @@ namespace logic::leg {
 
         Result GoToTargetAngle();
 
-        void SetTargetAngle(float targetAngle);
-        void SetTargetAngle(float targetAngle, float angleChangingStep);
-        void SetCurrentAngle(float servoAngle);
+        Result SetTargetAngle(float targetAngle);
+        Result SetTargetAngle(float targetAngle, float angleChangingStep);
+        Result SetCurrentAngle(float servoAngle);
 
         const float GetCurrentAngle()const;
         const float GetTargetAngle()const;

@@ -1,5 +1,5 @@
-#include "../../src/Logic/inc/Leg.hpp"
-#include "../../src/Logic/inc/LegPositionController.hpp"
+#include "Leg.hpp"
+#include "LegPositionController.hpp"
 #include <gtest/gtest.h>
 
 namespace logic::leg {

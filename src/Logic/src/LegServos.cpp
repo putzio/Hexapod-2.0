@@ -1,14 +1,14 @@
-#include "../inc/LegServos.hpp"
+#include "LegServos.hpp"
 
 namespace logic::leg {
-    void LegServos::SetTargetAngle(const float upperServoTargetAngle, const float lowerServoTargetAngle) {
-        upperServo.SetTargetAngle(upperServoTargetAngle);
-        lowerServo.SetTargetAngle(lowerServoTargetAngle);
+    Result LegServos::SetTargetAngle(const float upperServoTargetAngle, const float lowerServoTargetAngle) {
+        ReturnOnError(upperServo.SetTargetAngle(upperServoTargetAngle));
+        return (lowerServo.SetTargetAngle(lowerServoTargetAngle));
     }
 
-    void LegServos::SetTargetAngle(float upperServoTargetAngle, float upperServoAngleChangingStep, float lowerServoTargetAngle, float lowerServoAngleChangingStep) {
-        upperServo.SetTargetAngle(upperServoTargetAngle, upperServoAngleChangingStep);
-        lowerServo.SetTargetAngle(lowerServoTargetAngle, lowerServoAngleChangingStep);
+    Result LegServos::SetTargetAngle(float upperServoTargetAngle, float upperServoAngleChangingStep, float lowerServoTargetAngle, float lowerServoAngleChangingStep) {
+        ReturnOnError(upperServo.SetTargetAngle(upperServoTargetAngle, upperServoAngleChangingStep));
+        return (lowerServo.SetTargetAngle(lowerServoTargetAngle, lowerServoAngleChangingStep));
     }
 
     Result LegServos::GoToTargetAngle() {

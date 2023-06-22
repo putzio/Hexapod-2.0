@@ -1,6 +1,5 @@
-#include "../inc/Servo.hpp"
+#include "Servo.hpp"
 #include <cmath>
-// #include"../include/constants.hpp"
 
 namespace logic::leg {
     Servo::Servo(float currentAngle) {
@@ -26,23 +25,31 @@ namespace logic::leg {
         return RESULT_SERVO_MOVING;
     }
 
-    void Servo::SetTargetAngle(const float targetAngle) {
+    Result Servo::SetTargetAngle(const float targetAngle) {
         if (targetAngle > Constants::ANGLE_RANGE[0] && targetAngle < Constants::ANGLE_RANGE[1]) {
             p_targetAngle = targetAngle;
+            return RESULT_OK;
         }
+        std::cout << "targetAngle:\t" << targetAngle << std::endl;
+        return RESULT_SERVO_ANGLE_OUT_OF_RANGE;
     }
-    void Servo::SetTargetAngle(float targetAngle, float angleChangingStep) {
-        SetTargetAngle(targetAngle);
+    Result Servo::SetTargetAngle(float targetAngle, float angleChangingStep) {
+        ReturnOnError(SetTargetAngle(targetAngle));
 
-        if (angleChangingStep > Constants::PI / 600 && angleChangingStep < Constants::PI / 48) {
+        if (angleChangingStep > Constants::PI / 600.0 && angleChangingStep < Constants::PI / 48.0) {
             p_angleChangingStep = angleChangingStep;
+            return RESULT_OK;
         }
+        return RESULT_SERVO_VELOCITY_OUT_OF_RANGE;
     }
-    void Servo::SetCurrentAngle(float angle) {
-        if (angle < Constants::ANGLE_RANGE[0] || angle > Constants::ANGLE_RANGE[1])
-            return;
+    Result Servo::SetCurrentAngle(float angle) {
+        if (angle < Constants::ANGLE_RANGE[0] || angle > Constants::ANGLE_RANGE[1]) {
+            std::cout << "angle:\t" << angle << std::endl;
+            return RESULT_SERVO_ANGLE_OUT_OF_RANGE;
+        }
         else
             p_currentAngle = angle;
+        return RESULT_OK;
     }
 
     const float Servo::GetCurrentAngle()const {

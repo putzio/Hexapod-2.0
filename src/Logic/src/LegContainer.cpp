@@ -1,4 +1,4 @@
-#include "../inc/LegContainer.hpp"
+#include "LegContainer.hpp"
 #include <cmath>
 
 
@@ -11,17 +11,4 @@ namespace logic::leg {
         }
         return true;
     }
-
-    // bool LegContainer::operator==(const LegsCoordinates& legCoordinates)const {
-    //     return LegContainerEqualsToCoordinates(legCoordinates);
-    // }
-
-    // bool LegContainer::LegContainerEqualsToCoordinates(const LegsCoordinates& legCoordinates)const {
-    //     for (int i = 0; i < 6; i++) {
-    //         if (this->legs[i] != legCoordinates.coordinates[i]) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
 }

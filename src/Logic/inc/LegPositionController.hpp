@@ -2,9 +2,9 @@
 
 #include <stdint.h>
 #include <cmath>
-#include "..\..\..\include\constants.hpp"
+#include "constants.hpp"
 #include "FootCoordinates.hpp"
-#include "..\..\..\include\Results.h"
+#include "Results.h"
 #include "ServoPositions.hpp"
 #include "LegRange.hpp"
 
@@ -90,11 +90,12 @@ namespace logic::leg {
      *   The point (0,0) is in the Upper servomotor joint
      *
      **/
-    void SetNewXYPosition(SingleCoordinate xNew, SingleCoordinate yNew);
-    void SetNewXYPosition(const FootCoordinates& coordinates);
+    Result SetNewXYPosition(SingleCoordinate xNew, SingleCoordinate yNew);
+    Result SetNewXYPosition(const FootCoordinates& coordinates);
+    Result SetLegRange(const LegRange& legRange);
 
   private:
-    void SetX(SingleCoordinate xNew);
-    void SetY(SingleCoordinate yNew);
+    Result SetX(SingleCoordinate xNew);
+    Result SetY(SingleCoordinate yNew);
   };
 }

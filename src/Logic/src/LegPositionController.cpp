@@ -1,5 +1,4 @@
-#include "../inc/LegPositionController.hpp"
-
+#include "LegPositionController.hpp"
 namespace logic::leg {
     LegPositionController::LegPositionController(SingleCoordinate x, SingleCoordinate y, Side knee) {
         if (knee == Side::KNEE_FRONT) {
@@ -89,13 +88,18 @@ namespace logic::leg {
         return p_legRange;
     }
 
-    void LegPositionController::SetNewXYPosition(SingleCoordinate xNew, SingleCoordinate yNew) {
-        SetX(xNew);
-        SetY(yNew);
+    Result LegPositionController::SetNewXYPosition(SingleCoordinate xNew, SingleCoordinate yNew) {
+        ReturnOnError(SetX(xNew));
+        return SetY(yNew);
     }
 
-    void LegPositionController::SetNewXYPosition(const FootCoordinates& coordinates) {
-        SetNewXYPosition(coordinates.x, coordinates.y);
+    Result LegPositionController::SetNewXYPosition(const FootCoordinates& coordinates) {
+        return SetNewXYPosition(coordinates.x, coordinates.y);
+    }
+
+    Result LegPositionController::SetLegRange(const LegRange& legRange) {
+        p_legRange = legRange;
+        return RESULT_OK;
     }
 
     FootCoordinates LegPositionController::FindXYPosition(const ServosPositions& positions) {
@@ -109,17 +113,20 @@ namespace logic::leg {
         return coordinates;
     }
 
-    void LegPositionController::SetX(SingleCoordinate xNew) {
+    Result LegPositionController::SetX(SingleCoordinate xNew) {
         if (!xNew.IsBetween(p_legRange.x)) {
-            return;
+            return RESULT_COORDINATES_OUT_OF_RANGE;
         }
         p_coordinates.x = xNew;
+        return RESULT_OK;
     }
-    void LegPositionController::SetY(SingleCoordinate yNew) {
+    Result LegPositionController::SetY(SingleCoordinate yNew) {
         if (!yNew.IsBetween(p_legRange.y)) {
-            return;
+            return RESULT_COORDINATES_OUT_OF_RANGE;
         }
         p_coordinates.y = yNew;
+
+        return RESULT_OK;
     }
 
     ServosPositions LegPositionController::CalculateServoPositions(float xNew, float yNew) {

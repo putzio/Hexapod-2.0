@@ -3,7 +3,7 @@
 #include "LegPositionController.hpp"
 #include "FootCoordinates.hpp"
 #include "LegServos.hpp"
-#include "..\..\..\include\constants.hpp"
+#include "constants.hpp"
 #include <memory>
 
 namespace logic::leg {
@@ -45,12 +45,16 @@ namespace logic::leg {
         Result MoveJServos();
         Result MoveJServos(const ServosPositions& positions);
 
+        Result SetLegRange(const LegRange& range);
+
         const FootCoordinates& GetFootCoordinates() const;
 
         const FootTargetPosition& GetFinalTargetPosition()const;
 
-        void SetChangingStep(float changingStep);
+        Result SetChangingStep(float changingStep);
         float GetChangingStep();
+
+        LegRange GetRange() const;
     };
 
 }

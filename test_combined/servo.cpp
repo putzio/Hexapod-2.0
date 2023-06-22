@@ -17,7 +17,7 @@ Result ServoPeriodicProcess(std::shared_ptr<Servo_DriverInterface> servo_driver,
 int main() {
     stdio_init_all();
     Gpio_driver gpio = Gpio_driver(25, Gpio_driver::OUTPUT);
-    Servo servo = Servo(1.570796371F);
+    Servo servo = Servo(1.570796371f);
     std::shared_ptr<Servo_DriverInterface> servo_driver = std::make_shared<ServoDriverLeft>(2);
 
     UpdateServoDriver(servo_driver, servo.GetCurrentAngle());

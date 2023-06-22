@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../../src/Logic/inc/Servo.hpp"
+#include "Servo.hpp"
 
 namespace logic::leg {
     TEST(Servo, test_servo_init) {
@@ -13,7 +13,7 @@ namespace logic::leg {
         Servo servo = Servo();
         float expected = 0.2137f;
 
-        servo.SetTargetAngle(expected);
+        ASSERT_EQ(RESULT_OK, servo.SetTargetAngle(expected));
 
         ASSERT_EQ(expected, servo.GetTargetAngle());
     }
@@ -25,7 +25,7 @@ namespace logic::leg {
         float expectedAngle = Constants::PI / 3.0, expectedStep = Constants::PI / 60.0;
         float floatError = Constants::PI / 1800;//0.1 degree
 
-        servo.SetTargetAngle(expectedAngle, expectedStep);
+        ASSERT_EQ(RESULT_OK, servo.SetTargetAngle(expectedAngle, expectedStep));
 
         ASSERT_NEAR(expectedAngle, servo.GetTargetAngle(), floatError);
         ASSERT_NEAR(expectedStep, servo.GetAngleChangingStep(), floatError);
@@ -38,7 +38,7 @@ namespace logic::leg {
             ASSERT_NEAR(expectedAngle, servo.GetCurrentAngle(), floatError);
         }
         //Constants::PI / 2  - Constants::PI / 6 * 10 = Constants::PI / 3
-        servo.GoToTargetAngle();//this method call should not change anything
+        ASSERT_EQ(RESULT_SERVO_IN_TARGET_POSITION, servo.GoToTargetAngle());//this method call should not change anything
         expectedAngle = Constants::PI / 3;
         ASSERT_NEAR(expectedAngle, servo.GetCurrentAngle(), floatError);
     }
@@ -48,7 +48,7 @@ namespace logic::leg {
 
         float expectedAngle = Constants::PI / 3.0;
         float floatError = Constants::PI / 1800;//0.1 degree
-        servo.SetTargetAngle(expectedAngle);
+        ASSERT_EQ(RESULT_OK, servo.SetTargetAngle(expectedAngle));
         Result expected = Result::RESULT_SERVO_VELOCITY_EQ_0;
         ASSERT_EQ(expected, servo.GoToTargetAngle());
     }

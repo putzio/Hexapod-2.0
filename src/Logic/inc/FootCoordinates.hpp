@@ -1,8 +1,7 @@
 #pragma once
 
 #include <cmath>
-#include "../../../include/constants.hpp"
-// # include "Logic/WalkingModes/LegContainer.hpp"
+#include "constants.hpp"
 
 namespace logic::leg {
   typedef struct SingleCoordinate {
@@ -32,12 +31,12 @@ namespace logic::leg {
 
     SingleCoordinate operator = (const float& other) { value = other;    return *this; }
     SingleCoordinate operator = (const SingleCoordinate& other) { value = other.GetCoordinate();    return *this; }
-    bool operator==(const SingleCoordinate& other)const { return std::abs(value - other.GetCoordinate()) < 0.0001; }
+    bool operator==(const SingleCoordinate& other)const { return std::abs(value - other.GetCoordinate()) < 0.001; }
     bool operator!=(const SingleCoordinate& other)const { return !(*this == other); }
     bool operator>(const SingleCoordinate& other)const { return value > other.GetCoordinate(); }
     bool operator<(const SingleCoordinate& other)const { return value < other.GetCoordinate(); }
 
-    bool IsBetween(const float range[2]) const { return (value > range[0] && value < range[1]); }
+    bool IsBetween(const float range[2]) const { return (value >= range[0] && value <= range[1]); }
   }SingleCoordinate;
 
   typedef struct FootTargetPosition {
@@ -98,21 +97,4 @@ namespace logic::leg {
     }
 
   }FootCoordinates;
-
-  typedef struct LegsCoordinates {
-    FootCoordinates coordinates[6];
-
-    // bool operator==(const LegsCoordinates &coordinates)const{
-    //   for(int i = 0; i < 6; i++){
-    //     if(legs[i] != legCoordinates.coordinates[i]){
-    //         return false;
-    //     }
-    //   }
-    //   return true;
-    // }
-    // bool operator!=(const LegsCoordinates &coordinates)const{
-    //   return !(coordinates == *this);
-    // }
-
-  }LegsCoordinates;
 }

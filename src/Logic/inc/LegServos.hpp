@@ -18,8 +18,8 @@ namespace logic::leg {
             :upperServo(startingPositions.upperServoAngle),
             lowerServo(startingPositions.lowerServoAngle) {
         };
-        void SetTargetAngle(float upperServoTargetAngle, float lowerServoTargetAngle);
-        void SetTargetAngle(float upperServoTargetAngle, float upperServoAngleChangingStep, float lowerServoTargetAngle, float lowerServoAngleChangingStep);
+        Result SetTargetAngle(float upperServoTargetAngle, float lowerServoTargetAngle);
+        Result SetTargetAngle(float upperServoTargetAngle, float upperServoAngleChangingStep, float lowerServoTargetAngle, float lowerServoAngleChangingStep);
 
         Result GoToTargetAngle();
         ServosPositions GetCurrentServoPositions();

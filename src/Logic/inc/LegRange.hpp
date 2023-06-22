@@ -1,6 +1,6 @@
 #pragma once
-#include "..\..\..\include\Results.h"
-#include "..\..\..\include\constants.hpp"
+#include "Results.h"
+#include "constants.hpp"
 namespace logic::leg {
     typedef struct LegRange {
         float y[2];
@@ -18,7 +18,7 @@ namespace logic::leg {
             y[0] = Constants::Y_ABSOLUTE_RANGE[0];
             y[1] = Constants::Y_ABSOLUTE_RANGE[1];
         }
-        Result NewHightRange_mm(const float& min, const float& max) {
+        inline Result NewHightRange_mm(const float& min, const float& max) {
             if (ValueInRange(min, Constants::Y_ABSOLUTE_RANGE) &&
                 ValueInRange(max, Constants::Y_ABSOLUTE_RANGE) &&
                 min < max) {
@@ -30,8 +30,15 @@ namespace logic::leg {
                 return RESULT_HIGHT_OUT_OF_RANGE;
             }
         }
-        Result NewHightRange_mm(float hightRange[2]) {
+        inline Result NewHightRange_mm(float hightRange[2]) {
             return NewHightRange_mm(hightRange[0], hightRange[1]);
+        }
+        inline LegRange operator = (const LegRange& other) {
+            x[0] = other.x[0];
+            x[1] = other.x[1];
+            y[0] = other.y[0];
+            y[1] = other.y[1];
+            return *this;
         }
     }LegRange;
 }

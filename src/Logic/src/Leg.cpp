@@ -1,4 +1,4 @@
-#include "../inc/Leg.hpp"
+#include "Leg.hpp"
 
 namespace logic::leg {
     Leg::Leg(Side knee)
@@ -39,14 +39,13 @@ namespace logic::leg {
 
     Result Leg::MoveJServos() {
         ServosPositions p = p_controller.CalculateServoPositions();
-        p_servos.SetTargetAngle(p.upperServoAngle, servosChangingStep, p.lowerServoAngle, servosChangingStep);
-        return RESULT_OK;
+        return p_servos.SetTargetAngle(p.upperServoAngle, servosChangingStep, p.lowerServoAngle, servosChangingStep);
     }
 
     Result Leg::MoveJServos(const ServosPositions& positions) {
-        p_servos.SetTargetAngle(positions.upperServoAngle, servosChangingStep, positions.lowerServoAngle, servosChangingStep);
-        p_controller.SetNewXYPosition(p_controller.FindXYPosition(positions));
-        return RESULT_OK;
+        ReturnOnError(p_servos.SetTargetAngle(positions.upperServoAngle, servosChangingStep, positions.lowerServoAngle, servosChangingStep));
+        return p_controller.SetNewXYPosition(p_controller.FindXYPosition(positions));
+
     }
 
     bool Leg::LegInFinalTargetPosition(const FootCoordinates& coordinates) {//for y?
@@ -60,6 +59,11 @@ namespace logic::leg {
         p_finalTargetPostion = coordinates;
         p_controller.FindNextCoordinates(p_finalTargetPostion.x, p_finalTargetPostion.footOnGround);
         return MoveJServos();
+    }
+
+    Result Leg::SetLegRange(const LegRange& range) {
+        p_controller.SetLegRange(range);
+        return RESULT_OK;
     }
     // Result Leg::SetNewTargetPosition(const FootCoordinates& coordinates) {
     //     if ((coordinates.x < p_controller.GetLegRange().x[0] || coordinates.x > p_controller.GetLegRange().x[1])
@@ -89,12 +93,20 @@ namespace logic::leg {
         return p_finalTargetPostion;
     }
 
-    void Leg::SetChangingStep(float changingStep) {
+    Result Leg::SetChangingStep(float changingStep) {
         if (changingStep > Constants::CHANGING_STEP_RANGE[0]) {
             servosChangingStep = changingStep;
+            return RESULT_OK;
         }
+        return RESULT_SERVO_VELOCITY_OUT_OF_RANGE;
     }
+
     float Leg::GetChangingStep() {
         return servosChangingStep;
     }
+
+    LegRange Leg::GetRange() const {
+        return p_controller.GetLegRange();
+    }
+
 }
