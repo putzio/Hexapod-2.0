@@ -30,7 +30,6 @@ namespace logic::leg {
             p_targetAngle = targetAngle;
             return RESULT_OK;
         }
-        std::cout << "targetAngle:\t" << targetAngle << std::endl;
         return RESULT_SERVO_ANGLE_OUT_OF_RANGE;
     }
     Result Servo::SetTargetAngle(float targetAngle, float angleChangingStep) {
@@ -44,7 +43,6 @@ namespace logic::leg {
     }
     Result Servo::SetCurrentAngle(float angle) {
         if (angle < Constants::ANGLE_RANGE[0] || angle > Constants::ANGLE_RANGE[1]) {
-            std::cout << "angle:\t" << angle << std::endl;
             return RESULT_SERVO_ANGLE_OUT_OF_RANGE;
         }
         else

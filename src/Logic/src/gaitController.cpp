@@ -1,9 +1,9 @@
-#include "../inc/gaitController.hpp"
+#include "gaitController.hpp"
 
 namespace logic {
     GaitController::GaitController() {
         for (int i = 0; i < legs.size(); i++) {
-            legs[i] = leg::Leg(90.0, 90.0, leg::Side::KNEE_BACK);
+            legs[i] = leg::Leg(Constants::PI / 2, Constants::PI / 2, leg::Side::KNEE_BACK);
         }
     }
 
@@ -13,14 +13,18 @@ namespace logic {
         }
 
         if (GoToPosition() == RESULT_LEG_IN_TARGET_POSITION) {
-            SetNewTarget();
+            ReturnOnError(SetNewTarget());
+        }
+
+        for (int i = 0; i < legs.size(); i++) {
+            ReturnUnexpected(legs[i].LegPeriodicProcess(), RESULT_UNDEFINED_ERROR);
         }
         return RESULT_OK;
     }
     Result GaitController::GoToPosition() {
         bool allLegsInPosition = true;
-        for (leg::Leg& leg : legs) {
-            if (leg.LegPeriodicProcess() != RESULT_LEG_IN_TARGET_POSITION) {
+        for (int i = 0; i < legs.size(); i++) {
+            if (legs[i].LegPeriodicProcess() != RESULT_LEG_IN_TARGET_POSITION) {
                 allLegsInPosition = false;
             }
         }
@@ -33,7 +37,7 @@ namespace logic {
         }
         switch (direction) {
         case NONE:
-            return RESULT_OK;
+            return RESULT_DIRECTION_NOT_CHOSEN;
         case FOREWARD:
             return p_ptr_gaitInterface->GoForeward();
         case BACKWARD:
@@ -42,14 +46,21 @@ namespace logic {
             return p_ptr_gaitInterface->TurnRight();
         case TURN_LEFT:
             return p_ptr_gaitInterface->TurnLeft();
-        case DEFAULT_POSITION:
+        case DEFAULT_POSITION: {
+            leg::LegRange legRange = legs[0].GetRange();
+            legRange.y[1] = 2.0;
+            for (leg::Leg& leg : legs) {
+                leg.SetLegRange(legRange);
+            }
             return p_ptr_gaitInterface->GoToTheDefaultPosition();
+        }
         default:
             return RESULT_UNDEFINED_ERROR;
         }
         for (int i = 0; i < legs.size(); i++) {
-            legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]);
+            ReturnOnError(legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]));
         }
+        return RESULT_OK;
     }
 
     Result GaitController::ChangeDirection(Direction newDirection) {
@@ -58,7 +69,6 @@ namespace logic {
         if (newDirection == direction) {
             return RESULT_OK;
         }
-
         direction = newDirection;
         return SetNewTarget();
     }
@@ -68,9 +78,9 @@ namespace logic {
         }
         //stop the current gait?
         // p_ptr_gaitInterface = std::make_unique<gait::GaitInterface>(newGait);
-        typedef gait::GaitInterface::Gait Gait;
+
         switch (newGait) {
-        case Gait::TRIPOD: {
+        case gait::GaitInterface::Gait::TRIPOD: {
             p_ptr_gaitInterface = std::make_unique<gait::TripodGait>();
             break;
         }
