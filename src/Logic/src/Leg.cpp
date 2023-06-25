@@ -6,13 +6,13 @@ namespace logic::leg {
         p_servos(
             p_controller.CalculateServoPositions(
                 p_finalTargetPostion.x.GetCoordinate(),
-                p_controller.GetLegRange().y[1]
+                p_controller.GetFootOnGroundY().GetCoordinate()
             )) {
         p_controller.SetNewXYPosition(p_finalTargetPostion.x, p_controller.GetLegRange().y[p_finalTargetPostion.footOnGround != 0]);
     };
 
     Leg::Leg(float upperServoCurrentAngle, float lowerServoCurrentAngle, Side knee)
-        :p_controller(knee),
+        :p_controller(upperServoCurrentAngle, lowerServoCurrentAngle, knee),
         p_servos(upperServoCurrentAngle, upperServoCurrentAngle) {
         p_controller.SetNewXYPosition(p_controller.FindXYPosition(p_servos.GetCurrentServoPositions()));
     };

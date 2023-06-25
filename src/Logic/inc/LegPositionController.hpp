@@ -20,10 +20,11 @@ namespace logic::leg {
   protected:
     FootCoordinates p_coordinates;
     LegRange p_legRange;
+    SingleCoordinate p_footOnGroundY[2] = { 1.5, 1.7320f };//sin(60.0 * Constants::PI / 180.0) * 20000.0 = 1.7320f
 
   private:
     typedef ServosPositions(*CalculateServoPositionsFunctionPointer)(float xNew, float yNew);
-    float MapXInRange(const float& xPos);
+    SingleCoordinate MapXInRange(const SingleCoordinate& xPos);
     CalculateServoPositionsFunctionPointer calculateServoPositionsPtr;
     static ServosPositions CalculateServoPositions_KneeBack(float xNew, float yNew);
     static ServosPositions CalculateServoPositions_KneeFront(float xNew, float yNew);
@@ -32,6 +33,7 @@ namespace logic::leg {
     LegPositionController(Side knee = Side::KNEE_BACK) : LegPositionController(0, Constants::Y_ABSOLUTE_RANGE[1], knee) {};
     LegPositionController(FootCoordinates coordinates, Side knee = Side::KNEE_BACK) :LegPositionController(coordinates.x, coordinates.y, knee) {};
     LegPositionController(SingleCoordinate x, SingleCoordinate y, Side knee = Side::KNEE_BACK);
+    LegPositionController(ServosPositions servos, Side knee = Side::KNEE_BACK);
 
     /**
      *   \brief Calculate the y position when the leg is up
@@ -42,7 +44,7 @@ namespace logic::leg {
      *   \return struct ServoPositions with values of angles for both servomotors
      *
      **/
-    SingleCoordinate CalculateYPosition(const SingleCoordinate& xPos);
+    Result CalculateYPosition(const SingleCoordinate& xPos);
 
     /**
      * @brief Calculates coordinates to set servos in,
@@ -82,6 +84,8 @@ namespace logic::leg {
     SingleCoordinate GetY();
     const FootCoordinates& GetCoordinates()const;
     const LegRange& GetLegRange()const;
+    const SingleCoordinate& GetFootOnGroundY()const { return p_footOnGroundY[1]; };
+    const SingleCoordinate& GetFootUpY()const { return p_footOnGroundY[0]; };
 
     /**
      *   \brief Set current xy position

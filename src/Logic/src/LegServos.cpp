@@ -1,4 +1,5 @@
 #include "LegServos.hpp"
+#include <stdio.h>
 
 namespace logic::leg {
     Result LegServos::SetTargetAngle(const float upperServoTargetAngle, const float lowerServoTargetAngle) {

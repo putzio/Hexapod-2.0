@@ -15,13 +15,23 @@ namespace logic::leg {
         Leg leg = Leg(Side::KNEE_BACK);
         FootCoordinates coordinates;
         coordinates.x = 0;
-        coordinates.y = 1.7320f;//sin(60.0 * Constants::PI / 180.0) * 20000.0;
+        coordinates.y = 2.0;//sin(60.0 * Constants::PI / 180.0) * 20000.0;
+        LegRange range;
+        range.x[0] = Constants::X_ABSOLUTE_RANGE[0];
+        range.x[1] = Constants::X_ABSOLUTE_RANGE[1];
+        range.y[0] = Constants::Y_ABSOLUTE_RANGE[0];
+        range.y[1] = Constants::Y_ABSOLUTE_RANGE[1];
+
         ASSERT_EQ(coordinates.x, leg.GetFootCoordinates().x);
-        ASSERT_EQ(coordinates.y, leg.GetFootCoordinates().y);
+        ASSERT_EQ(coordinates.y.GetCoordinate(), leg.GetFootCoordinates().y.GetCoordinate());
         ASSERT_NEAR(Constants::PI / 180.0f, leg.GetChangingStep(), 0.0001);
         ASSERT_NEAR(Constants::PI / 3.0f, leg.p_servos.GetCurrentServoPositions().upperServoAngle, 0.001);
         ASSERT_NEAR(Constants::PI * 5.0f / 6.0f, leg.p_servos.GetCurrentServoPositions().lowerServoAngle, 0.001);
-        // ASSERT_EQ(coordinates, leg.p_controller.GetCoordinates());
+        ASSERT_EQ(coordinates, leg.p_controller.GetCoordinates());
+        ASSERT_EQ(range.x[0].GetCoordinate_mm(), leg.GetRange().x[0].GetCoordinate_mm());
+        ASSERT_EQ(range.x[1].GetCoordinate_mm(), leg.GetRange().x[1].GetCoordinate_mm());
+        ASSERT_EQ(range.y[0].GetCoordinate_mm(), leg.GetRange().y[0].GetCoordinate_mm());
+        ASSERT_EQ(range.y[1].GetCoordinate_mm(), leg.GetRange().y[1].GetCoordinate_mm());
     }
 
     TEST(Leg, test_MoveJServos) {
@@ -53,11 +63,22 @@ namespace logic::leg {
         uint8_t step = 0;
         Leg leg = Leg(Constants::PI / 2, Constants::PI / 2, Side::KNEE_BACK);
         FootTargetPosition target = GoForeward(step);
-        leg.SetChangingStep(Constants::PI * 2.0 / 180.0f);
-        leg.SetNewTargetPosition(target);
+        LegRange range = leg.GetRange();
+        range.x[0].SetCoordinate_mm(-5);
+        range.x[1].SetCoordinate_mm(20);
+        leg.SetLegRange(range);
+        ASSERT_EQ(RESULT_OK, leg.SetChangingStep(Constants::PI * 2.0 / 180.0f));
+        ASSERT_EQ(2.0 * Constants::LEG_LENGTH, leg.p_controller.GetY().GetCoordinate_mm());
+        ASSERT_LE(target.x.GetCoordinate(), leg.p_controller.GetLegRange().x[1].GetCoordinate());
+        ASSERT_LT(leg.p_controller.GetLegRange().x[0].GetCoordinate(), target.x.GetCoordinate());
+        ASSERT_EQ(RESULT_OK, leg.SetNewTargetPosition(target));
         FullPeriodicProcess(leg);
         // ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
     }
+
+
+
+
 
     float CalculateNumberOfSteps(ServosPositions target, ServosPositions current, float changingStep) {
         float steps = 0;
@@ -112,14 +133,17 @@ namespace logic::leg {
     }
 
     void FullPeriodicProcess(Leg& leg) {
-        float steps = leg.GetFinalTargetPosition().x.GetCoordinate() / Constants::DELTA_X;
+        float steps = leg.GetFinalTargetPosition().x.GetCoordinate() - leg.GetFootCoordinates().x.GetCoordinate() / Constants::DELTA_X;
         for (int i = 0; i < steps; i++) {
-            PeriodicProcess(leg);
+            Result r = leg.LegPeriodicProcess();
+            while (r == RESULT_LEG_MOVING) {
+                r = leg.LegPeriodicProcess();
+            }
             if (i != (int)steps) {
-                ASSERT_EQ(Result::RESULT_LEG_NEW_CONTROLLER_POSITION, leg.LegPeriodicProcess());
+                ASSERT_EQ(Result::RESULT_LEG_NEW_CONTROLLER_POSITION, r);
             }
             else {
-                ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
+                ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, r);
             }
         }
     }
@@ -130,17 +154,17 @@ namespace logic::leg {
             LOWER_LEGS_MOVE_THEM_BACKWARD
         } FirstGroupOfLegsSteps;
         FootTargetPosition targetLegsPositions;
-        float xForeward = 2;
-        float xBackwards = -2;
+        float xForeward = 20;
+        float xBackwards = 0;
         switch (step) {
         case LIFT_LEGS_AND_MOVE_THEM_FORWARD: {
-            targetLegsPositions.x = xForeward;
+            targetLegsPositions.x.SetCoordinate_mm(xForeward);
             targetLegsPositions.footOnGround = false;
             step = LOWER_LEGS_MOVE_THEM_BACKWARD;
             break;
         }
         case LOWER_LEGS_MOVE_THEM_BACKWARD: {
-            targetLegsPositions.x = xBackwards;
+            targetLegsPositions.x.SetCoordinate_mm(xBackwards);
             targetLegsPositions.footOnGround = true;
             step = LIFT_LEGS_AND_MOVE_THEM_FORWARD;
             break;

@@ -1,5 +1,4 @@
 #include "Servo.hpp"
-#include <cmath>
 
 namespace logic::leg {
     Servo::Servo(float currentAngle) {

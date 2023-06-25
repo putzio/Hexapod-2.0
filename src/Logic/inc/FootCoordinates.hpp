@@ -14,15 +14,15 @@ namespace logic::leg {
     float GetCoordinate_mm() const { return value * Constants::LEG_LENGTH; }
     float GetCoordinate() const { return value; }
 
-    SingleCoordinate operator + (const float& other) { return value + other; }
-    SingleCoordinate operator - (const float& other) { return value - other; }
-    SingleCoordinate operator * (const float& other) { return value * other; }
-    SingleCoordinate operator / (const float& other) { return value / other; }
+    SingleCoordinate operator + (const float& other) const { return value + other; }
+    SingleCoordinate operator - (const float& other) const { return value - other; }
+    SingleCoordinate operator * (const float& other) const { return value * other; }
+    SingleCoordinate operator / (const float& other) const { return value / other; }
 
-    SingleCoordinate operator + (const SingleCoordinate& other) { return value + other.GetCoordinate(); }
-    SingleCoordinate operator - (const SingleCoordinate& other) { return value - other.GetCoordinate(); }
-    SingleCoordinate operator * (const SingleCoordinate& other) { return value * other.GetCoordinate(); }
-    SingleCoordinate operator / (const SingleCoordinate& other) { return value / other.GetCoordinate(); }
+    SingleCoordinate operator + (const SingleCoordinate& other) const { return value + other.GetCoordinate(); }
+    SingleCoordinate operator - (const SingleCoordinate& other) const { return value - other.GetCoordinate(); }
+    SingleCoordinate operator * (const SingleCoordinate& other) const { return value * other.GetCoordinate(); }
+    SingleCoordinate operator / (const SingleCoordinate& other) const { return value / other.GetCoordinate(); }
 
     SingleCoordinate operator+=(const float& other) { *this = *this + other;    return *this; }
     SingleCoordinate operator-=(const float& other) { *this = *this - other;    return *this; }
@@ -31,12 +31,13 @@ namespace logic::leg {
 
     SingleCoordinate operator = (const float& other) { value = other;    return *this; }
     SingleCoordinate operator = (const SingleCoordinate& other) { value = other.GetCoordinate();    return *this; }
-    bool operator==(const SingleCoordinate& other)const { return std::abs(value - other.GetCoordinate()) < 0.001; }
-    bool operator!=(const SingleCoordinate& other)const { return !(*this == other); }
-    bool operator>(const SingleCoordinate& other)const { return value > other.GetCoordinate(); }
-    bool operator<(const SingleCoordinate& other)const { return value < other.GetCoordinate(); }
+    bool operator == (const SingleCoordinate& other) const { return std::abs(value - other.GetCoordinate()) < 0.001; }
+    bool operator != (const SingleCoordinate& other) const { return !(*this == other); }
+    bool operator >  (const SingleCoordinate& other) const { return value > other.GetCoordinate(); }
+    bool operator <  (const SingleCoordinate& other) const { return value < other.GetCoordinate(); }
 
     bool IsBetween(const float range[2]) const { return (value >= range[0] && value <= range[1]); }
+    bool IsBetween(const SingleCoordinate range[2]) const { return (value >= range[0].GetCoordinate() && value <= range[1].GetCoordinate()); }
   }SingleCoordinate;
 
   typedef struct FootTargetPosition {

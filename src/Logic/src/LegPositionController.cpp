@@ -1,4 +1,6 @@
 #include "LegPositionController.hpp"
+#include <stdio.h>
+
 namespace logic::leg {
     LegPositionController::LegPositionController(SingleCoordinate x, SingleCoordinate y, Side knee) {
         if (knee == Side::KNEE_FRONT) {
@@ -10,25 +12,36 @@ namespace logic::leg {
         p_coordinates.x = x;
         p_coordinates.y = y;
     }
-
-    SingleCoordinate LegPositionController::CalculateYPosition(const SingleCoordinate& xPos) {
-        if (!xPos.IsBetween(p_legRange.x)) {
-            return -1;
+    LegPositionController::LegPositionController(ServosPositions servos, Side knee) {
+        if (knee == Side::KNEE_FRONT) {
+            calculateServoPositionsPtr = CalculateServoPositions_KneeFront;
         }
-        float xMapped = MapXInRange(xPos.GetCoordinate());
-        p_coordinates.y = (1.0 - sin(xMapped * 3.1415)) * (double)(p_legRange.y[1] - p_legRange.y[0]) + p_legRange.y[0];
-        return p_coordinates.y;
+        else {
+            calculateServoPositionsPtr = CalculateServoPositions_KneeBack;
+        }
+        p_coordinates = FindXYPosition(servos);
     }
 
-    float LegPositionController::MapXInRange(const float& xPos) {
+    Result LegPositionController::CalculateYPosition(const SingleCoordinate& xPos) {
+        if (!xPos.IsBetween(p_legRange.x)) {
+            return RESULT_COORDINATES_OUT_OF_RANGE;
+        }
+        SingleCoordinate xMapped = MapXInRange(xPos);
+        p_coordinates.y = (1.0 - sin(xMapped.GetCoordinate() * 3.1415)) *
+            (double)(p_footOnGroundY[1].GetCoordinate() - p_footOnGroundY[0].GetCoordinate())
+            + p_footOnGroundY[0].GetCoordinate();
+        return RESULT_OK;
+    }
+
+    inline SingleCoordinate LegPositionController::MapXInRange(const SingleCoordinate& xPos) {
         return (xPos - p_legRange.x[0]) / (p_legRange.x[1] - p_legRange.x[0]);
     }
 
-    ServosPositions LegPositionController::CalculateServoPositions_KneeFront(float xNew, float yNew) {
+    ServosPositions LegPositionController::CalculateServoPositions_KneeFront(const float xNew, const float yNew) {
         ServosPositions servosPositions;
         //p_coordinates.x = xNew; p_coordinates.y = yNew;
         float dSquared = pow(xNew, 2) + pow(yNew, 2);
-        float gamma = acos((2 - dSquared) / 2);
+        float gamma = acos((2.0f - dSquared) / 2);
         float alpha = atan2(yNew, xNew) - (Constants::PI - gamma) / 2;
 
         servosPositions.upperServoAngle = Constants::PI - alpha;
@@ -37,7 +50,7 @@ namespace logic::leg {
         return servosPositions;
     }
 
-    ServosPositions LegPositionController::CalculateServoPositions_KneeBack(float xNew, float yNew) {
+    ServosPositions LegPositionController::CalculateServoPositions_KneeBack(const float xNew, const float yNew) {
         ServosPositions servosPositions;
         float dSquared = pow(xNew, 2) + pow(yNew, 2);
         float gamma = acos((2.0f - dSquared) / 2.0f);
@@ -45,7 +58,6 @@ namespace logic::leg {
 
         servosPositions.upperServoAngle = alpha;
         servosPositions.lowerServoAngle = Constants::PI * 3.0f / 2.0f - gamma;
-
         return servosPositions;
     }
 
@@ -61,10 +73,10 @@ namespace logic::leg {
         }
 
         if (!footOnGround) {
-            p_coordinates.y = CalculateYPosition(p_coordinates.x);
+            CalculateYPosition(p_coordinates.x);
         }
         else {
-            p_coordinates.y = p_legRange.y[1];
+            p_coordinates.y = p_footOnGroundY[1];
         }
         return p_coordinates;
     }
@@ -89,6 +101,10 @@ namespace logic::leg {
     }
 
     Result LegPositionController::SetNewXYPosition(SingleCoordinate xNew, SingleCoordinate yNew) {
+        float maxRange = Constants::LEG_LENGTH * Constants::LEG_LENGTH;
+        if (xNew.GetCoordinate() * xNew.GetCoordinate() + yNew.GetCoordinate() * yNew.GetCoordinate() > maxRange) {
+            return RESULT_COORDINATES_OUT_OF_RANGE;
+        }
         ReturnOnError(SetX(xNew));
         return SetY(yNew);
     }
@@ -129,7 +145,7 @@ namespace logic::leg {
         return RESULT_OK;
     }
 
-    ServosPositions LegPositionController::CalculateServoPositions(float xNew, float yNew) {
+    ServosPositions LegPositionController::CalculateServoPositions(const float xNew, const float yNew) {
         return (this->calculateServoPositionsPtr)(xNew, yNew);
     }
 

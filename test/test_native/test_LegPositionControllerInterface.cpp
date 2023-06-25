@@ -7,22 +7,26 @@ namespace logic::leg {
         LegPositionController controller = LegPositionController();
         FootCoordinates coordinates;
         coordinates.x.SetCoordinate_mm(0);
-        coordinates.y.SetCoordinate(1.7320);
+        coordinates.y.SetCoordinate(2.0);
         ASSERT_EQ(coordinates.x, controller.GetX());
         ASSERT_EQ(coordinates.y, controller.GetY()); //(sin(60.0*Constants::PI/180.0) * 2.0) 
+        ASSERT_EQ(Constants::X_ABSOLUTE_RANGE[0], controller.GetLegRange().x[0].GetCoordinate());
+        ASSERT_EQ(Constants::X_ABSOLUTE_RANGE[1], controller.GetLegRange().x[1].GetCoordinate());
+        ASSERT_EQ(Constants::Y_ABSOLUTE_RANGE[0], controller.GetLegRange().y[0].GetCoordinate());
+        ASSERT_EQ(Constants::Y_ABSOLUTE_RANGE[1], controller.GetLegRange().y[1].GetCoordinate());
     }
 
     TEST(LegPositionController, test_CalculateYPosition) {
         LegPositionController controller = LegPositionController();
 
-        controller.CalculateYPosition(controller.GetLegRange().x[0]);
-        ASSERT_NEAR(controller.GetLegRange().y[1], controller.GetY().GetCoordinate(), 0.001);
+        ASSERT_EQ(RESULT_OK, controller.CalculateYPosition(controller.GetLegRange().x[0]));
+        ASSERT_NEAR(controller.GetFootOnGroundY().GetCoordinate(), controller.GetY().GetCoordinate(), 0.001);
 
         controller.CalculateYPosition(controller.GetLegRange().x[1]);
-        ASSERT_NEAR(controller.GetLegRange().y[1], controller.GetY().GetCoordinate(), 0.001);
+        ASSERT_NEAR(controller.GetFootOnGroundY().GetCoordinate(), controller.GetY().GetCoordinate(), 0.001);
 
-        controller.CalculateYPosition((controller.GetLegRange().x[0] + controller.GetLegRange().x[1]) / 2);
-        ASSERT_NEAR(controller.GetLegRange().y[0], controller.GetY().GetCoordinate(), 0.001);
+        controller.CalculateYPosition((controller.GetLegRange().x[0].GetCoordinate() + controller.GetLegRange().x[1].GetCoordinate()) / 2);
+        ASSERT_NEAR(controller.GetFootUpY().GetCoordinate(), controller.GetY().GetCoordinate(), 0.001);
     }
 
     TEST(LegPositionController, test_Find_XY_Position) {
@@ -48,22 +52,27 @@ namespace logic::leg {
         nextPosition.SetCoordinate_mm(5.0);
         FootCoordinates actual = controller.FindNextCoordinates(target);
         ASSERT_NEAR(5.0, actual.x.GetCoordinate_mm(), 0.001);
-        ASSERT_EQ(controller.CalculateYPosition(nextPosition), actual.y);
+        ASSERT_EQ(RESULT_OK, controller.CalculateYPosition(nextPosition));
+        ASSERT_EQ(controller.GetY().GetCoordinate_mm(), actual.y.GetCoordinate_mm());
 
         actual = controller.FindNextCoordinates(target);
         nextPosition = target.x;
         ASSERT_NEAR(6.5, actual.x.GetCoordinate_mm(), 0.001);
-        ASSERT_EQ(controller.CalculateYPosition(nextPosition), actual.y);
+        ASSERT_EQ(RESULT_OK, controller.CalculateYPosition(nextPosition));
+        ASSERT_EQ(controller.GetY(), actual.y);
 
         target.x.SetCoordinate_mm(5.0);
         target.footOnGround = true;
         actual = controller.FindNextCoordinates(target);
         ASSERT_NEAR(5.0, actual.x.GetCoordinate_mm(), 0.001);
-        ASSERT_NEAR(controller.GetLegRange().y[1], actual.y.GetCoordinate(), 0.001);
+        ASSERT_NEAR(controller.GetFootOnGroundY().GetCoordinate(), actual.y.GetCoordinate(), 0.001);
     }
 
     TEST(LegPositionController, test_CalculateServoPositions_x0_KneeBack) {
-        LegPositionController controller = LegPositionController();
+        FootCoordinates coordinates;
+        coordinates.x = 0;
+        coordinates.y = 1.7320f;
+        LegPositionController controller = LegPositionController(coordinates);
         ServosPositions expectedPositions;
         expectedPositions.lowerServoAngle = Constants::PI * 150.0f / 180.0f;
         expectedPositions.upperServoAngle = Constants::PI * 60.0f / 180.0f;
