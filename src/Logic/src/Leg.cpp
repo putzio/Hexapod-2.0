@@ -65,24 +65,7 @@ namespace logic::leg {
         p_controller.SetLegRange(range);
         return RESULT_OK;
     }
-    // Result Leg::SetNewTargetPosition(const FootCoordinates& coordinates) {
-    //     if ((coordinates.x < p_controller.GetLegRange().x[0] || coordinates.x > p_controller.GetLegRange().x[1])
-    //         || coordinates.y < p_controller.GetLegRange().y[0] || coordinates.y > p_controller.GetLegRange().y[1]) {
-    //         return RESULT_COORDINATES_OUT_OF_RANGE;
-    //     }
-    //     p_finalTargetPostion = coordinates;
-    //     p_controller.SetNewXYPosition(coordinates);
-    //     return RESULT_OK;
-    // }
 
-    // Result Leg::SetNewTargetPosition_mm(const FootTargetPosition& coordinates) {
-    //     return SetNewTargetPosition(coordinates);
-    // }
-    // Result Leg::SetNewTargetPosition_mm(const FootCoordinates& coordinates) {
-    //     FootCoordinates newCoordinates = coordinates;
-    //     newCoordinates /= (float)Constants::LEG_LENGTH;
-    //     return SetNewTargetPosition(newCoordinates);
-    // }
 
 
     const FootCoordinates& Leg::GetFootCoordinates() const {

@@ -11,8 +11,8 @@ namespace logic {
         if (p_ptr_gaitInterface == nullptr) {
             return RESULT_WRONG_GAIT;
         }
-
-        if (GoToPosition() == RESULT_LEG_IN_TARGET_POSITION) {
+        Result result = GoToPosition();
+        if (result == RESULT_LEG_IN_TARGET_POSITION) {
             ReturnOnError(SetNewTarget());
         }
 
@@ -21,6 +21,22 @@ namespace logic {
         }
         return RESULT_OK;
     }
+
+    Result GaitController::ResetLegTargetPositions() {
+        uint8_t legsSetCorrectly = 0xFF;
+        for (int i = 0; i < legs.size(); i++) {
+            if (legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]) != RESULT_OK) {
+                legsSetCorrectly = i;
+            }
+        }
+        if (legsSetCorrectly == 0xFF) {
+            return RESULT_OK;
+        }
+        else {
+            return legs[legsSetCorrectly].SetNewTargetPosition(targetLegsPositions->legs[legsSetCorrectly]);
+        }
+    }
+
     Result GaitController::GoToPosition() {
         bool allLegsInPosition = true;
         for (int i = 0; i < legs.size(); i++) {

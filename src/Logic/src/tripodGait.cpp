@@ -1,5 +1,5 @@
 #include "tripodGait.hpp"
-
+#include <stdio.h>
 namespace logic::gait {
     Result TripodGait::GoForeward() {
         typedef enum {
@@ -8,6 +8,7 @@ namespace logic::gait {
         } FirstGroupOfLegsSteps;
         switch (step) {
         case LIFT_LEGS_AND_MOVE_THEM_FORWARD: {
+            printf("LIFT_LEGS_AND_MOVE_THEM_FORWARD\n");
             for (int i : firstGroupOfLegs) {
                 targetLegsPositions.legs[i].x = xForeward;
                 targetLegsPositions.legs[i].footOnGround = false;
@@ -20,6 +21,7 @@ namespace logic::gait {
             break;
         }
         case LOWER_LEGS_MOVE_THEM_BACKWARD: {
+            printf("LOWER_LEGS_MOVE_THEM_BACKWARD\n");
             for (int i : firstGroupOfLegs) {
                 targetLegsPositions.legs[i].x = xBackwards;
                 targetLegsPositions.legs[i].footOnGround = true;
@@ -31,6 +33,9 @@ namespace logic::gait {
             step = LIFT_LEGS_AND_MOVE_THEM_FORWARD;
             break;
         }
+        default:
+            printf("ERROR: TripodGait::GoForeward() - step is undefined\n");
+            return RESULT_UNDEFINED_ERROR;
         }
         return RESULT_OK;
     }

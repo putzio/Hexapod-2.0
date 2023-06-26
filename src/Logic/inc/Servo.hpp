@@ -10,8 +10,8 @@ namespace logic::leg {
     private:
         float p_currentAngle;
         float p_targetAngle;
-        //defines how far can the servo move in a single GoToTargetAngle() mthod call
-        float p_angleChangingStep;
+        //[rad / period] e.g. PI / 180 means that servo will move max 1 degree in a single period (GoToTargetAngle() call)
+        float p_angleChangingStep = 0;
 
     public:
         Servo(float currentAngle = DEFAULT_SERVO_ANGLE);
@@ -21,6 +21,7 @@ namespace logic::leg {
         Result SetTargetAngle(float targetAngle);
         Result SetTargetAngle(float targetAngle, float angleChangingStep);
         Result SetCurrentAngle(float servoAngle);
+        Result SetAngleChangingStep(float angleChangingStep);
 
         const float GetCurrentAngle()const;
         const float GetTargetAngle()const;

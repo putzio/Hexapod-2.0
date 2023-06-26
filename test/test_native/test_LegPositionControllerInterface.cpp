@@ -45,15 +45,25 @@ namespace logic::leg {
 
     TEST(LegPositionController, test_CalculateNextCoordinates) {
         LegPositionController controller = LegPositionController();
+        ASSERT_NEAR(0.0, controller.GetX().GetCoordinate_mm(), 0.001);
         FootTargetPosition target;
         target.footOnGround = false;
         target.x.SetCoordinate_mm(6.5);
         SingleCoordinate nextPosition;
-        nextPosition.SetCoordinate_mm(5.0);
+        nextPosition.SetCoordinate_mm(Constants::DELTA_X_MM);
         FootCoordinates actual = controller.FindNextCoordinates(target);
-        ASSERT_NEAR(5.0, actual.x.GetCoordinate_mm(), 0.001);
+
+        ASSERT_NEAR(nextPosition.GetCoordinate_mm(), actual.x.GetCoordinate_mm(), 0.001);
         ASSERT_EQ(RESULT_OK, controller.CalculateYPosition(nextPosition));
         ASSERT_EQ(controller.GetY().GetCoordinate_mm(), actual.y.GetCoordinate_mm());
+
+        for (int i = 1; i < target.x.GetCoordinate_mm() / Constants::DELTA_X_MM - 1; i++) {
+            actual = controller.FindNextCoordinates(target);
+            nextPosition.SetCoordinate_mm(nextPosition.GetCoordinate_mm() + Constants::DELTA_X_MM);
+            ASSERT_NEAR(nextPosition.GetCoordinate_mm(), actual.x.GetCoordinate_mm(), 0.001);
+            ASSERT_EQ(RESULT_OK, controller.CalculateYPosition(nextPosition));
+            ASSERT_EQ(controller.GetY().GetCoordinate_mm(), actual.y.GetCoordinate_mm());
+        }
 
         actual = controller.FindNextCoordinates(target);
         nextPosition = target.x;
@@ -61,10 +71,10 @@ namespace logic::leg {
         ASSERT_EQ(RESULT_OK, controller.CalculateYPosition(nextPosition));
         ASSERT_EQ(controller.GetY(), actual.y);
 
-        target.x.SetCoordinate_mm(5.0);
+        target.x.SetCoordinate_mm(5.5);
         target.footOnGround = true;
         actual = controller.FindNextCoordinates(target);
-        ASSERT_NEAR(5.0, actual.x.GetCoordinate_mm(), 0.001);
+        ASSERT_NEAR(5.5, actual.x.GetCoordinate_mm(), 0.001);
         ASSERT_NEAR(controller.GetFootOnGroundY().GetCoordinate(), actual.y.GetCoordinate(), 0.001);
     }
 

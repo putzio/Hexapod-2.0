@@ -15,9 +15,10 @@ namespace logic::gait {
 
     protected:
         leg::LegContainer targetLegsPositions;
-        uint8_t step = 0;
+        // uint8_t step = 0;
 
     public:
+        uint8_t step = 0;
         /**
          * @brief depending on theing mode and the step
          *        the targetLegsPositions variable is set

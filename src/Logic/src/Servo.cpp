@@ -49,6 +49,14 @@ namespace logic::leg {
         return RESULT_OK;
     }
 
+    Result Servo::SetAngleChangingStep(float angleChangingStep) {
+        if (angleChangingStep > Constants::PI / 1800.0 && angleChangingStep < Constants::PI / 48.0) {
+            p_angleChangingStep = angleChangingStep;
+            return RESULT_OK;
+        }
+        return RESULT_SERVO_VELOCITY_OUT_OF_RANGE;
+    }
+
     const float Servo::GetCurrentAngle()const {
         return p_currentAngle;
     }

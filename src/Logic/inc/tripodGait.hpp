@@ -13,8 +13,8 @@ namespace logic::gait {
         Result GoToTheDefaultPosition() override;
         Gait GetCurrentGait() override { return TRIPOD; };
     private:
-        float xForeward = Constants::X_ABSOLUTE_RANGE[0];
-        float xBackwards = Constants::X_ABSOLUTE_RANGE[1];
+        float xForeward = Constants::X_ABSOLUTE_RANGE[1];
+        float xBackwards = Constants::X_ABSOLUTE_RANGE[0];
         uint8_t firstGroupOfLegs[3] = {
             leg::LegContainer::LEFT_FRONT,
             leg::LegContainer::RIGHT_MIDDLE,

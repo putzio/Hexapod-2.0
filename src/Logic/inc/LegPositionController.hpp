@@ -20,7 +20,7 @@ namespace logic::leg {
   protected:
     FootCoordinates p_coordinates;
     LegRange p_legRange;
-    SingleCoordinate p_footOnGroundY[2] = { 1.5, 1.7320f };//sin(60.0 * Constants::PI / 180.0) * 20000.0 = 1.7320f
+    SingleCoordinate p_footOnGroundY[2] = { 1.4, 1.7320f };//sin(60.0 * Constants::PI / 180.0) * 20000.0 = 1.7320f
 
   private:
     typedef ServosPositions(*CalculateServoPositionsFunctionPointer)(float xNew, float yNew);
