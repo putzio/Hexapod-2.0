@@ -7,14 +7,27 @@ include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 add_library(LOGIC)
 add_library(DRIVERS)
 
-add_subdirectory(src/drivers)
-add_subdirectory(src/Logic)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+set(CMAKE_HAVE_THREADS_LIBRARY 1)
+set(CMAKE_USE_WIN32_THREADS_INIT 0)
+set(CMAKE_USE_PTHREADS_INIT 1)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 project(Hexapod C CXX)
 
+add_subdirectory(src/drivers)
+add_subdirectory(src/Logic)
+add_subdirectory(test_combined)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+# unit tests:
+# add_subdirectory(test)
+# add_subdirectory(extern)
+
+
+
 
 #inintialise the sdk
 pico_sdk_init()

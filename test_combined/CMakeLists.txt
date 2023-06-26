@@ -1,0 +1,3 @@
+add_subdirectory(test_leg)
+add_subdirectory(test_servo)
+add_subdirectory(test_tripod_foreward)
