@@ -25,13 +25,13 @@ namespace logic {
     }
 
     Result GaitController::ResetLegTargetPositions() {
-        uint8_t legsSetCorrectly = 0xFF;
+        uint8_t legsSetCorrectly = UINT8_MAX;//UINT8_MAX means that all legs are set correctly
         for (int i = 0; i < legs.size(); i++) {
             if (legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]) != RESULT_OK) {
                 legsSetCorrectly = i;
             }
         }
-        if (legsSetCorrectly == 0xFF) {
+        if (legsSetCorrectly == UINT8_MAX) {
             return RESULT_OK;
         }
         else {

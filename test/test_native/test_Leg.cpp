@@ -24,7 +24,7 @@ namespace logic::leg {
 
         ASSERT_EQ(coordinates.x, leg.GetFootCoordinates().x);
         ASSERT_EQ(coordinates.y.GetCoordinate(), leg.GetFootCoordinates().y.GetCoordinate());
-        ASSERT_NEAR(Constants::PI / 180.0f, leg.GetChangingStep(), 0.0001);
+        ASSERT_NEAR(Constants::DEFAULT_CHANGING_STEP, leg.GetChangingStep(), 0.0001);
         ASSERT_NEAR(Constants::PI / 3.0f, leg.p_servos.GetCurrentServoPositions().upperServoAngle, 0.001);
         ASSERT_NEAR(Constants::PI * 5.0f / 6.0f, leg.p_servos.GetCurrentServoPositions().lowerServoAngle, 0.001);
         ASSERT_EQ(coordinates, leg.p_controller.GetCoordinates());
@@ -67,7 +67,7 @@ namespace logic::leg {
         range.x[0].SetCoordinate_mm(-5);
         range.x[1].SetCoordinate_mm(20);
         leg.SetLegRange(range);
-        ASSERT_EQ(RESULT_OK, leg.SetChangingStep(Constants::PI * 2.0 / 180.0f));
+        ASSERT_EQ(RESULT_OK, leg.SetChangingStep(Constants::PI * 2.0 / 180.0f, Constants::PI * 2.0 / 180.0f));
         ASSERT_EQ(2.0 * Constants::LEG_LENGTH, leg.p_controller.GetY().GetCoordinate_mm());
         ASSERT_LE(target.x.GetCoordinate(), leg.p_controller.GetLegRange().x[1].GetCoordinate());
         ASSERT_LT(leg.p_controller.GetLegRange().x[0].GetCoordinate(), target.x.GetCoordinate());

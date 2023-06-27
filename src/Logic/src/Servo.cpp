@@ -34,7 +34,7 @@ namespace logic::leg {
     Result Servo::SetTargetAngle(float targetAngle, float angleChangingStep) {
         ReturnOnError(SetTargetAngle(targetAngle));
 
-        if (angleChangingStep > Constants::PI / 600.0 && angleChangingStep < Constants::PI / 48.0) {
+        if (angleChangingStep > Constants::CHANGING_STEP_RANGE[0] && angleChangingStep < Constants::CHANGING_STEP_RANGE[1]) {
             p_angleChangingStep = angleChangingStep;
             return RESULT_OK;
         }

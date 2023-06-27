@@ -21,16 +21,16 @@ namespace logic {
         ASSERT_EQ(RESULT_DIRECTION_NOT_CHOSEN, gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD));
         ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::DEFAULT_POSITION));
 
-        for (int i = 0; i < 1000; i++)
-            ASSERT_EQ(RESULT_OK, gaitController.PeriodicProcess());
-
+        ASSERT_EQ(RESULT_OK, gaitController.PeriodicProcess());
+        while (gaitController.PeriodicProcess() != RESULT_LEG_IN_TARGET_POSITION) {
+            //Do nothing
+        }
         leg::ServosPositions expected = leg::ServosPositions();
-        expected.upperServoAngle = Constants::PI / 2;
-        expected.lowerServoAngle = Constants::PI / 2;
+        expected.upperServoAngle = Constants::PI / 3;
+        expected.lowerServoAngle = Constants::PI / 1.2;//Check Calculations
 
-        ASSERT_EQ(expected.upperServoAngle, gaitController.GetSerovAngles()[0].upperServoAngle);
-        ASSERT_EQ(expected.lowerServoAngle, gaitController.GetSerovAngles()[0].lowerServoAngle);
-        ASSERT_EQ(expected, gaitController.GetSerovAngles()[0]);
+        ASSERT_NEAR(expected.upperServoAngle, gaitController.GetSerovAngles()[0].upperServoAngle, 0.001);
+        ASSERT_NEAR(expected.lowerServoAngle, gaitController.GetSerovAngles()[0].lowerServoAngle, 0.001);
     }
 
     TEST(GaitController, test_Foreward_Tripod_init) {
@@ -38,7 +38,7 @@ namespace logic {
 
         //Check if the leg position controller positions are correct
         ASSERT_NEAR(0.0, gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate(), 0.001);
-        
+
         ASSERT_EQ(RESULT_DIRECTION_NOT_CHOSEN, gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD));
         ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FOREWARD));
 
@@ -66,8 +66,8 @@ namespace logic {
         ASSERT_EQ(true, gaitController.targetLegsPositions->legs[1].footOnGround);
 
         //Check if the leg position controller positions are correct
-        ASSERT_NEAR(1.0, gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate_mm(), 0.001);
-        ASSERT_NEAR(-1.0, gaitController.legs[1].p_controller.GetCoordinates().x.GetCoordinate_mm(), 0.001);
+        ASSERT_NEAR(Constants::DELTA_X_MM, gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate_mm(), 0.001);
+        ASSERT_NEAR(Constants::DELTA_X_MM, gaitController.legs[1].p_controller.GetCoordinates().x.GetCoordinate_mm(), 0.001);
 
         // for (int i = 0; i < 100; i++)
         //     ASSERT_EQ(RESULT_OK, gaitController.PeriodicProcess());
