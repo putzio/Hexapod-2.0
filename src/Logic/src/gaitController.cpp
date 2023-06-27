@@ -1,11 +1,13 @@
 #include "gaitController.hpp"
 
 namespace logic {
+
     GaitController::GaitController() {
         for (int i = 0; i < legs.size(); i++) {
             legs[i] = leg::Leg(Constants::PI / 2, Constants::PI / 2, leg::Side::KNEE_BACK);
         }
     }
+
 
     Result GaitController::PeriodicProcess() {
         if (p_ptr_gaitInterface == nullptr) {
@@ -55,24 +57,30 @@ namespace logic {
         case NONE:
             return RESULT_DIRECTION_NOT_CHOSEN;
         case FOREWARD:
-            return p_ptr_gaitInterface->GoForeward();
+            ReturnOnError(p_ptr_gaitInterface->GoForeward());
+            break;
         case BACKWARD:
-            return p_ptr_gaitInterface->GoBackward();
+            ReturnOnError(p_ptr_gaitInterface->GoBackward());
+            break;
         case TURN_RIGHT:
-            return p_ptr_gaitInterface->TurnRight();
+            ReturnOnError(p_ptr_gaitInterface->TurnRight());
+            break;
         case TURN_LEFT:
-            return p_ptr_gaitInterface->TurnLeft();
+            ReturnOnError(p_ptr_gaitInterface->TurnLeft());
+            break;
         case DEFAULT_POSITION: {
             leg::LegRange legRange = legs[0].GetRange();
             legRange.y[1] = 2.0;
             for (leg::Leg& leg : legs) {
                 leg.SetLegRange(legRange);
             }
-            return p_ptr_gaitInterface->GoToTheDefaultPosition();
+            ReturnOnError(p_ptr_gaitInterface->GoToTheDefaultPosition());
+            break;
         }
         default:
             return RESULT_UNDEFINED_ERROR;
         }
+
         for (int i = 0; i < legs.size(); i++) {
             ReturnOnError(legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]));
         }
@@ -103,6 +111,9 @@ namespace logic {
         }
 
         targetLegsPositions = p_ptr_gaitInterface->GetTargetLegsPositionsPtr();
+        for (leg::Leg& leg : legs) {
+            leg.SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues());
+        }
         return SetNewTarget();
     }
 

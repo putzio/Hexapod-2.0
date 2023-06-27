@@ -2,12 +2,14 @@
 
 namespace pico_drivers {
     LegController::LegController(std::array<uint8_t, 12> pins) {
-        for (int i = 0; i < pins.size(); i++) {
-            if (i < pins.size() / 2) {
-                servos[i] = std::make_unique<ServoLeft>(pins[i]);
+        for (int i = 0; i < pins.size() / 2; i++) {
+            if (i % 2 == 0) {
+                servos[2 * i] = std::make_unique<ServoLeft>(pins[2 * i]);
+                servos[2 * i + 1] = std::make_unique<ServoLeft>(pins[2 * i + 1]);
             }
             else {
-                servos[i] = std::make_unique<ServoRight>(pins[i]);
+                servos[2 * i] = std::make_unique<ServoRight>(pins[2 * i]);
+                servos[2 * i + 1] = std::make_unique<ServoRight>(pins[2 * i + 1]);
             }
         }
     }

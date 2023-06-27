@@ -3,6 +3,7 @@
 #include "Results.h"
 
 namespace logic::gait {
+
     class GaitInterface {
     public:
         typedef enum Gait {
@@ -34,6 +35,7 @@ namespace logic::gait {
         virtual Result TurnLeft();
         virtual Gait GetCurrentGait();
         virtual Result GoToTheDefaultPosition();
+        virtual std::array<float, 2> GetChangingStepValues() = 0;
         /**
          * @brief returns an enum representing the classingMode)
          *

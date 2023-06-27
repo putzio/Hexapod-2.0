@@ -1,10 +1,16 @@
 #include "tripodGait.hpp"
 #include <stdio.h>
 namespace logic::gait {
+    void Error_Handler() {
+        printf("In Error_Handler()\n");
+        while (1) {
+            // sleep_ms(1000);
+        }
+    }
     Result TripodGait::GoForeward() {
         typedef enum {
             LIFT_LEGS_AND_MOVE_THEM_FORWARD,
-            LOWER_LEGS_MOVE_THEM_BACKWARD
+            LOWER_LEGS_AND_MOVE_THEM_BACKWARD
         } FirstGroupOfLegsSteps;
         switch (step) {
         case LIFT_LEGS_AND_MOVE_THEM_FORWARD: {
@@ -17,11 +23,12 @@ namespace logic::gait {
                 targetLegsPositions.legs[i].x = xBackwards;
                 targetLegsPositions.legs[i].footOnGround = true;
             }
-            step = LOWER_LEGS_MOVE_THEM_BACKWARD;
+            step = LOWER_LEGS_AND_MOVE_THEM_BACKWARD;
+            printf("after 1st case, step = %d\n", step);
             break;
         }
-        case LOWER_LEGS_MOVE_THEM_BACKWARD: {
-            printf("LOWER_LEGS_MOVE_THEM_BACKWARD\n");
+        case LOWER_LEGS_AND_MOVE_THEM_BACKWARD: {
+            printf("LOWER_LEGS_AND_MOVE_THEM_BACKWARD\n");
             for (int i : firstGroupOfLegs) {
                 targetLegsPositions.legs[i].x = xBackwards;
                 targetLegsPositions.legs[i].footOnGround = true;
@@ -35,7 +42,12 @@ namespace logic::gait {
         }
         default:
             printf("ERROR: TripodGait::GoForeward() - step is undefined\n");
+            Error_Handler();
             return RESULT_UNDEFINED_ERROR;
+        }
+        if (step == 2) {
+            printf("step == 2\n");
+            Error_Handler();
         }
         return RESULT_OK;
     }
@@ -70,6 +82,10 @@ namespace logic::gait {
             step = LIFT_LEGS_AND_MOVE_THEM_BACKWARD;
             break;
         }
+        default:
+            printf("ERROR: TripodGait::GoBackward() - step is undefined\n");
+            Error_Handler();
+            return RESULT_UNDEFINED_ERROR;
         }
         return RESULT_OK;
     }
@@ -124,6 +140,10 @@ namespace logic::gait {
             step = LIFT_LEGS_AND_MOVE_BACKWARDS;
             break;
         }
+        default:
+            printf("ERROR: TripodGait::TurnLeft() - step is undefined\n");
+            Error_Handler();
+            return RESULT_UNDEFINED_ERROR;
         }
         return RESULT_OK;
     }
@@ -178,6 +198,10 @@ namespace logic::gait {
             step = LIFT_LEGS_AND_MOVE_FORWARD;
             break;
         }
+        default:
+            printf("ERROR: TripodGait::TurnRight() - step is undefined\n");
+            Error_Handler();
+            return RESULT_UNDEFINED_ERROR;
         }
         return RESULT_OK;
     }
@@ -235,9 +259,15 @@ namespace logic::gait {
         case LEGS_IN_DEFAULT_POSITION:
             return RESULT_LEG_IN_TARGET_POSITION;
         default:
+            printf("ERROR: TripodGait::GoToTheDefaultPosition() - step is undefined\n");
+            Error_Handler();
             return RESULT_UNDEFINED_ERROR;
         }
+
         return RESULT_OK;
+    }
+    std::array<float, 2> TripodGait::GetChangingStepValues() {
+        return { changingStepValues[0], changingStepValues[1] };
     }
 
 } // namespace logic::gait

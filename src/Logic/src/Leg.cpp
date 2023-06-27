@@ -37,15 +37,24 @@ namespace logic::leg {
         }
     }
 
+    inline void Leg::SetCorrectServoChangingStep() {
+        if (p_finalTargetPostion.footOnGround) {
+            servosChangingStep = servosChangingStepOnGround;
+        }
+        else {
+            servosChangingStep = servosChangingStepInAir;
+        }
+    }
     Result Leg::MoveJServos() {
+        SetCorrectServoChangingStep();
         ServosPositions p = p_controller.CalculateServoPositions();
         return p_servos.SetTargetAngle(p.upperServoAngle, servosChangingStep, p.lowerServoAngle, servosChangingStep);
     }
 
     Result Leg::MoveJServos(const ServosPositions& positions) {
+        SetCorrectServoChangingStep();
         ReturnOnError(p_servos.SetTargetAngle(positions.upperServoAngle, servosChangingStep, positions.lowerServoAngle, servosChangingStep));
         return p_controller.SetNewXYPosition(p_controller.FindXYPosition(positions));
-
     }
 
     bool Leg::LegInFinalTargetPosition(const FootCoordinates& coordinates) {//for y?
@@ -76,9 +85,16 @@ namespace logic::leg {
         return p_finalTargetPostion;
     }
 
-    Result Leg::SetChangingStep(float changingStep) {
-        if (changingStep > Constants::CHANGING_STEP_RANGE[0]) {
-            servosChangingStep = changingStep;
+    Result Leg::SetChangingStep(std::array<float, 2> changingStep) {
+        return SetChangingStep(changingStep[0], changingStep[1]);
+    }
+
+    Result Leg::SetChangingStep(float changingStepOnGround, float changingStepInAir) {
+        if (this->servosChangingStepOnGround > Constants::CHANGING_STEP_RANGE[0]) {
+            this->servosChangingStepOnGround = servosChangingStepOnGround;
+        }
+        if (this->servosChangingStepInAir > Constants::CHANGING_STEP_RANGE[0]) {
+            this->servosChangingStepInAir = servosChangingStepInAir;
             return RESULT_OK;
         }
         return RESULT_SERVO_VELOCITY_OUT_OF_RANGE;

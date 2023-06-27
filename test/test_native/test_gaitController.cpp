@@ -35,6 +35,10 @@ namespace logic {
 
     TEST(GaitController, test_Foreward_Tripod_init) {
         GaitController gaitController = logic::GaitController();
+
+        //Check if the leg position controller positions are correct
+        ASSERT_NEAR(0.0, gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate(), 0.001);
+        
         ASSERT_EQ(RESULT_DIRECTION_NOT_CHOSEN, gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD));
         ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FOREWARD));
 
@@ -44,9 +48,6 @@ namespace logic {
 
     TEST(GaitController, test_Foreward_Tripod_walk) {
         GaitController gaitController = logic::GaitController();
-
-        //Check if the leg position controller positions are correct
-        ASSERT_NEAR(0.0, gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate(), 0.001);
 
         ASSERT_EQ(RESULT_DIRECTION_NOT_CHOSEN, gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD));
         ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FOREWARD));

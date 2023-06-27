@@ -9,8 +9,9 @@
 namespace logic::leg {
     class Leg {
     private:
-        float servosChangingStep = Constants::PI * 1.0 / 180.0f;
-
+        float servosChangingStep = Constants::DEFAULT_CHANGING_STEP;
+        float servosChangingStepOnGround = Constants::DEFAULT_CHANGING_STEP;
+        float servosChangingStepInAir = Constants::DEFAULT_CHANGING_STEP;
         FootTargetPosition p_finalTargetPostion = FootTargetPosition(0, true);
     public:
         LegPositionController p_controller;
@@ -18,7 +19,7 @@ namespace logic::leg {
 
     private:
         bool LegInFinalTargetPosition(const FootCoordinates& coordinates);
-
+        inline void SetCorrectServoChangingStep();
 
     public:
         Leg(Side knee = Side::KNEE_BACK);
@@ -51,7 +52,8 @@ namespace logic::leg {
 
         const FootTargetPosition& GetFinalTargetPosition()const;
 
-        Result SetChangingStep(float changingStep);
+        Result SetChangingStep(float changingStepOnGround, float changingStepInAir);
+        Result SetChangingStep(std::array<float, 2> changingStep);
         float GetChangingStep();
 
         LegRange GetRange() const;
