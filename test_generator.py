@@ -1,15 +1,27 @@
 import os
 
+print("Choose test type:\r\n1. System\r\n2. Hardware")
+test_type = input()
+test_system_path = f"./test_system"
+test_hardware_path = f"./test_hardware_drivers"
+match test_type:
+    case "1":
+        path = test_system_path
+    case "2":
+        path = test_hardware_path
+    case _:
+        print("Wrong test type")
+        exit()
 
 print("Write new test name:")
 test_name = input()
-path = f"./test_combined/{test_name}"
+
 try:
-    os.mkdir(path)
+    os.mkdir(f"{path}/{test_name}")
 except OSError:
     print("Directory already exists")
     exit()
-f = open(f"{path}/{test_name}.cpp", "a")
+f = open(f"{path}/{test_name}/{test_name}.cpp", "a")
 f.write(
     """
 #include <stdio.h>
@@ -26,7 +38,7 @@ int main(){
 )
 f.close()
 
-f = open(f"{path}/CMakeLists.txt", "a")
+f = open(f"{path}/{test_name}/CMakeLists.txt", "a")
 f.write(
     f"""
 include($ENV{{PICO_SDK_PATH}}/external/pico_sdk_import.cmake)
@@ -39,7 +51,6 @@ add_executable({test_name} {test_name}.cpp)
 target_link_libraries({test_name} 
     LOGIC
     DRIVERS
-    hardware_spi
 ) 
 
 pico_enable_stdio_usb({test_name} 1)
@@ -51,5 +62,5 @@ pico_add_extra_outputs({test_name})
 )
 f.close()
 
-f = open(f"./test_combined/CMakeLists.txt", "a")
+f = open(f"{path}/{test_name}/CMakeLists.txt", "a")
 f.write(f"\r\nadd_subdirectory({test_name})")

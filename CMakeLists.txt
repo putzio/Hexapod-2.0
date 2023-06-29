@@ -20,7 +20,8 @@ project(Hexapod C CXX)
 
 add_subdirectory(src/drivers)
 add_subdirectory(src/Logic)
-add_subdirectory(test_combined)
+add_subdirectory(test_system)
+add_subdirectory(test_hardware_drivers)
 
 # unit tests:
 # add_subdirectory(test)
@@ -57,28 +58,28 @@ target_link_libraries(${PROJECT_NAME}
 pico_add_extra_outputs(Hexapod)
 
 
-if(TEST_HARDWARE)
-    project(TEST_HARDWARE C CXX)
+# if(TEST_HARDWARE)
+#     project(TEST_HARDWARE C CXX)
     
-    add_executable(TEST_HARDWARE 
-    ./test/test.cpp
-    )
-    # enable usb output, disable uart output
-    pico_enable_stdio_usb(TEST_HARDWARE 1)
-    pico_enable_stdio_uart(TEST_HARDWARE 0)
-    add_library(TEST_HW)
-    add_subdirectory(./test/test_hw)
-    #libraries
-    target_link_libraries(TEST_HARDWARE 
-        DRIVERS
-        TEST_HW
-        hardware_i2c
-    ) 
+#     add_executable(TEST_HARDWARE 
+#     ./test/test.cpp
+#     )
+#     # enable usb output, disable uart output
+#     pico_enable_stdio_usb(TEST_HARDWARE 1)
+#     pico_enable_stdio_uart(TEST_HARDWARE 0)
+#     add_library(TEST_HW)
+#     add_subdirectory(./test/test_hw)
+#     #libraries
+#     target_link_libraries(TEST_HARDWARE 
+#         DRIVERS
+#         TEST_HW
+#         hardware_i2c
+#     ) 
     
-    #Generates different file formats
-    pico_add_extra_outputs(TEST_HARDWARE)
-# else()
-#     #add some other compilation flags
-endif(TEST_HARDWARE)
-unset(TEST_HARDWARE CACHE) # <---- this is the important!!
+#     #Generates different file formats
+#     pico_add_extra_outputs(TEST_HARDWARE)
+# # else()
+# #     #add some other compilation flags
+# endif(TEST_HARDWARE)
+# unset(TEST_HARDWARE CACHE) # <---- this is the important!!
 
