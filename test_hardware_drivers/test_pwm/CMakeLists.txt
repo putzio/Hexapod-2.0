@@ -16,5 +16,3 @@ pico_enable_stdio_uart(test_pwm 0)
 
 #Generates different file formats
 pico_add_extra_outputs(test_pwm)
-    
-add_subdirectory(test_pwm)

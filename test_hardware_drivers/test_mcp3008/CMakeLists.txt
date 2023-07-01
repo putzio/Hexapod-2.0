@@ -16,5 +16,3 @@ pico_enable_stdio_uart(test_mcp3008 0)
 
 #Generates different file formats
 pico_add_extra_outputs(test_mcp3008)
-    
-add_subdirectory(test_mcp3008)
