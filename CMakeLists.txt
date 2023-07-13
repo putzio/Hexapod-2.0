@@ -1,11 +1,12 @@
 #specify a min ver
 cmake_minimum_required(VERSION 3.19)
-
+set(PICO_BOARD pico_w)
 #INCLUDE THE CMAKE IMPORT FILE
 # include(pico_sdk_import.cmake)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 add_library(LOGIC)
 add_library(DRIVERS)
+add_library(WEB)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -20,6 +21,7 @@ project(Hexapod C CXX)
 
 add_subdirectory(src/drivers)
 add_subdirectory(src/Logic)
+add_subdirectory(src/webServer)
 add_subdirectory(test_system)
 add_subdirectory(test_hardware_drivers)
 
@@ -38,6 +40,7 @@ target_include_directories(
     LOGIC PUBLIC ./src/Logic/inc
     DRIVERS PUBLIC ./include
     DRIVERS PUBLIC ./src/drivers/inc
+    WEB PUBLIC ./src/webServer/inc
     Hexapod PUBLIC ./include
 )
 
@@ -52,7 +55,7 @@ pico_enable_stdio_uart(Hexapod 0)
 target_link_libraries(${PROJECT_NAME} 
     LOGIC
     DRIVERS
-    hardware_spi
+    WEB
 ) 
 #Generates different file formats
 pico_add_extra_outputs(Hexapod)

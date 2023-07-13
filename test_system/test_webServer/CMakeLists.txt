@@ -1,0 +1,19 @@
+
+include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+pico_sdk_init()
+
+project(test_webServer C CXX)
+
+add_executable(test_webServer test_webServer.cpp)
+
+target_link_libraries(test_webServer 
+    WEB
+	DRIVERS
+) 
+
+pico_enable_stdio_usb(test_webServer 1)
+pico_enable_stdio_uart(test_webServer 0)
+
+#Generates different file formats
+pico_add_extra_outputs(test_webServer)
+    

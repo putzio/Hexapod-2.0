@@ -27,7 +27,7 @@ namespace logic::leg {
             return RESULT_COORDINATES_OUT_OF_RANGE;
         }
         SingleCoordinate xMapped = MapXInRange(xPos);
-        p_coordinates.y = (1.0 - sin(xMapped.GetCoordinate() * 3.1415)) *
+        p_coordinates.y = (1.0 - sin(xMapped.GetCoordinate() * 3.1415)) * //sin^2?
             (double)(p_footOnGroundY[1].GetCoordinate() - p_footOnGroundY[0].GetCoordinate())
             + p_footOnGroundY[0].GetCoordinate();
         return RESULT_OK;
