@@ -1,8 +1,7 @@
-#pragma once
-
 // Common settings used in most of the pico_w examples
 // (see https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html for details)]
-
+#ifndef LWIP_LWIPOPTS_H
+#define LWIP_LWIPOPTS_H
 // allow override in some examples
 #ifndef NO_SYS
 #define NO_SYS                      1
@@ -91,4 +90,6 @@
 #define LWIP_HTTPD_SSI 1
 #define LWIP_HTTPD_CGI 1
 #define LWIP_HTTPD_SSI_INCLUDE_TAG 0
-#define HTTPD_FSDATA_FILE "htmldata.c"
+#define HTTPD_FSDATA_FILE "../htmldata.c"
+
+#endif /* LWIP_LWIPOPTS_H */

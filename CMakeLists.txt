@@ -1,88 +1,43 @@
-#specify a min ver
 cmake_minimum_required(VERSION 3.19)
-set(PICO_BOARD pico_w)
-#INCLUDE THE CMAKE IMPORT FILE
-# include(pico_sdk_import.cmake)
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
-add_library(LOGIC)
-add_library(DRIVERS)
-add_library(WEB)
 
+set(PICO_BOARD pico_w)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_THREAD_LIBS_INIT "-lpthread")
-set(CMAKE_HAVE_THREADS_LIBRARY 1)
-set(CMAKE_USE_WIN32_THREADS_INIT 0)
-set(CMAKE_USE_PTHREADS_INIT 1)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
+include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-project(Hexapod C CXX)
+project(hexapod CXX C ASM)
 
+pico_sdk_init()
+
+add_library(WEB)
+add_subdirectory(src/web)
+add_library(DRIVERS)
 add_subdirectory(src/drivers)
+add_library(LOGIC)
 add_subdirectory(src/Logic)
-add_subdirectory(src/webServer)
+
 add_subdirectory(test_system)
 add_subdirectory(test_hardware_drivers)
 
-# unit tests:
-# add_subdirectory(test)
-# add_subdirectory(extern)
-
-
-
-
-#inintialise the sdk
-pico_sdk_init()
-
 target_include_directories(
     LOGIC PUBLIC ./include
-    LOGIC PUBLIC ./src/Logic/inc
     DRIVERS PUBLIC ./include
-    DRIVERS PUBLIC ./src/drivers/inc
-    WEB PUBLIC ./src/webServer/inc
-    Hexapod PUBLIC ./include
+    # ${PROJECT_NAME} PUBLIC ./include
 )
 
-#Creating an executable target "Hexapod" from a single source hexapod.cpp
-add_executable(${PROJECT_NAME} 
-    ./src/hexapod.cpp
-)
-# enable usb output, disable uart output
-pico_enable_stdio_usb(Hexapod 1)
-pico_enable_stdio_uart(Hexapod 0)
+add_executable(${PROJECT_NAME} src/hexapod.cpp)
+
 #libraries
-target_link_libraries(${PROJECT_NAME} 
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    WEB
     LOGIC
     DRIVERS
-    WEB
 ) 
+
+# enable usb output, disable uart output
+pico_enable_stdio_usb(${PROJECT_NAME} TRUE)
+pico_enable_stdio_uart(${PROJECT_NAME} FALSE)
+
 #Generates different file formats
-pico_add_extra_outputs(Hexapod)
-
-
-# if(TEST_HARDWARE)
-#     project(TEST_HARDWARE C CXX)
-    
-#     add_executable(TEST_HARDWARE 
-#     ./test/test.cpp
-#     )
-#     # enable usb output, disable uart output
-#     pico_enable_stdio_usb(TEST_HARDWARE 1)
-#     pico_enable_stdio_uart(TEST_HARDWARE 0)
-#     add_library(TEST_HW)
-#     add_subdirectory(./test/test_hw)
-#     #libraries
-#     target_link_libraries(TEST_HARDWARE 
-#         DRIVERS
-#         TEST_HW
-#         hardware_i2c
-#     ) 
-    
-#     #Generates different file formats
-#     pico_add_extra_outputs(TEST_HARDWARE)
-# # else()
-# #     #add some other compilation flags
-# endif(TEST_HARDWARE)
-# unset(TEST_HARDWARE CACHE) # <---- this is the important!!
-
+pico_add_extra_outputs(${PROJECT_NAME})

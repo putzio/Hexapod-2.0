@@ -2,9 +2,6 @@
 target_include_directories(DRIVERS PUBLIC inc
 DRIVERS PUBLIC ../../include)
 
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
-pico_sdk_init()
-
 target_sources(DRIVERS
     PUBLIC ./src/pwm.cpp
     PUBLIC ./src/gpio.cpp

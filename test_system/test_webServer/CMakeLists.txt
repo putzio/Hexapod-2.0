@@ -1,8 +1,4 @@
-
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
-pico_sdk_init()
-
-project(test_webServer C CXX)
+project(test_webServer C CXX ASM)
 
 add_executable(test_webServer test_webServer.cpp)
 
