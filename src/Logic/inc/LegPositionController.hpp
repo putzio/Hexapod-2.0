@@ -7,6 +7,7 @@
 #include "Results.h"
 #include "ServoPositions.hpp"
 #include "LegRange.hpp"
+#include <functional>
 
 namespace logic::leg {
   typedef enum Side :uint8_t {
@@ -23,7 +24,8 @@ namespace logic::leg {
     SingleCoordinate p_footOnGroundY[2] = { 1.4, 1.7320f };//sin(60.0 * Constants::PI / 180.0) * 20000.0 = 1.7320f
 
   private:
-    typedef ServosPositions(*CalculateServoPositionsFunctionPointer)(float xNew, float yNew);
+    // typedef ServosPositions(*CalculateServoPositionsFunctionPointer)(float xNew, float yNew);
+    typedef std::function < ServosPositions(float xNew, float yNew)>CalculateServoPositionsFunctionPointer;
     SingleCoordinate MapXInRange(const SingleCoordinate& xPos);
     CalculateServoPositionsFunctionPointer calculateServoPositionsPtr;
     static ServosPositions CalculateServoPositions_KneeBack(float xNew, float yNew);
