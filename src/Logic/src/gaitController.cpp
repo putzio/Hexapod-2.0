@@ -82,8 +82,10 @@ namespace logic {
         }
 
         for (int i = 0; i < legs.size(); i++) {
+            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues()));
             ReturnOnError(legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]));
         }
+        
         return RESULT_OK;
     }
 
@@ -98,7 +100,7 @@ namespace logic {
     }
     Result GaitController::ChangeGait(gait::GaitInterface::Gait newGait) {
         if (p_ptr_gaitInterface != nullptr && newGait == p_ptr_gaitInterface->GetCurrentGait()) {
-            return RESULT_OK;
+            return RESULT_CHOSEN_GAIT_IS_CURRENT_GAIT;
         }
         //stop the current gait?
         // p_ptr_gaitInterface = std::make_unique<gait::GaitInterface>(newGait);
@@ -108,12 +110,21 @@ namespace logic {
             p_ptr_gaitInterface = std::make_unique<gait::TripodGait>();
             break;
         }
+        case gait::GaitInterface::Gait::CATERPILLAR: {
+            p_ptr_gaitInterface = std::make_unique<gait::CaterpillarGait>();
+            break;
+        }
+        default:
+            return RESULT_UNDEFINED_ERROR;
         }
 
         targetLegsPositions = p_ptr_gaitInterface->GetTargetLegsPositionsPtr();
-        for (leg::Leg& leg : legs) {
-            leg.SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues());
+        // for (leg::Leg& leg : legs) {
+        
+        for (int i = 0; i < legs.size(); i++) {
+            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues()));
         }
+        
         return SetNewTarget();
     }
 

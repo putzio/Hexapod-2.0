@@ -3,6 +3,7 @@
 #include <memory>
 #include "gaitInterface.hpp"
 #include "tripodGait.hpp"
+#include "caterpillarGait.hpp"
 #include "Results.h"
 #include "Leg.hpp"
 

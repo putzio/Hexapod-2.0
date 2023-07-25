@@ -10,6 +10,7 @@ target_sources(LOGIC PUBLIC
     ./src/body.cpp
     ./src/Servo.cpp
     ./src/tripodGait.cpp
+    ./src/caterpillarGait.cpp
 )
 
     
