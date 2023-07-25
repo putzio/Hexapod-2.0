@@ -12,6 +12,7 @@ target_include_directories(WEB PUBLIC inc)
 target_sources(WEB PUBLIC
     ./src/cgi.cpp
     ./src/ssi.cpp
+    ./src/gpio_w.cpp
 )
 
 target_link_libraries(WEB PUBLIC
