@@ -2,17 +2,20 @@
 
 #include "lwip/apps/httpd.h"
 #include "pico/cyw43_arch.h"
+#include "gpio_w.hpp"
 
-// CGI handler which is run when a request for /led.cgi is detected
-const char* cgi_led_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
-
-// tCGI Struct
-// Fill this with all of the CGI requests and their respective handlers
-// static const tCGI cgi_handlers[] = {
-//     {
-//         // Html request for "/led.cgi" triggers cgi_handler
-//         "/led.cgi", cgi_led_handler
-//     },
-// };
-
-void cgi_init(void);
+namespace web {
+    class CGI {
+    public:
+        CGI();
+        ~CGI() { delete cgiHandlers_ptr; };
+        void cgi_init(void);
+    private:
+        static pico_drivers::Gpio_w led;
+        tCGI* cgiHandlers_ptr;
+        static const char* cgi_led_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
+        static const char* cgi_direction_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
+        static const char* cgi_gait_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
+        static const char* cgi_speed_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
+    };
+}

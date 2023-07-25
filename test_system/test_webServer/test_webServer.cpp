@@ -24,10 +24,10 @@ int main() {
     httpd_init();
     printf("Http server initialised\n");
 
-    // Configure SSI and CGI handler
-    ssi_init();
-    printf("SSI Handler initialised\n");
-    cgi_init();
+    // // Configure SSI and CGI handler
+    // ssi_init();
+    // printf("SSI Handler initialised\n");
+    web::CGI cgi = web::CGI();
     printf("CGI Handler initialised\n");
 
     // Infinite loop
