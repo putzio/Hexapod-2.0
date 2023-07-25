@@ -29,7 +29,7 @@ namespace web {
     const char* CGI::cgi_direction_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]) {
         printf("cgi_direction_handler\n");
         if (strcmp(pcParam[0], "direction") == 0) {
-            if (strcmp(pcValue[0], "foreward") == 0)
+            if (strcmp(pcValue[0], "forward") == 0)
                 led.Write(0);
             else if (strcmp(pcValue[0], "backward") == 0)
                 led.Write(1);
