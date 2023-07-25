@@ -21,7 +21,7 @@ namespace Constants {
 
     const float DEFAULT_LEG_HIGHT = (sin(60.0 * PI / 180.0) * 2.0);
 
-    const float CHANGING_STEP_RANGE[2] = { PI * 0.1f / 180.0f , PI * 10.0f / 180.0f }; //0.1 to 10 deg
+    const float CHANGING_STEP_RANGE[2] = { PI * 0.01f / 180.0f , PI * 10.0f / 180.0f }; //0.01 to 10 deg
     const float DEFAULT_CHANGING_STEP = PI * 0.3 / 180.0f;
 } // namespace Constants
 

@@ -1,7 +1,7 @@
 #include "tripodGait.hpp"
 #include <stdio.h>
 namespace logic::gait {
-    void Error_Handler() {
+    void TripodGait::Error_Handler() {
         printf("In Error_Handler()\n");
         while (1) {
             // sleep_ms(1000);
@@ -265,9 +265,6 @@ namespace logic::gait {
         }
 
         return RESULT_OK;
-    }
-    std::array<float, 2> TripodGait::GetChangingStepValues() {
-        return { changingStepValues[0], changingStepValues[1] };
     }
 
 } // namespace logic::gait

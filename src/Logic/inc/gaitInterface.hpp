@@ -1,6 +1,7 @@
 #pragma once
 #include "LegContainer.hpp"
 #include "Results.h"
+#include "array"
 
 namespace logic::gait {
 
@@ -10,12 +11,13 @@ namespace logic::gait {
             NONE,
             DEFAULT_POSITION,
             TRIPOD,
-            CATEPILLAR,
+            CATERPILLAR,
             MONOCHROMATIC
         }Gait;
 
     protected:
         leg::LegContainer targetLegsPositions;
+        std::array<float, 2> changingStepValues{ {0,0} };
         // uint8_t step = 0;
 
     public:
@@ -35,7 +37,7 @@ namespace logic::gait {
         virtual Result TurnLeft();
         virtual Gait GetCurrentGait();
         virtual Result GoToTheDefaultPosition();
-        virtual std::array<float, 2> GetChangingStepValues() = 0;
+        std::array<float, 2> GetChangingStepValues() { return changingStepValues; };
         /**
          * @brief returns an enum representing the classingMode)
          *

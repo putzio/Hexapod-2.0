@@ -76,6 +76,13 @@ namespace logic::leg {
         // ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
     }
 
+    TEST(Leg, test_ChangingStep) {
+        Leg leg = Leg(Constants::PI / 2, Constants::PI / 2, Side::KNEE_BACK);
+        ASSERT_EQ(RESULT_OK, leg.SetChangingStep(Constants::DEFAULT_CHANGING_STEP / 2.0, Constants::DEFAULT_CHANGING_STEP * 4.0));
+        ASSERT_EQ(Constants::DEFAULT_CHANGING_STEP / 2.0, leg.GetChangingStepOnGround());
+        ASSERT_EQ(Constants::DEFAULT_CHANGING_STEP * 4.0, leg.GetChangingStepInAir());
+        // ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
+    }
 
 
 

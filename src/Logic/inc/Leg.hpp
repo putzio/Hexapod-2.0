@@ -55,6 +55,8 @@ namespace logic::leg {
         Result SetChangingStep(float changingStepOnGround, float changingStepInAir);
         Result SetChangingStep(std::array<float, 2> changingStep);
         float GetChangingStep();
+        float GetChangingStepInAir() { return servosChangingStepInAir; };
+        float GetChangingStepOnGround() { return servosChangingStepOnGround; };
 
         LegRange GetRange() const;
     };

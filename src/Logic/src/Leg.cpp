@@ -90,11 +90,14 @@ namespace logic::leg {
     }
 
     Result Leg::SetChangingStep(float changingStepOnGround, float changingStepInAir) {
-        if (this->servosChangingStepOnGround > Constants::CHANGING_STEP_RANGE[0]) {
-            this->servosChangingStepOnGround = servosChangingStepOnGround;
+        if (changingStepOnGround > Constants::CHANGING_STEP_RANGE[0] && changingStepOnGround < Constants::CHANGING_STEP_RANGE[1]) {
+            this->servosChangingStepOnGround = changingStepOnGround;
         }
-        if (this->servosChangingStepInAir > Constants::CHANGING_STEP_RANGE[0]) {
-            this->servosChangingStepInAir = servosChangingStepInAir;
+        else {
+            return RESULT_SERVO_VELOCITY_OUT_OF_RANGE;
+        }
+        if (changingStepInAir > Constants::CHANGING_STEP_RANGE[0] && changingStepInAir < Constants::CHANGING_STEP_RANGE[1]) {
+            this->servosChangingStepInAir = changingStepInAir;
             return RESULT_OK;
         }
         return RESULT_SERVO_VELOCITY_OUT_OF_RANGE;
