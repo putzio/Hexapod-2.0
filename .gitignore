@@ -3,3 +3,4 @@
 build/
 htmldata.c
 wifi_passwords.hpp
+*.csv
