@@ -16,7 +16,6 @@ namespace pico_drivers {
         gpio_cs->Write(0);
         SpiWriteRead(tx_data, rx_data, 3);
         gpio_cs->Write(1);
-        printf("rx_data[0]: %d, %d, %d\n", rx_data[0], rx_data[1], rx_data[2]);
         // Compute the ADC
         return 0x3FF & ((rx_data[0] & 0x01) << 9 | (rx_data[1] & 0xFF) << 1 | (rx_data[2] & 0x80) >> 7);
     }
