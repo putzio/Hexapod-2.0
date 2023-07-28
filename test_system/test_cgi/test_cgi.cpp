@@ -1,8 +1,12 @@
 #include "pico/stdlib.h"
-#include "server.hpp"
+#include "ssi.hpp"
+#include "cgi.hpp"
+#include "wifi_passwords.hpp"
 
 // WIFI Credentials - take care if pushing to github!
-pico_drivers::Gpio_w led = pico_drivers::Gpio_w();
+// const char WIFI_SSID[] = "xdddd";
+// const char WIFI_PASSWORD[] = "kapusta15";
+pico_drivers::Gpio_w led;
 
 const char* cgi_led_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
 const char* cgi_direction_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
@@ -12,15 +16,33 @@ const char* cgi_speed_handler(int iIndex, int iNumParams, char* pcParam[], char*
 int main() {
     stdio_init_all();
 
+    cyw43_arch_init();
+
+    cyw43_arch_enable_sta_mode();
+
+    // Connect to the WiFI network - loop until connected
+    while (cyw43_arch_wifi_connect_timeout_ms(web::WIFI_SSID, web::WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 30000) != 0) {
+        printf("Attempting to connect...\n");
+    }
+    // Print a success message once connected
+    printf("Connected! \n");
+
+    // Initialise web server
+    httpd_init();
+    printf("Http server initialised\n");
+
     std::vector <tCGI> cgiHandlers;
     cgiHandlers.push_back(tCGI{ "/led.cgi", (tCGIHandler)cgi_led_handler });
     cgiHandlers.push_back(tCGI{ "/direction.cgi", (tCGIHandler)cgi_direction_handler });
     cgiHandlers.push_back(tCGI{ "/gait.cgi", (tCGIHandler)cgi_gait_handler });
     cgiHandlers.push_back(tCGI{ "/speed.cgi", (tCGIHandler)cgi_speed_handler });
+
+    led = pico_drivers::Gpio_w();
     // // Configure SSI and CGI handler
     // ssi_init();
     // printf("SSI Handler initialised\n");
-    web::Server server = web::Server(cgiHandlers);
+    web::CGI cgi = web::CGI(cgiHandlers);
+    printf("CGI Handler initialised\n");
 
     // Infinite loop
     while (1);
