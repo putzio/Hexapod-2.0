@@ -2,7 +2,7 @@
 #include "pico/stdlib.h"
 #include "gpio.hpp"
 #include "servo_left.hpp"
-#include "leg_controller.hpp"
+#include "legs_controller.hpp"
 #include "gaitController.hpp"
 
 void UpdateServoPositions(std::array<pico_drivers::ServoLeft, 12>& servos, std::array<logic::leg::ServosPositions, 6>& servoPositions) {
@@ -26,12 +26,12 @@ int main() {
 	sleep_ms(2000);
 	printf("Init\r\n");
 	sleep_ms(2000);
-	pico_drivers::LegController legController = pico_drivers::LegController(pins);
-	legController.InitServos();
+	pico_drivers::LegsController legsController = pico_drivers::LegsController(pins);
+	legsController.InitServos();
 	logic::GaitController gaitController = logic::GaitController();
 	sleep_ms(500);
 	printf("Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
-	gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD);
+	gaitController.ChangeGait(logic::gait::GaitType::TRIPOD);
 	// sleep_ms(500);
 	// printf("Tripod, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
 	gaitController.ChangeDirection(logic::GaitController::FOREWARD);
@@ -40,7 +40,7 @@ int main() {
 	gaitController.ResetLegTargetPositions();
 	// sleep_ms(500);
 	// printf("Reset, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
-	legController.UpdateServos(gaitController.GetSerovAngles());
+	legsController.UpdateServos(gaitController.GetSerovAngles());
 	// printf("Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
 	// sleep_ms(2000);
 	// printf("Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
@@ -51,7 +51,7 @@ int main() {
 		led.Toggle();
 		printf("PP Result: %d\r\n", gaitController.PeriodicProcess());
 		printf("X coordiante leg0: %f\r\n", gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate_mm());
-		legController.UpdateServos(gaitController.GetSerovAngles());
+		legsController.UpdateServos(gaitController.GetSerovAngles());
 		printf("upper angle: %f \r\n", gaitController.legs[0].p_servos.GetCurrentServoPositions().upperServoAngle);
 		printf("lower angle: %f \r\n", gaitController.legs[0].p_servos.GetCurrentServoPositions().lowerServoAngle);
 		printf("Get gait: %d\r\n", gaitController.p_ptr_gaitInterface->GetCurrentGait());

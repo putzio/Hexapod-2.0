@@ -3,7 +3,7 @@
 namespace logic {
 
     GaitController::GaitController() {
-        for (int i = 0; i < legs.size(); i++) {
+        for (int i = 0; i < (int)legs.size(); i++) {
             legs[i] = leg::Leg(Constants::PI / 2, Constants::PI / 2, leg::Side::KNEE_BACK);
         }
     }
@@ -18,7 +18,7 @@ namespace logic {
             ReturnOnError(SetNewTarget());
         }
 
-        for (int i = 0; i < legs.size(); i++) {
+        for (int i = 0; i < (int)legs.size(); i++) {
             ReturnUnexpected(legs[i].LegPeriodicProcess(), RESULT_UNDEFINED_ERROR);
         }
         return RESULT_OK;
@@ -26,7 +26,7 @@ namespace logic {
 
     Result GaitController::ResetLegTargetPositions() {
         uint8_t legsSetCorrectly = UINT8_MAX;//UINT8_MAX means that all legs are set correctly
-        for (int i = 0; i < legs.size(); i++) {
+        for (int i = 0; i < (int)legs.size(); i++) {
             if (legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]) != RESULT_OK) {
                 legsSetCorrectly = i;
             }
@@ -41,7 +41,7 @@ namespace logic {
 
     Result GaitController::GoToPosition() {
         bool allLegsInPosition = true;
-        for (int i = 0; i < legs.size(); i++) {
+        for (int i = 0; i < (int)legs.size(); i++) {
             if (legs[i].LegPeriodicProcess() != RESULT_LEG_IN_TARGET_POSITION) {
                 allLegsInPosition = false;
             }
@@ -81,11 +81,11 @@ namespace logic {
             return RESULT_UNDEFINED_ERROR;
         }
 
-        for (int i = 0; i < legs.size(); i++) {
+        for (int i = 0; i < (int)legs.size(); i++) {
             ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues()));
             ReturnOnError(legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]));
         }
-        
+
         return RESULT_OK;
     }
 
@@ -98,7 +98,7 @@ namespace logic {
         direction = newDirection;
         return SetNewTarget();
     }
-    Result GaitController::ChangeGait(gait::GaitInterface::Gait newGait) {
+    Result GaitController::ChangeGait(gait::GaitType newGait) {
         if (p_ptr_gaitInterface != nullptr && newGait == p_ptr_gaitInterface->GetCurrentGait()) {
             return RESULT_CHOSEN_GAIT_IS_CURRENT_GAIT;
         }
@@ -106,11 +106,11 @@ namespace logic {
         // p_ptr_gaitInterface = std::make_unique<gait::GaitInterface>(newGait);
 
         switch (newGait) {
-        case gait::GaitInterface::Gait::TRIPOD: {
+        case gait::GaitType::TRIPOD: {
             p_ptr_gaitInterface = std::make_unique<gait::TripodGait>();
             break;
         }
-        case gait::GaitInterface::Gait::CATERPILLAR: {
+        case gait::GaitType::CATERPILLAR: {
             p_ptr_gaitInterface = std::make_unique<gait::CaterpillarGait>();
             break;
         }
@@ -120,17 +120,17 @@ namespace logic {
 
         targetLegsPositions = p_ptr_gaitInterface->GetTargetLegsPositionsPtr();
         // for (leg::Leg& leg : legs) {
-        
-        for (int i = 0; i < legs.size(); i++) {
+
+        for (int i = 0; i < (int)legs.size(); i++) {
             ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues()));
         }
-        
+
         return SetNewTarget();
     }
 
     std::array<leg::ServosPositions, 6> GaitController::GetSerovAngles() {
         std::array<leg::ServosPositions, 6> result;
-        for (int i = 0; i < legs.size(); i++) {
+        for (int i = 0; i < (int)legs.size(); i++) {
             result[i] = legs[i].p_servos.GetCurrentServoPositions();
         }
         return result;

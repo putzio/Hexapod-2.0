@@ -6,10 +6,11 @@
 #include <memory>
 
 namespace pico_drivers {
-    class LegController {
+    class LegsController {
         std::array<std::unique_ptr<Servo_Interface>, 12> servos;
     public:
-        LegController(std::array<uint8_t, 12> pins);
+        LegsController() {};
+        LegsController(std::array<uint8_t, 12> pins);
         void InitServos();
         void UpdateServos(std::array<logic::leg::ServosPositions, 6> newAnges);
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "servo_left.hpp"
-#include "leg_controller.hpp"
+#include "legs_controller.hpp"
 #include "gaitController.hpp"
 #include "gpio.hpp"
 
@@ -20,18 +20,18 @@ int main() {
     led.Write(true);
     std::array<uint8_t, 12> pins;
     for (int i; i < pins.size(); i++) {
-        pins[i] = i + 2;
+        pins[i] = i + 6;
     }
     printf("Start\r\n");
     sleep_ms(2000);
     printf("Init\r\n");
     sleep_ms(2000);
-    pico_drivers::LegController legController = pico_drivers::LegController(pins);
-    legController.InitServos();
+    pico_drivers::LegsController legsController = pico_drivers::LegsController(pins);
+    legsController.InitServos();
     logic::GaitController gaitController = logic::GaitController();
     sleep_ms(500);
     printf("Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
-    printf("ChangeGait result: %d\r\n", gaitController.ChangeGait(logic::gait::GaitInterface::CATERPILLAR));
+    printf("ChangeGait result: %d\r\n", gaitController.ChangeGait(logic::gait::GaitType::CATERPILLAR));
     printf("changing step values:\t%f\t%f\r\n", gaitController.p_ptr_gaitInterface->GetChangingStepValues()[0], gaitController.p_ptr_gaitInterface->GetChangingStepValues()[1]);
     printf("Leg changing steps: %f, %f\r\n", gaitController.legs[0].GetChangingStepInAir(), gaitController.legs[1].GetChangingStepOnGround());
     // sleep_ms(500);
@@ -45,7 +45,7 @@ int main() {
     printf("Leg changing steps: %f, %f\r\n", gaitController.legs[0].GetChangingStepInAir(), gaitController.legs[1].GetChangingStepOnGround());
     // sleep_ms(500);
     // printf("Reset, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
-    legController.UpdateServos(gaitController.GetSerovAngles());
+    legsController.UpdateServos(gaitController.GetSerovAngles());
     // printf("Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
     // sleep_ms(2000);
     // printf("Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
@@ -56,7 +56,7 @@ int main() {
         led.Toggle();
         printf("PP Result: %d\r\n", gaitController.PeriodicProcess());
         printf("X coordiante leg0: %f\r\n", gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate_mm());
-        legController.UpdateServos(gaitController.GetSerovAngles());
+        legsController.UpdateServos(gaitController.GetSerovAngles());
         printf("upper angle: %f \r\n", gaitController.legs[0].p_servos.GetCurrentServoPositions().upperServoAngle);
         printf("lower angle: %f \r\n", gaitController.legs[0].p_servos.GetCurrentServoPositions().lowerServoAngle);
         printf("Get gait: %d\r\n", gaitController.p_ptr_gaitInterface->GetCurrentGait());

@@ -10,7 +10,9 @@ target_sources(DRIVERS
     PUBLIC ./src/servo_left.cpp
     PUBLIC ./src/mcp3008.cpp
     PUBLIC ./src/spi.cpp
-    PUBLIC ./src/leg_controller.cpp
+    PUBLIC ./src/legs_controller.cpp
+    PUBLIC ./src/robot_current_sensors.cpp
+    PUBLIC ./src/GD25VQ21B.cpp
     )
 
 target_link_libraries(DRIVERS PUBLIC

@@ -5,15 +5,17 @@
 
 namespace logic::gait {
 
+    typedef enum Gait {
+        NONE,
+        DEFAULT_POSITION,
+        TRIPOD,
+        CATERPILLAR,
+        MONOCHROMATIC
+    }GaitType;
+
     class GaitInterface {
     public:
-        typedef enum Gait {
-            NONE,
-            DEFAULT_POSITION,
-            TRIPOD,
-            CATERPILLAR,
-            MONOCHROMATIC
-        }Gait;
+
 
     protected:
         leg::LegContainer targetLegsPositions;

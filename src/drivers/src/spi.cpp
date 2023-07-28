@@ -23,6 +23,6 @@ namespace pico_drivers {
         spi_read_blocking(spi, repeated_tx_data, data, size);
     }
     void SPI::SpiWriteRead(uint8_t* tx_data, uint8_t* rx_data, uint8_t size) {
-        printf("Number of bytes read: %d\n", spi_write_read_blocking(spi, tx_data, rx_data, size));
+        spi_write_read_blocking(spi, tx_data, rx_data, size);
     };
 }

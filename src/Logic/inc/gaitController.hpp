@@ -33,7 +33,7 @@ namespace logic {
         const leg::LegContainer* targetLegsPositions = nullptr;
         GaitController();
         Result ChangeDirection(Direction newDirection);
-        Result ChangeGait(gait::GaitInterface::Gait newGait);
+        Result ChangeGait(gait::GaitType newGait);
         Result PeriodicProcess();
         Result ResetLegTargetPositions();
         std::array<leg::ServosPositions, 6> GetSerovAngles();
