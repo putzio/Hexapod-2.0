@@ -56,7 +56,7 @@ namespace logic {
         switch (direction) {
         case NONE:
             return RESULT_DIRECTION_NOT_CHOSEN;
-        case FOREWARD:
+        case FORWARD:
             ReturnOnError(p_ptr_gaitInterface->GoForeward());
             break;
         case BACKWARD:

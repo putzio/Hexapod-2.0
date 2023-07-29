@@ -34,7 +34,7 @@ int main() {
 	gaitController.ChangeGait(logic::gait::GaitType::TRIPOD);
 	// sleep_ms(500);
 	// printf("Tripod, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
-	gaitController.ChangeDirection(logic::GaitController::FOREWARD);
+	gaitController.ChangeDirection(logic::GaitController::FORWARD);
 	// sleep_ms(500);
 	// printf("Foreward, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
 	gaitController.ResetLegTargetPositions();

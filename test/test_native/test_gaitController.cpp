@@ -33,24 +33,24 @@ namespace logic {
         ASSERT_NEAR(expected.lowerServoAngle, gaitController.GetSerovAngles()[0].lowerServoAngle, 0.001);
     }
 
-    TEST(GaitController, test_Foreward_Tripod_init) {
+    TEST(GaitController, test_Forward_Tripod_init) {
         GaitController gaitController = logic::GaitController();
 
         //Check if the leg position controller positions are correct
         ASSERT_NEAR(0.0, gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate(), 0.001);
 
         ASSERT_EQ(RESULT_DIRECTION_NOT_CHOSEN, gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD));
-        ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FOREWARD));
+        ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FORWARD));
 
         ASSERT_EQ(logic::gait::GaitInterface::TRIPOD, gaitController.p_ptr_gaitInterface->GetCurrentGait());
-        ASSERT_EQ(logic::GaitController::FOREWARD, gaitController.direction);
+        ASSERT_EQ(logic::GaitController::FORWARD, gaitController.direction);
     }
 
     TEST(GaitController, test_Foreward_Tripod_walk) {
         GaitController gaitController = logic::GaitController();
 
         ASSERT_EQ(RESULT_DIRECTION_NOT_CHOSEN, gaitController.ChangeGait(logic::gait::GaitInterface::TRIPOD));
-        ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FOREWARD));
+        ASSERT_EQ(RESULT_OK, gaitController.ChangeDirection(logic::GaitController::FORWARD));
         ASSERT_EQ(RESULT_OK, gaitController.ResetLegTargetPositions());
         ASSERT_EQ(RESULT_OK, gaitController.PeriodicProcess());
 

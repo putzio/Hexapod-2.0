@@ -36,7 +36,7 @@ int main() {
     printf("Leg changing steps: %f, %f\r\n", gaitController.legs[0].GetChangingStepInAir(), gaitController.legs[1].GetChangingStepOnGround());
     // sleep_ms(500);
     // printf("Tripod, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
-    printf("ChangeDirection result: %d\r\n", gaitController.ChangeDirection(logic::GaitController::FOREWARD));
+    printf("ChangeDirection result: %d\r\n", gaitController.ChangeDirection(logic::GaitController::FORWARD));
     // sleep_ms(500);
     // printf("Foreward, Step: %d\r\n", gaitController.p_ptr_gaitInterface->step);
     gaitController.ResetLegTargetPositions();

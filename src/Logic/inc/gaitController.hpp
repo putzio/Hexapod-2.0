@@ -12,11 +12,12 @@ namespace logic {
     public:
         typedef enum {
             NONE,
-            FOREWARD,
+            FORWARD,
             BACKWARD,
             TURN_RIGHT,
             TURN_LEFT,
-            DEFAULT_POSITION
+            DEFAULT_POSITION,
+            STOP
         } Direction;
     private:
         // std::unique_ptr<gait::GaitInterface> p_ptr_gaitInterface;
