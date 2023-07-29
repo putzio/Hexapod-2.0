@@ -43,7 +43,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-project(hexapod CXX C ASM)
+project(app CXX C ASM)
 
 pico_sdk_init()
 
@@ -53,6 +53,9 @@ add_library(DRIVERS)
 add_subdirectory(src/drivers)
 add_library(LOGIC)
 add_subdirectory(src/logic)
+
+add_library(HEXAPOD)
+add_subdirectory(src/hexapod)
 
 add_subdirectory(test_system)
 add_subdirectory(test_hardware_drivers)
@@ -67,14 +70,13 @@ target_include_directories(
 
 add_executable(${PROJECT_NAME} 
     ./src/main.cpp
-    ./src/robot_driver.cpp
-    ./src/hexapod.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}  
     WEB
     LOGIC
     DRIVERS
+    HEXAPOD
 ) 
 
 # enable usb output, disable uart output
