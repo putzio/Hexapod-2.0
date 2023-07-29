@@ -1,7 +1,7 @@
 #include "server.hpp"
 
 namespace web {
-    Server::Server(std::vector <tCGI>& cgiHandlers) {
+    Server::Server() {
         printf("Server constructor\n");
         cyw43_arch_init();
         cyw43_arch_enable_sta_mode();
@@ -12,6 +12,8 @@ namespace web {
         }
         // Print a success message once connected
         printf("Connected! \n");
+    }
+    void Server::Run(std::vector <tCGI>& cgiHandlers) {
 
         // Initialise web server
         httpd_init();
@@ -19,7 +21,7 @@ namespace web {
         // // Configure SSI and CGI handler
         // ssi_init();
         // printf("SSI Handler initialised\n");
-        web::CGI cgi_ = web::CGI(cgiHandlers);
+        web::CGI cgi = web::CGI(cgiHandlers);
         printf("CGI Handler initialised\n");
     }
 }

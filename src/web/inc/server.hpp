@@ -6,8 +6,9 @@
 namespace web {
     class Server {
     public:
-        Server(std::vector <tCGI>& cgiHandlers);
-        // private:
-        //     CGI cgi;
+        Server();
+        void Run(std::vector <tCGI>& cgiHandlers);
+    private:
+        CGI cgi;
     };
 }

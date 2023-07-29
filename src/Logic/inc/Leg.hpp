@@ -53,7 +53,7 @@ namespace logic::leg {
         const FootTargetPosition& GetFinalTargetPosition()const;
 
         Result SetChangingStep(float changingStepOnGround, float changingStepInAir);
-        Result SetChangingStep(std::array<float, 2> changingStep);
+        Result SetChangingStep(std::array<float, 2> changingStep, uint8_t speed);
         float GetChangingStep();
         float GetChangingStepInAir() { return servosChangingStepInAir; };
         float GetChangingStepOnGround() { return servosChangingStepOnGround; };

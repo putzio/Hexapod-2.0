@@ -2,7 +2,7 @@
 #include "server.hpp"
 
 // WIFI Credentials - take care if pushing to github!
-pico_drivers::Gpio_w led = pico_drivers::Gpio_w();
+pico_drivers::Gpio_w led;
 
 const char* cgi_led_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
 const char* cgi_direction_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]);
@@ -20,7 +20,9 @@ int main() {
     // // Configure SSI and CGI handler
     // ssi_init();
     // printf("SSI Handler initialised\n");
-    web::Server server = web::Server(cgiHandlers);
+    web::Server server = web::Server();
+    led = pico_drivers::Gpio_w();
+    server.Run(cgiHandlers);
 
     // Infinite loop
     while (1);

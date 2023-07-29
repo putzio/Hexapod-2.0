@@ -82,7 +82,7 @@ namespace logic {
         }
 
         for (int i = 0; i < (int)legs.size(); i++) {
-            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues()));
+            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues(), speed));
             ReturnOnError(legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]));
         }
 
@@ -122,12 +122,21 @@ namespace logic {
         // for (leg::Leg& leg : legs) {
 
         for (int i = 0; i < (int)legs.size(); i++) {
-            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues()));
+            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues(), speed));
         }
 
         return SetNewTarget();
     }
-
+    Result GaitController::ChangeSpeed(uint8_t newSpeed) {
+        if (newSpeed > 10) {
+            return RESULT_WRONG_SPEED;
+        }
+        speed = newSpeed;
+        for (int i = 0; i < (int)legs.size(); i++) {
+            ReturnOnError(legs[i].SetChangingStep(p_ptr_gaitInterface->GetChangingStepValues(), speed));
+        }
+        return RESULT_OK;
+    }
     std::array<leg::ServosPositions, 6> GaitController::GetSerovAngles() {
         std::array<leg::ServosPositions, 6> result;
         for (int i = 0; i < (int)legs.size(); i++) {

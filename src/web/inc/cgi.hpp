@@ -7,6 +7,8 @@
 namespace web {
     class CGI {
     public:
+        CGI() {}
         CGI(std::vector <tCGI>& cgiHandlers);
+        
     };
 }

@@ -85,8 +85,8 @@ namespace logic::leg {
         return p_finalTargetPostion;
     }
 
-    Result Leg::SetChangingStep(std::array<float, 2> changingStep) {
-        return SetChangingStep(changingStep[0], changingStep[1]);
+    Result Leg::SetChangingStep(std::array<float, 2> changingStep, uint8_t speed) {
+        return SetChangingStep(changingStep[0] * (0.5 + speed / 10.0), changingStep[1] * (0.5 + speed / 10.0));
     }
 
     Result Leg::SetChangingStep(float changingStepOnGround, float changingStepInAir) {

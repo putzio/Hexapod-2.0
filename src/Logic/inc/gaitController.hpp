@@ -31,10 +31,12 @@ namespace logic {
         std::unique_ptr<gait::GaitInterface> p_ptr_gaitInterface;
         std::array<leg::Leg, 6> legs;
         Direction direction = NONE;
+        uint8_t speed = 5;
         const leg::LegContainer* targetLegsPositions = nullptr;
         GaitController();
         Result ChangeDirection(Direction newDirection);
         Result ChangeGait(gait::GaitType newGait);
+        Result ChangeSpeed(uint8_t newSpeed);
         Result PeriodicProcess();
         Result ResetLegTargetPositions();
         std::array<leg::ServosPositions, 6> GetSerovAngles();
