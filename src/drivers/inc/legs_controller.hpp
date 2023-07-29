@@ -13,6 +13,6 @@ namespace pico_drivers {
         LegsController(std::array<uint8_t, 12> pins);
         void InitServos();
         void UpdateServos(std::array<logic::leg::ServosPositions, 6> newAnges);
-
+        void CalibrateServo(uint8_t servoIndex, int16_t offset);
     };
 } // namespace pico_drivers

@@ -1,38 +1,72 @@
 #include "ssi.hpp"
 
 // SSI tags - tag length limited to 8 bytes by default
-const char* ssi_tags[] = { "volt","temp","led" };
+const char* ssi_tags[] = { "s1", "s2", "s3", "s4","s5", "s6", "s7", "s8", "s9", "s10", "s11", "s12" };
+volatile int16_t calibration_values[12] = { 0 };
 
 u16_t ssi_handler(int iIndex, char* pcInsert, int iInsertLen) {
     size_t printed;
     switch (iIndex) {
-    case 0: // volt
+    case 0: // s1
     {
-        // const float voltage = adc_read() * 3.3f / (1 << 12);
-        const float voltage = 0.25f;
-        printed = snprintf(pcInsert, iInsertLen, "%f", voltage);
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[0]);
+        break;
     }
-    break;
-    case 1: // temp
+    case 1: // s2
     {
-        // const float voltage = adc_read() * 3.3f / (1 << 12);
-        const float voltage = 0.25f;
-        // const float tempC = 27.0f - (voltage - 0.706f) / 0.001721f;
-        const float tempC = 27.0f;
-        printed = snprintf(pcInsert, iInsertLen, "%f", tempC);
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[1]);
+        break;
     }
-    break;
-    case 2: // led
+    case 2: // s3
     {
-        bool led_status = cyw43_arch_gpio_get(CYW43_WL_GPIO_LED_PIN);
-        if (led_status == true) {
-            printed = snprintf(pcInsert, iInsertLen, "ON");
-        }
-        else {
-            printed = snprintf(pcInsert, iInsertLen, "OFF");
-        }
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[2]);
+        break;
     }
-    break;
+    case 3: // s4
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[3]);
+        break;
+    }
+    case 4: // s5
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[4]);
+        break;
+    }
+    case 5: // s6
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[5]);
+        break;
+    }
+    case 6: // s7
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[6]);
+        break;
+    }
+    case 7: // s8
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[7]);
+        break;
+    }
+    case 8: // s9
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[8]);
+        break;
+    }
+    case 9: // s10
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[9]);
+        break;
+    }
+    case 10: // s11
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[10]);
+        break;
+    }
+    case 11: // s12
+    {
+        printed = snprintf(pcInsert, iInsertLen, "%d", calibration_values[11]);
+        break;
+    }
     default:
         printed = 0;
         break;
@@ -43,10 +77,5 @@ u16_t ssi_handler(int iIndex, char* pcInsert, int iInsertLen) {
 
 // Initialise the SSI handler
 void ssi_init() {
-    // Initialise ADC (internal pin)
-    // adc_init();
-    // adc_set_temp_sensor_enabled(true);
-    // adc_select_input(4);
-
     http_set_ssi_handler(ssi_handler, ssi_tags, LWIP_ARRAYSIZE(ssi_tags));
 }

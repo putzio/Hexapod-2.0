@@ -24,5 +24,8 @@ namespace pico_drivers {
             servos[i * 2 + 1]->SetRadianAngle(newAnges[i].lowerServoAngle);
         }
     }
+    void LegsController::CalibrateServo(uint8_t servoIndex, int16_t offset) {
+        servos[servoIndex]->Calibrate(offset);
+    }
 
 } // namespace pico_drivers

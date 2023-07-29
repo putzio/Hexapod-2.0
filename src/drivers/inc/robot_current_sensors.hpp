@@ -5,9 +5,6 @@
 #include "pinout.hpp"
 #include "math.h"
 
-#define SPI_INSTANCE spi0
-#define SPI_BAUD_RATE 250000
-
 namespace pico_drivers {
     class RobotCurrentSensors {
     public:

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robot Control</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #222;
+        color: #fff;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #333;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .control-buttons {
+        display: flex;
+        justify-content: center;
+        margin: 10px;
+      }
+
+      .arrow-buttons {
+        font-size: 24px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border: none;
+        background-color: #af00c3;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+      }
+
+      .arrow-buttons:hover {
+        background-color: #af00c3;
+      }
+
+      .gait-select {
+        margin: 10px 0;
+      }
+
+      .gait-select select {
+        font-size: 16px;
+        padding: 5px;
+        background-color: #af00c3; /* Updated background color */
+        color: #fff; /* Text color */
+      }
+
+      .speed-slider-container {
+        margin: 10px 0;
+      }
+
+      .speed-label {
+        font-size: 16px;
+      }
+
+      .speed-slider {
+        width: 100%;
+        /*background-color: #af00c3; /* Updated background color */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Robot Control Panel</h1>
+      <div class="control-buttons">
+        <button class="arrow-buttons" onclick="move('forward')">
+          <i class="material-icons">arrow_upward</i>
+        </button>
+      </div>
+      <div class="control-buttons">
+        <button class="arrow-buttons" onclick="move('left')">
+          <i class="material-icons">arrow_back</i>
+        </button>
+        <button class="arrow-buttons" onclick="move('backward')">
+          <i class="material-icons">arrow_downward</i>
+        </button>
+        <button class="arrow-buttons" onclick="move('right')">
+          <i class="material-icons">arrow_forward</i>
+        </button>
+      </div>
+      <div>
+        <p>
+          Servo1 calibration:
+          <!--#s1-->
+        </p>
+        <p>
+          Servo2 calibration:
+          <!--#s2-->
+        </p>
+        <p>
+          Servo3 calibration:
+          <!--#s3-->
+        </p>
+        <p>
+          Servo4 calibration:
+          <!--#s4-->
+        </p>
+        <p>
+          Servo5 calibration:
+          <!--#s5-->
+        </p>
+        <p>
+          Servo6 calibration:
+          <!--#s6-->
+        </p>
+        <p>
+          Servo7 calibration:
+          <!--#s7-->
+        </p>
+        <p>
+          Servo8 calibration:
+          <!--#s8-->
+        </p>
+        <p>
+          Servo9 calibration:
+          <!--#s9-->
+        </p>
+        <p>
+          Servo10 calibration:
+          <!--#s10-->
+        </p>
+        <p>
+          Servo11 calibration:
+          <!--#s11-->
+        </p>
+        <p>
+          Servo12 calibration:
+          <!--#s12-->
+        </p>
+      </div>
+      <h2 margin="20px">Settings:</h2>
+      <div class="gait-select">
+        <label for="gaitSelect">Select Gait:</label>
+        <select id="gaitSelect" onchange="changeGait()">
+          <option value="tripod">Tripod</option>
+          <option value="caterpillar">Caterpillar</option>
+          <option value="monochromatic">Monochromatic</option>
+        </select>
+      </div>
+      <div class="speed-slider-container">
+        <label for="speedSlider" class="speed-label">Speed:</label>
+        <input
+          type="range"
+          min="1"
+          max="10"
+          value="5"
+          id="speedSlider"
+          onchange="changeSpeed()"
+          class="speed-slider"
+        />
+      </div>
+      <p id="currentSpeed">Current Speed: 5</p>
+    </div>
+
+    <script>
+      let currentSpeed = 5;
+
+      function move(direction) {
+        console.log(`Moving ${direction}`);
+        // You would send commands to the robot's backend server here
+        if (direction === "forward") {
+          sendRequest("/direction.cgi?direction=forward");
+        } else if (direction === "backward") {
+          sendRequest("/direction.cgi?direction=backward");
+        } else if (direction === "left") {
+          sendRequest("/direction.cgi?direction=left");
+        } else if (direction === "right") {
+          sendRequest("/direction.cgi?direction=right");
+        }
+      }
+
+      function changeGait() {
+        const gaitSelect = document.getElementById("gaitSelect");
+        const selectedGait = gaitSelect.value;
+        console.log(`Selected Gait: ${selectedGait}`);
+        // You would send the selected gait to the robot's backend server here
+        if (selectedGait === "tripod") {
+          sendRequest("/gait.cgi?gait=tripod");
+        } else if (selectedGait === "caterpillar") {
+          sendRequest("/gait.cgi?gait=caterpillar");
+        } else if (selectedGait === "monochromatic") {
+          sendRequest("/gait.cgi?gait=monochromatic");
+        }
+      }
+
+      function changeSpeed() {
+        const speedSlider = document.getElementById("speedSlider");
+        currentSpeed = speedSlider.value;
+        const currentSpeedLabel = document.getElementById("currentSpeed");
+        currentSpeedLabel.textContent = `Current Speed: ${currentSpeed}`;
+        console.log(`Current Speed: ${currentSpeed}`);
+        // You would send the current speed to the robot's backend server here
+        sendRequest(`/speed.cgi?speed=${currentSpeed}`);
+      }
+
+      // Function to send the HTTP request to the server
+      function sendRequest(url) {
+        // Create a new XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure the HTTP method (GET in this case) and the URL
+        xhr.open("GET", url, true);
+
+        // Set up a callback function to handle the response from the server
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            // Handle the response from the server if needed
+            if (xhr.status == 200) {
+              console.log("Request sent successfully");
+            } else {
+              console.log("Error sending request");
+            }
+          }
+        };
+
+        // Send the request
+        xhr.send();
+      }
+
+      const refreshButtons = document.getElementsByClassName("arrow-buttons");
+
+      // Attach the event listener to each button
+      for (let i = 0; i < refreshButtons.length; i++) {
+        refreshButtons[i].addEventListener("click", function () {
+          setTimeout(refresh, 500);
+        });
+
+        function refresh() {
+          location.reload();
+        }
+      }
+    </script>
+  </body>
+</html>

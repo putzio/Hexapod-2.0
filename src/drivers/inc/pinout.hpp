@@ -16,3 +16,6 @@
 
 #define FLASH_HOLD_PIN 27
 #define FLASH_WP_PIN 26
+
+#define SPI_INSTANCE spi0
+#define SPI_BAUD_RATE 250000
