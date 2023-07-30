@@ -1,6 +1,6 @@
 #include "gpio_w.hpp"
 
-namespace pico_drivers {
+namespace web {
     Gpio_w::Gpio_w(uint16_t pin) {
         // cyw43_arch_init();
         m_pin = pin;

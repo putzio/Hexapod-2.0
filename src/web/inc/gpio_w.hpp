@@ -4,7 +4,7 @@
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 
-namespace pico_drivers {
+namespace web {
     struct Gpio_w {
 
         uint16_t m_pin;
