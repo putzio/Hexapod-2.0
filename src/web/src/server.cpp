@@ -19,8 +19,8 @@ namespace web {
         httpd_init();
         printf("Http server initialised\n");
         // // Configure SSI and CGI handler
-        // ssi_init();
-        // printf("SSI Handler initialised\n");
+        ssi_init();
+        printf("SSI Handler initialised\n");
         web::CGI cgi = web::CGI(cgiHandlers);
         printf("CGI Handler initialised\n");
     }

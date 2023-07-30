@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include "cgi.hpp"
 #include "wifi_passwords.hpp"
+#include "ssi.hpp"
 
 namespace web {
     class Server {
