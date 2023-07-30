@@ -4,8 +4,8 @@ namespace logic::gait {
 
     MonochromaticGait::MonochromaticGait() {
         step = 0;
-        changingStepValues[0] = Constants::DEFAULT_CHANGING_STEP / 2.0;//On ground 
-        changingStepValues[1] = Constants::DEFAULT_CHANGING_STEP * 2.0;//In air 
+        changingStepValues[0] = Constants::DEFAULT_CHANGING_STEP / 3.0;//On ground 
+        changingStepValues[1] = Constants::DEFAULT_CHANGING_STEP * 8.0;//In air 
         for (int i = 0; i < 6; i++) {
             xPositions[i] = CalculateXTargetPosition(i);
         }
@@ -19,71 +19,96 @@ namespace logic::gait {
     }
     Result MonochromaticGait::GoForeward() {
         typedef enum {
-            LIFT_LEG_AND_MOVE_FORWARD,
-            LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION,
-            MOVE_LEG_BACK_TO_THE_2ND_POSITION,
-            MOVE_LEG_BACK_TO_THE_3RD_POSITION,
-            MOVE_LEG_BACK_TO_THE_4TH_POSITION,
-            MOVE_LEG_BACK_TO_THE_5TH_POSITION
+            LIFT_LEG_AND_MOVE_FORWARD = 0,
+            LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION = 1,
+            MOVE_LEG_BACK_TO_THE_2ND_POSITION = 2,
+            MOVE_LEG_BACK_TO_THE_3RD_POSITION = 3,
+            MOVE_LEG_BACK_TO_THE_4TH_POSITION = 4,
+            MOVE_LEG_BACK_TO_THE_5TH_POSITION = 5
         } FrontLeftLegsSteps;
+
         switch (step) {
         case LIFT_LEG_AND_MOVE_FORWARD: {
             printf("LIFT_LEG_AND_MOVE_FORWARD\n");
             for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[i];
-                targetLegsPositions.legs[i].footOnGround = true;
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == 0) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
             }
-            targetLegsPositions.legs[leg::LegContainer::LEFT_FRONT].footOnGround = false;
             step = LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION;
             break;
         }
         case LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION: {
             printf("LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION\n");
             for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + 1) % 6];
-                targetLegsPositions.legs[i].footOnGround = true;
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == 0) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
             }
-            targetLegsPositions.legs[leg::LegContainer::RIGHT_FRONT].footOnGround = false;
             step = MOVE_LEG_BACK_TO_THE_2ND_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_2ND_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_2ND_POSITION\n");
-            for(int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + 2) % 6];
-                targetLegsPositions.legs[i].footOnGround = true;
+            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == 0) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
             }
-            targetLegsPositions.legs[leg::LegContainer::LEFT_MIDDLE].footOnGround = false;
             step = MOVE_LEG_BACK_TO_THE_3RD_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_3RD_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_3RD_POSITION\n");
-            for(int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + 3) % 6];
-                targetLegsPositions.legs[i].footOnGround = true;
+            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == 0) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
             }
-            targetLegsPositions.legs[leg::LegContainer::RIGHT_MIDDLE].footOnGround = false;
             step = MOVE_LEG_BACK_TO_THE_4TH_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_4TH_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_4TH_POSITION\n");
-            for(int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + 4) % 6];
-                targetLegsPositions.legs[i].footOnGround = true;
+            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == 0) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
             }
-            targetLegsPositions.legs[leg::LegContainer::LEFT_BACK].footOnGround = false;
             step = MOVE_LEG_BACK_TO_THE_5TH_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_5TH_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_5TH_POSITION\n");
-            for(int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + 5) % 6];
-                targetLegsPositions.legs[i].footOnGround = true;
+            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == 0) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
             }
-            targetLegsPositions.legs[leg::LegContainer::RIGHT_BACK].footOnGround = false;
             step = LIFT_LEG_AND_MOVE_FORWARD;
             break;
         }
@@ -164,7 +189,11 @@ namespace logic::gait {
     leg::SingleCoordinate MonochromaticGait::CalculateXTargetPosition(uint8_t step) {
         const uint8_t numberOfSteps = 6;
         leg::SingleCoordinate xStep = (xForeward - xBackwards) / (numberOfSteps - 1);
-        return xForeward - xStep * step;
+        leg::SingleCoordinate result = xForeward - xStep * step;
+        if (result < xBackwards) {
+            result = xBackwards;
+        }
+        return result;
     }
 
     Result MonochromaticGait::GoToTheDefaultPosition() { printf("GoToTheDefaultPosition\n"); return RESULT_OK; }

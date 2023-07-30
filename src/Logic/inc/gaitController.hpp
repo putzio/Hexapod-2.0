@@ -4,6 +4,7 @@
 #include "gaitInterface.hpp"
 #include "tripodGait.hpp"
 #include "caterpillarGait.hpp"
+#include "monochromaticGait.hpp"
 #include "Results.h"
 #include "Leg.hpp"
 

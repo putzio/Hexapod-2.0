@@ -114,6 +114,10 @@ namespace logic {
             p_ptr_gaitInterface = std::make_unique<gait::CaterpillarGait>();
             break;
         }
+        case gait::GaitType::MONOCHROMATIC: {
+            p_ptr_gaitInterface = std::make_unique<gait::MonochromaticGait>();
+            break;
+        }
         default:
             return RESULT_UNDEFINED_ERROR;
         }
