@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Robot Control</title>
+    <title>Servo Calibration</title>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -72,142 +72,122 @@
         width: 100%;
         /*background-color: #af00c3; /* Updated background color */
       }
+      .no-link-underline {
+        text-decoration: none; /* Removes the underline from the link */
+        color: white; /* Ensures that the link text color remains unchanged */
+        display: inline-block;
+        background-color: #af00c3;
+        padding: 5px 20px; /* Adjust padding for better visual appearance */
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Robot Control Panel</h1>
+      <h1>Servo Calibration</h1>
       <div class="control-buttons">
-        <button class="arrow-buttons" onclick="move('forward')">
-          <i class="material-icons">arrow_upward</i>
-        </button>
+        <a href="index.shtml"
+          ><button class="no-link-underline" onclick="calibration('stop')">
+            Calibrate Servos
+          </button></a
+        >
       </div>
+      <h2>Choose Servo</h2>
       <div class="control-buttons">
-        <button class="arrow-buttons" onclick="move('left')">
+        <button class="arrow-buttons" onclick="servo('left')">
           <i class="material-icons">arrow_back</i>
         </button>
-        <button class="arrow-buttons" onclick="move('backward')">
-          <i class="material-icons">arrow_downward</i>
+        <button class="arrow-buttons" onclick="servo('right')">
+          <i class="material-icons">arrow_forward</i>
         </button>
-        <button class="arrow-buttons" onclick="move('right')">
+      </div>
+      <h2>
+        Calibrate servo:
+        <!--#servo-->
+      </h2>
+      <div class="control-buttons">
+        <button class="arrow-buttons" onclick="calibration('left')">
+          <i class="material-icons">arrow_back</i>
+        </button>
+        <button class="arrow-buttons" onclick="calibration('right')">
           <i class="material-icons">arrow_forward</i>
         </button>
       </div>
       <div>
         <p>
-          Servo1 calibration:
+          Servo1:
           <!--#s1-->
         </p>
         <p>
-          Servo2 calibration:
+          Servo2:
           <!--#s2-->
         </p>
         <p>
-          Servo3 calibration:
+          Servo3:
           <!--#s3-->
         </p>
         <p>
-          Servo4 calibration:
+          Servo4:
           <!--#s4-->
         </p>
         <p>
-          Servo5 calibration:
+          Servo5:
           <!--#s5-->
         </p>
         <p>
-          Servo6 calibration:
+          Servo6:
           <!--#s6-->
         </p>
         <p>
-          Servo7 calibration:
+          Servo7:
           <!--#s7-->
         </p>
         <p>
-          Servo8 calibration:
+          Servo8:
           <!--#s8-->
         </p>
         <p>
-          Servo9 calibration:
+          Servo9:
           <!--#s9-->
         </p>
         <p>
-          Servo10 calibration:
+          Servo10:
           <!--#s10-->
         </p>
         <p>
-          Servo11 calibration:
+          Servo11:
           <!--#s11-->
         </p>
         <p>
-          Servo12 calibration:
+          Servo12:
           <!--#s12-->
         </p>
       </div>
-      <h2 margin="20px">Settings:</h2>
-      <div class="gait-select">
-        <label for="gaitSelect">Select Gait:</label>
-        <select id="gaitSelect" onchange="changeGait()">
-          <option value="tripod">Tripod</option>
-          <option value="caterpillar">Caterpillar</option>
-          <option value="monochromatic">Monochromatic</option>
-        </select>
-      </div>
-      <div class="speed-slider-container">
-        <label for="speedSlider" class="speed-label">Speed:</label>
-        <input
-          type="range"
-          min="1"
-          max="10"
-          value="5"
-          id="speedSlider"
-          onchange="changeSpeed()"
-          class="speed-slider"
-        />
-      </div>
-      <p id="currentSpeed">Current Speed: 5</p>
     </div>
 
     <script>
       let currentSpeed = 5;
 
-      function move(direction) {
-        console.log(`Moving ${direction}`);
+      function servo(index) {
+        console.log(`change servo: ${index}`);
         // You would send commands to the robot's backend server here
-        if (direction === "forward") {
-          sendRequest("/direction.cgi?direction=forward");
-        } else if (direction === "backward") {
-          sendRequest("/direction.cgi?direction=backward");
-        } else if (direction === "left") {
-          sendRequest("/direction.cgi?direction=left");
-        } else if (direction === "right") {
-          sendRequest("/direction.cgi?direction=right");
+        if (index === "left") {
+          sendRequest("/calibration.cgi?servo=left");
+        } else if (index === "right") {
+          sendRequest("/calibration.cgi?servo=right");
         }
       }
-
-      function changeGait() {
-        const gaitSelect = document.getElementById("gaitSelect");
-        const selectedGait = gaitSelect.value;
-        console.log(`Selected Gait: ${selectedGait}`);
-        // You would send the selected gait to the robot's backend server here
-        if (selectedGait === "tripod") {
-          sendRequest("/gait.cgi?gait=tripod");
-        } else if (selectedGait === "caterpillar") {
-          sendRequest("/gait.cgi?gait=caterpillar");
-        } else if (selectedGait === "monochromatic") {
-          sendRequest("/gait.cgi?gait=monochromatic");
+      function calibration(changeValue) {
+        console.log(`Calibrate by ${changeValue}`);
+        // You would send commands to the robot's backend server here
+        if (changeValue === "left") {
+          sendRequest("/calibration.cgi?calibration=left");
+        } else if (changeValue === "right") {
+          sendRequest("/calibration.cgi?calibration=right");
+        }
+        if (changeValue === "stop") {
+          sendRequest("/calibration.cgi?calibration=stop");
         }
       }
-
-      function changeSpeed() {
-        const speedSlider = document.getElementById("speedSlider");
-        currentSpeed = speedSlider.value;
-        const currentSpeedLabel = document.getElementById("currentSpeed");
-        currentSpeedLabel.textContent = `Current Speed: ${currentSpeed}`;
-        console.log(`Current Speed: ${currentSpeed}`);
-        // You would send the current speed to the robot's backend server here
-        sendRequest(`/speed.cgi?speed=${currentSpeed}`);
-      }
-
       // Function to send the HTTP request to the server
       function sendRequest(url) {
         // Create a new XMLHttpRequest object

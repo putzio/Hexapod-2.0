@@ -16,9 +16,13 @@ void Hexapod::PeriodicProcess() {
 void Hexapod::SetGait(logic::gait::GaitType gaitType) {
     gaitController.ChangeGait(gaitType);
 }
-void Hexapod::SetSpeed(float speed){
+void Hexapod::SetSpeed(float speed) {
     gaitController.ChangeSpeed(speed);
 }
 void Hexapod::SetDirection(logic::GaitController::Direction direction) {
     gaitController.ChangeDirection(direction);
+}
+
+void Hexapod::CalibrateServos(const std::array<int16_t, 12>& calibrationValues) {
+    driver.CalibrateServos(calibrationValues);
 }

@@ -11,8 +11,14 @@ namespace pico_drivers {
     }
     std::array<uint16_t, 12> RobotDriver::UpdateCurrentSensorsValues() {
         return current_sensors.PeriodicProcess();
-    };
+    }
     void RobotDriver::UpdateServos(std::array<logic::leg::ServosPositions, 6> newAnges) {
         legsController.UpdateServos(newAnges);
-    };
+    }
+    void RobotDriver::CalibrateServos(const std::array<int16_t, 12>& calibrationValues) {
+        for (int i = 0; i < calibrationValues.size(); i++) {
+            legsController.CalibrateServo(i, calibrationValues[i]);
+        }
+        legsController.InitServos();
+    }
 }

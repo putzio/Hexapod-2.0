@@ -27,6 +27,7 @@
       .control-buttons {
         display: flex;
         justify-content: center;
+        width: auto;
         margin: 10px;
       }
 
@@ -44,6 +45,7 @@
         align-items: center;
         justify-content: center;
         margin: 10px;
+        transition: background-color 0.2s ease;
       }
 
       .arrow-buttons:hover {
@@ -73,11 +75,26 @@
         width: 100%;
         /*background-color: #af00c3; /* Updated background color */
       }
+
+      .no-link-underline {
+        text-decoration: none; /* Removes the underline from the link */
+        color: white; /* Ensures that the link text color remains unchanged */
+        display: inline-block;
+        background-color: #af00c3;
+        padding: 5px 20px; /* Adjust padding for better visual appearance */
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Robot Control Panel</h1>
+      <div class="control-buttons">
+        <a href="calibrate_servos.shtml"
+          ><button class="no-link-underline" onclick="calibration('start')">
+            Calibrate Servos
+          </button></a
+        >
+      </div>
       <div class="control-buttons">
         <button class="arrow-buttons" onclick="move('forward')">
           <i class="material-icons">arrow_upward</i>
@@ -120,7 +137,12 @@
 
     <script>
       let currentSpeed = 5;
-
+      function calibration(changeValue) {
+        console.log(`Calibrate by ${changeValue}`);
+        if (changeValue === "start") {
+          sendRequest("/calibration.cgi?calibration=start");
+        }
+      }
       function move(direction) {
         console.log(`Moving ${direction}`);
         // You would send commands to the robot's backend server here
@@ -156,7 +178,7 @@
         currentSpeedLabel.textContent = `Current Speed: ${currentSpeed}`;
         console.log(`Current Speed: ${currentSpeed}`);
         // You would send the current speed to the robot's backend server here
-        sendRequest(`/speed.cgi?speed=${currentSpeed}`);  
+        sendRequest(`/speed.cgi?speed=${currentSpeed}`);
       }
 
       // Function to send the HTTP request to the server

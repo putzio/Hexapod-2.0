@@ -1,6 +1,16 @@
 #include "cgi_handlers.hpp"
 
 extern Hexapod hexapod;
+extern volatile int16_t calibration_values[12]{
+     20,     60,
+    -10,     50,
+      0,    -50,
+    -60,    -30,
+    -40,    -50,
+      0,    -60
+};
+extern volatile uint8_t calibratingServoIndex;
+extern bool calibrating;
 
 const char* cgi_direction_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]) {
     printf("cgi_direction_handler\n");
@@ -54,4 +64,37 @@ const char* cgi_speed_handler(int iIndex, int iNumParams, char* pcParam[], char*
 
     // Send the index page back to the user
     return "/index.shtml";
+}
+
+const char* cgi_calibration_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]) {
+    printf("cgi_calibration_handler\n");
+
+    if (strcmp(pcParam[0], "servo") == 0) {
+        if (strcmp(pcValue[0], "left") == 0) {
+            calibratingServoIndex--;
+            if (calibratingServoIndex > 11)
+                calibratingServoIndex = 11;
+        }
+        else if (strcmp(pcValue[0], "right") == 0) {
+            calibratingServoIndex++;
+            if (calibratingServoIndex > 11)
+                calibratingServoIndex = 0;
+        }
+    }
+    else if (strcmp(pcParam[0], "calibration") == 0) {
+        if (strcmp(pcValue[0], "left") == 0) {
+            calibration_values[calibratingServoIndex] -= 5;
+        }
+        else if (strcmp(pcValue[0], "right") == 0) {
+            calibration_values[calibratingServoIndex] += 5;
+        }
+        else if (strcmp(pcValue[0], "start") == 0) {
+            calibrating = true;
+        }
+        else if (strcmp(pcValue[0], "stop") == 0) {
+            calibrating = false;
+            return "/index.shtml";
+        }
+    }
+    return "/calibrate_servos.shtml";
 }
