@@ -46,5 +46,10 @@ namespace logic::gait {
             leg::LegContainer::RIGHT_MIDDLE,
             leg::LegContainer::RIGHT_BACK
         };
+        leg::FootTargetPosition liftAndForeward = { xForeward, false };
+        leg::FootTargetPosition lowerAndHalfway = { xHalfway, true };
+        leg::FootTargetPosition lowerAndBackward = { xBackwards, true };
+        leg::FootTargetPosition liftAndBackward = { xBackwards, false };
+        leg::FootTargetPosition lowerAndForeward = { xForeward, true };
     };
 } // namespace logic::gait

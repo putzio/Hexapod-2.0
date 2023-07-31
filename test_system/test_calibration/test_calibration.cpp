@@ -9,7 +9,7 @@
 // WIFI Credentials - take care if pushing to github!
 // const char WIFI_SSID[] = "xdddd";
 // const char WIFI_PASSWORD[] = "kapusta15";
-pico_drivers::Gpio_w led;
+web::Gpio_w led;
 uint8_t leg = 0;
 extern volatile int16_t calibration_values[12];
 
@@ -42,7 +42,7 @@ int main() {
     cgiHandlers.push_back(tCGI{ "/gait.cgi", (tCGIHandler)cgi_gait_handler });
     cgiHandlers.push_back(tCGI{ "/speed.cgi", (tCGIHandler)cgi_speed_handler });
 
-    led = pico_drivers::Gpio_w();
+    led = web::Gpio_w();
     // // Configure SSI and CGI handler
     ssi_init();
     printf("SSI Handler initialised\n");

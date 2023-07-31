@@ -10,7 +10,7 @@ namespace logic::gait {
         void Error_Handler();
         TripodGait() {
             step = 0;
-            changingStepValues = { Constants::DEFAULT_CHANGING_STEP, Constants::DEFAULT_CHANGING_STEP };
+            changingStepValues = { Constants::DEFAULT_CHANGING_STEP, Constants::DEFAULT_CHANGING_STEP * 2 };//on ground, in air
         };
         Result GoForeward() override;
         Result GoBackward() override;

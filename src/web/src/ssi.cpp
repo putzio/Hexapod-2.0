@@ -2,7 +2,14 @@
 
 // SSI tags - tag length limited to 8 bytes by default
 const char* ssi_tags[] = { "s1", "s2", "s3", "s4","s5", "s6", "s7", "s8", "s9", "s10", "s11", "s12", "servo" };
-volatile int16_t calibration_values[12] = { 0 };
+volatile int16_t calibration_values[12] = {
+     20,     60,
+    -10,     50,
+      0,    -50,
+    -60,    -30,
+    -40,    -50,
+      0,    -60
+};
 volatile uint8_t calibratingServoIndex = 0;
 
 u16_t ssi_handler(int iIndex, char* pcInsert, int iInsertLen) {

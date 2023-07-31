@@ -1,14 +1,7 @@
 #include "cgi_handlers.hpp"
 
 extern Hexapod hexapod;
-extern volatile int16_t calibration_values[12]{
-     20,     60,
-    -10,     50,
-      0,    -50,
-    -60,    -30,
-    -40,    -50,
-      0,    -60
-};
+extern volatile int16_t calibration_values[12];
 extern volatile uint8_t calibratingServoIndex;
 extern bool calibrating;
 

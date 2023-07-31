@@ -11,8 +11,6 @@ namespace pico_drivers {
         tx_data[2] = 0x00;
         // Data that we will get
         uint8_t rx_data[3] = { 0 };
-
-        SpiWriteRead(tx_data, rx_data, 6);
         gpio_cs->Write(0);
         SpiWriteRead(tx_data, rx_data, 3);
         gpio_cs->Write(1);
