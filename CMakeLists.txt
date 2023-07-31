@@ -69,7 +69,7 @@ target_include_directories(
 )
 
 add_executable(${PROJECT_NAME} 
-    ./src/main.cpp
+    ./main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}  
@@ -77,11 +77,12 @@ target_link_libraries(${PROJECT_NAME}
     LOGIC
     DRIVERS
     HEXAPOD
+    pico_multicore
 ) 
 
 # enable usb output, disable uart output
 pico_enable_stdio_usb(${PROJECT_NAME} TRUE)
-pico_enable_stdio_uart(${PROJECT_NAME} FALSE)
+pico_enable_stdio_uart(${PROJECT_NAME} TRUE)
 
 #Generates different file formats
 pico_add_extra_outputs(${PROJECT_NAME})

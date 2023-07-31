@@ -13,6 +13,7 @@ target_sources(DRIVERS
     PUBLIC ./src/legs_controller.cpp
     PUBLIC ./src/robot_current_sensors.cpp
     PUBLIC ./src/GD25VQ21B.cpp
+    PUBLIC ./src/uart.cpp
     )
 
 target_link_libraries(DRIVERS PUBLIC
@@ -26,5 +27,6 @@ target_link_libraries(DRIVERS PUBLIC
     hardware_gpio
     hardware_i2c
     hardware_spi
+    hardware_uart
     LOGIC
 ) 
