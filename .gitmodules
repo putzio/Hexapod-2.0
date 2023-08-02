@@ -1,3 +1,6 @@
 [submodule "extern/googletest"]
 	path = extern/googletest
 	url = ../../google/googletest.git
+[submodule "flashrom"]
+	path = flashrom
+	url = git@github.com:svn2github/flashrom.git

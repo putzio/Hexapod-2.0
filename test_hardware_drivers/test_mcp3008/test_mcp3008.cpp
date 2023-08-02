@@ -2,6 +2,7 @@
 #include "gpio.hpp"
 #include <array>
 #include "pinout.hpp"
+#include <string>
 
 #define SPI_INSTANCE spi0
 #define BAUD_RATE 250000
@@ -41,5 +42,9 @@ void UpdateADC(std::array<uint16_t, 8>& adc_values, pico_drivers::MCP3008& adc_s
 void PrintADC(const std::array<uint16_t, 8>& adc_values) {
     for (int i = 0; i < adc_values.size(); i++) {
         printf("ADC %d value: %d\n", i, adc_values[i]);
+    }
+    for (int i = 0; i < adc_values.size(); i++) {
+        std::string data = ">s" + std::to_string(i) + ":" + std::to_string(adc_values[i]) + "\n";
+        printf(data.c_str());
     }
 }

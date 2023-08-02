@@ -90,10 +90,19 @@
       <h1>Robot Control Panel</h1>
       <div class="control-buttons">
         <a href="calibrate_servos.shtml"
-          ><button class="no-link-underline" onclick="calibration('start')">
+          ><button
+            class="no-link-underline"
+            onclick="calibration('start')"
+            style="margin-bottom: 20px"
+          >
             Calibrate Servos
           </button></a
         >
+      </div>
+      <div class="control-buttons">
+        <button class="no-link-underline" onclick="move('stop')">
+          Stop Robot
+        </button>
       </div>
       <div class="control-buttons">
         <button class="arrow-buttons" onclick="move('forward')">
@@ -154,6 +163,8 @@
           sendRequest("/direction.cgi?direction=left");
         } else if (direction === "right") {
           sendRequest("/direction.cgi?direction=right");
+        } else if (direction === "stop") {
+          sendRequest("/direction.cgi?direction=stop");
         }
       }
 

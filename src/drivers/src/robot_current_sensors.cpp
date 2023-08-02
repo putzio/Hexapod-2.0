@@ -2,52 +2,50 @@
 
 namespace pico_drivers {
 
-    RobotCurrentSensors::RobotCurrentSensors(const std::array<uint8_t, 12> current_sensors_channels, spi_inst_t* spi, uint32_t baudRate,
+    RobotCurrentSensors::RobotCurrentSensors(const std::array<uint8_t, 12> currentSensorsChannels, spi_inst_t* spi, uint32_t baudRate,
         uint8_t sckPin, uint8_t txPin, uint8_t rxPin, uint8_t cs0Pin, uint8_t cs1Pin)
-        :current_sensors_channels(current_sensors_channels),
+        :currentSensorsChannels(currentSensorsChannels),
         extern_adc({
                 MCP3008(spi, baudRate, sckPin, txPin, rxPin, cs0Pin),
                 MCP3008(spi, baudRate, sckPin, txPin, rxPin, cs1Pin)
             }) {
-        // extern_adc[0] = MCP3008(SPI_INSTANCE, SPI_BAUD_RATE, SPI_CLK_PIN, SPI_MOSI_PIN, SPI_MISO_PIN, SPI_CS_ADC0_PIN);
-        // extern_adc[1] = MCP3008(SPI_INSTANCE, SPI_BAUD_RATE, SPI_CLK_PIN, SPI_MOSI_PIN, SPI_MISO_PIN, SPI_CS_ADC0_PIN);
-        FillCurrentSensorsBuffer();
-    }
-    std::array<uint16_t, 12> RobotCurrentSensors::PeriodicProcess() {
-        ReadCurrentSensors();
-        CalculateRMS();
-        return current_sensors_rms;
+        for (std::vector<uint16_t>& sensor : currentSensorsBuffer) {
+            sensor.resize(BUFFER_SIZE);
+        }
+        FillCurrentSensorsBuffer_blocking();
     }
 
-    Result RobotCurrentSensors::ReadCurrentSensors() {
+    Result RobotCurrentSensors::ReadNextPairOfCurrentSensors() {
         Result result = Result::RESULT_OK;
+        channelsReadIndex++;
+        if (channelsReadIndex >= currentSensorsChannels.size() / 2) {
+            buffer_index++;
+            channelsReadIndex = 0;
+            result = Result::RESULT_ALL_ADC_CHANNELS_READ_FINISHED;
+        }
         if (buffer_index >= BUFFER_SIZE) {
             buffer_index = 0;
         }
-        for (int i = 0; i < current_sensors_buffer.size(); i++) {
-            current_sensors_buffer[i][buffer_index] = extern_adc[i / 6].ReadChannel(current_sensors_channels[i]);
-        }
-        buffer_index++;
+        currentSensorsBuffer[channelsReadIndex][buffer_index] = extern_adc[0].ReadChannel(currentSensorsChannels[channelsReadIndex]);
+        currentSensorsBuffer[channelsReadIndex + 6][buffer_index] = extern_adc[0].ReadChannel(currentSensorsChannels[channelsReadIndex + 6]);
         return result;
     }
-    Result RobotCurrentSensors::CalculateRMS() {
-        Result result = Result::RESULT_OK;
-        for (int i = 0; i < current_sensors_buffer.size(); i++) {
+
+    std::array<uint16_t, 12> RobotCurrentSensors::CalculateRMS() {
+        for (int i = 0; i < currentSensorsBuffer.size(); i++) {
             uint32_t sum = 0;
-            for (int j = 0; j < current_sensors_buffer[i].size(); j++) {
-                sum += current_sensors_buffer[i][j] * current_sensors_buffer[i][j];
+            for (int j = 0; j < currentSensorsBuffer[i].size(); j++) {
+                sum += currentSensorsBuffer[i][j] * currentSensorsBuffer[i][j];
             }
-            current_sensors_rms[i] = sqrt(sum / current_sensors_buffer[i].size());
+            currentSensorsRms[i] = sqrt(sum / currentSensorsBuffer[i].size());
         }
-        return result;
+        return currentSensorsRms;
     }
-    Result RobotCurrentSensors::FillCurrentSensorsBuffer() {
+    Result RobotCurrentSensors::FillCurrentSensorsBuffer_blocking() {
         Result result = Result::RESULT_OK;
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            for (int j = 0; j < current_sensors_buffer.size(); j++) {
-                current_sensors_buffer[j][i] = extern_adc[j / 6].ReadChannel(current_sensors_channels[j]);
-            }
-            sleep_ms(5);
+        for (int i = 0; i < BUFFER_SIZE * 6; i++) {
+            ReadNextPairOfCurrentSensors();
+            sleep_ms(20);
         }
         return result;
     }

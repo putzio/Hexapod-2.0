@@ -5,7 +5,6 @@ target_link_libraries(HEXAPOD
 ) 
 
 target_sources(HEXAPOD PRIVATE
-    ./src/robot_driver.cpp
     ./src/hexapod.cpp
     ./src/cgi_handlers.cpp
 )

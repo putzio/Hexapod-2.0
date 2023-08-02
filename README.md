@@ -2,6 +2,17 @@
 
 ## Class diagram of the project
 
+### Project structure:
+
+```mermaid
+    classDiagram
+        %%Project structure:
+        Hexapod *-- RobotDriver
+        Hexapod *-- GaitController
+        Hexapod *-- Server
+
+```
+
 ### Robot Logic:
 
 ```mermaid

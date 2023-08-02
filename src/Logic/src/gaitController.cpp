@@ -68,6 +68,8 @@ namespace logic {
         case TURN_LEFT:
             ReturnOnError(p_ptr_gaitInterface->TurnLeft());
             break;
+        case STOP:
+            break;
         case DEFAULT_POSITION: {
             leg::LegRange legRange = legs[0].GetRange();
             legRange.y[1] = 2.0;
