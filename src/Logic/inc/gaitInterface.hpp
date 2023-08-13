@@ -38,7 +38,15 @@ namespace logic::gait {
         virtual Result TurnRight();
         virtual Result TurnLeft();
         virtual Gait GetCurrentGait();
-        virtual Result GoToTheDefaultPosition();
+        Result GoToTheDefaultPosition() {
+            leg::FootTargetPosition target;
+            target.x = 0;
+            target.footOnGround = true;
+            for (leg::FootTargetPosition& legTarget : targetLegsPositions.legs) {
+                legTarget = target;
+            }
+        };
+
         std::array<float, 2> GetChangingStepValues() { return changingStepValues; };
         /**
          * @brief returns an enum representing the classingMode)

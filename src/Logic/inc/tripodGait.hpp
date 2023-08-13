@@ -16,7 +16,7 @@ namespace logic::gait {
         Result GoBackward() override;
         Result TurnRight() override;
         Result TurnLeft() override;
-        Result GoToTheDefaultPosition() override;
+        // Result GoToTheDefaultPosition() override;
         Gait GetCurrentGait() override { return TRIPOD; };
     private:
         leg::SingleCoordinate xForeward = Constants::X_ABSOLUTE_RANGE[1];

@@ -26,10 +26,12 @@ namespace logic::leg {
         if (!xPos.IsBetween(p_legRange.x)) {
             return RESULT_COORDINATES_OUT_OF_RANGE;
         }
+        // SingleCoordinate DELTA_SENSING_Y;
+        // DELTA_SENSING_Y.SetCoordinate_mm(8);
         SingleCoordinate xMapped = MapXInRange(xPos);
         p_coordinates.y = (1.0 - sin(xMapped.GetCoordinate() * 3.1415)) * //sin^2?
             (double)(p_footOnGroundY[1].GetCoordinate() - p_footOnGroundY[0].GetCoordinate())
-            + p_footOnGroundY[0].GetCoordinate();
+            + p_footOnGroundY[0].GetCoordinate();// - DELTA_SENSING_Y.GetCoordinate();
         return RESULT_OK;
     }
 
@@ -115,6 +117,17 @@ namespace logic::leg {
 
     Result LegPositionController::SetLegRange(const LegRange& legRange) {
         p_legRange = legRange;
+        return RESULT_OK;
+    }
+
+    void LegPositionController::SetFootHights(std::array<SingleCoordinate, 2> hights) {
+        p_footOnGroundY[0] = hights[0];
+        p_footOnGroundY[1] = hights[1];
+    }
+
+    Result LegPositionController::SetStandUp() {
+        p_coordinates.x = 0;
+        p_coordinates.y = p_legRange.y[1];
         return RESULT_OK;
     }
 
