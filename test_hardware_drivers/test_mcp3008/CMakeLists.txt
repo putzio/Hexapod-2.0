@@ -9,6 +9,7 @@ add_executable(test_mcp3008 test_mcp3008.cpp)
 target_link_libraries(test_mcp3008 
     LOGIC
     DRIVERS
+    hardware_timer
 ) 
 
 pico_enable_stdio_usb(test_mcp3008 1)
