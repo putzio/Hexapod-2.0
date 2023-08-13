@@ -37,6 +37,10 @@ namespace logic::leg {
         }
     }
 
+    Result Leg::JustGoToTarget() {
+        return p_servos.GoToTargetAngle();
+    }
+
     inline void Leg::SetCorrectServoChangingStep() {
         if (p_finalTargetPostion.footOnGround) {
             servosChangingStep = servosChangingStepOnGround;
@@ -75,7 +79,9 @@ namespace logic::leg {
         return RESULT_OK;
     }
 
+    // Result Leg::StandUp(){
 
+    // }
 
     const FootCoordinates& Leg::GetFootCoordinates() const {
         return p_controller.GetCoordinates();

@@ -18,9 +18,9 @@
 #define FLASH_WP_PIN 26
 
 #define SPI_INSTANCE spi0
-#define SPI_BAUD_RATE 400000
+#define SPI_BAUD_RATE 250000
 
 #define UART_TX_PIN 0
 #define UART_RX_PIN 1
 #define UART_ID uart0
-#define UART_BAUD_RATE 9600
+#define UART_BAUD_RATE 115200

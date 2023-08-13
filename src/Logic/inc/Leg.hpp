@@ -27,6 +27,7 @@ namespace logic::leg {
         // Leg(LegServos& servos, LegPositionController& controller);
 
         Result LegPeriodicProcess();
+        Result JustGoToTarget();
         /**
          * @brief Set the New Target Position for leg
          * and optionally calculate coordinates from mm (devide by LEG_LENGTH)
@@ -37,6 +38,7 @@ namespace logic::leg {
 
         Result SetNewTargetPosition(const FootTargetPosition& coordinates);
         Result SetNewTargetPosition(const FootCoordinates& coordinates);
+        Result StandUp();
         /**
          * @brief Set the New Target Position for Servos
          * The position controller does not calculate the steps on a way to it

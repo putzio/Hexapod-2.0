@@ -3,8 +3,11 @@
 namespace logic {
 
     GaitController::GaitController() {
-        for (int i = 0; i < (int)legs.size(); i++) {
+        for (int i = 0; i < 4; i++) {
             legs[i] = leg::Leg(Constants::PI / 2, Constants::PI / 2, leg::Side::KNEE_BACK);
+        }
+        for (int i = 4; i < (int)legs.size(); i++) {
+            legs[i] = leg::Leg(Constants::PI / 2, Constants::PI / 2, leg::Side::KNEE_FRONT);
         }
     }
 
@@ -14,13 +17,13 @@ namespace logic {
             return RESULT_WRONG_GAIT;
         }
         Result result = GoToPosition();
-        if (result == RESULT_LEG_IN_TARGET_POSITION) {
+        if (result == RESULT_LEG_IN_TARGET_POSITION && direction != STOP) {
             ReturnOnError(SetNewTarget());
         }
 
-        for (int i = 0; i < (int)legs.size(); i++) {
-            ReturnUnexpected(legs[i].LegPeriodicProcess(), RESULT_UNDEFINED_ERROR);
-        }
+        // for (int i = 0; i < (int)legs.size(); i++) {
+        //     ReturnUnexpected(legs[i].LegPeriodicProcess(), RESULT_UNDEFINED_ERROR);
+        // }
         return RESULT_OK;
     }
 
@@ -88,6 +91,16 @@ namespace logic {
             ReturnOnError(legs[i].SetNewTargetPosition(targetLegsPositions->legs[i]));
         }
 
+        return RESULT_OK;
+    }
+
+    Result GaitController::StandUp() {
+        using namespace leg;
+        ServosPositions positions = { Constants::PI / 2, Constants::PI / 2 };
+        for (Leg& leg : legs) {
+            leg.MoveJServos(positions);
+            leg.JustGoToTarget();
+        }
         return RESULT_OK;
     }
 

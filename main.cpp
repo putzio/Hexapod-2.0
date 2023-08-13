@@ -26,23 +26,28 @@ int main(void) {
     stdio_init_all();
     pico_drivers::Gpio cs2 = pico_drivers::Gpio(SPI_CS_FLASH_PIN, pico_drivers::Gpio::OUTPUT);
     cs2.Write(1);
-    // multicore_launch_core1(core1_entry);
-    // hexapod.SetGait(logic::gait::GaitType::MONOCHROMATIC);
-    // hexapod.SetDirection(logic::GaitController::Direction::FORWARD);
-    hexapod.PeriodicProcess();
+    multicore_launch_core1(core1_entry);
+    hexapod.SetGait(logic::gait::GaitType::TRIPOD);
+    hexapod.SetDirection(logic::GaitController::Direction::FORWARD);
+    hexapod.SetSpeed(1.0f);
+    hexapod.GaitControllerPeriodicProcess();
     // cyw43_arch_init();
-    // web::Gpio_w led = web::Gpio_w();
-    pico_drivers::Gpio led = pico_drivers::Gpio(25, pico_drivers::Gpio::OUTPUT);
+    web::Gpio_w led = web::Gpio_w();
+    // pico_drivers::Gpio led = pico_drivers::Gpio(25, pico_drivers::Gpio::OUTPUT);
     led.Write(1);
+    uint32_t ledPreviousCallTime = 0;
+    uint32_t gaitTimer = 0;
     while (true) {
-        // if (calibrating) {
-        //     // hexapod.CalibrateServos((const std::array<int16_t, 12>&)calibration_values);
-        //     led.Write(0);
-        // }
-        // else {
-        hexapod.PeriodicProcess();
-        led.Write((hexapod.GetTime() / 1000000) % 2);
-        // }
+        hexapod.AdcPeriodicProcess();
+        if (calibrating)
+            hexapod.CalibrateServos((const std::array<int16_t, 12>&)calibration_values);
+        else
+            hexapod.GaitControllerPeriodicProcess();
+
+        if (hexapod.GetTime() / 1000 - ledPreviousCallTime > 100) {
+            led.Toggle();
+            ledPreviousCallTime = hexapod.GetTime() / 1000;
+        }
         sleep_us(20);
     }
 }

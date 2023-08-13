@@ -2,6 +2,7 @@ target_link_libraries(HEXAPOD
     WEB
 	DRIVERS
     LOGIC
+    hardware_timer
 ) 
 
 target_sources(HEXAPOD PRIVATE

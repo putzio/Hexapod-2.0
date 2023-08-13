@@ -203,7 +203,7 @@ namespace logic::gait {
     }
 
 
-    Result CaterpillarGait::GoToTheDefaultPosition() { printf("GoToTheDefaultPosition\n"); return RESULT_OK; }
+    // Result CaterpillarGait::GoToTheDefaultPosition() { printf("GoToTheDefaultPosition\n"); return RESULT_OK; }
     //     typedef enum {
     //         MOVE_LIFTED_LEGS_TO_THE_DEFAULT_X_POSITION,
     //         LIFT_LEGS_IN_INCORRECT_POSITION,

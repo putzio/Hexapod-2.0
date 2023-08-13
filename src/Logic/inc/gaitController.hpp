@@ -35,6 +35,7 @@ namespace logic {
         uint8_t speed = 5;
         const leg::LegContainer* targetLegsPositions = nullptr;
         GaitController();
+        Result StandUp();
         Result ChangeDirection(Direction newDirection);
         Result ChangeGait(gait::GaitType newGait);
         Result ChangeSpeed(uint8_t newSpeed);
@@ -44,3 +45,4 @@ namespace logic {
 
     };
 }
+
