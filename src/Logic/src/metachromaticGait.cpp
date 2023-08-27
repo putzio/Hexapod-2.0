@@ -1,8 +1,8 @@
-#include "monochromaticGait.hpp"
+#include "metachromaticGait.hpp"
 #include <stdio.h>
 namespace logic::gait {
 
-    MonochromaticGait::MonochromaticGait() {
+    MetachromaticGait::MetachromaticGait() {
         step = 0;
         changingStepValues[0] = Constants::DEFAULT_CHANGING_STEP / 3.0;//On ground 
         changingStepValues[1] = Constants::DEFAULT_CHANGING_STEP * 8.0;//In air 
@@ -11,13 +11,13 @@ namespace logic::gait {
         }
     };
 
-    void MonochromaticGait::Error_Handler() {
+    void MetachromaticGait::Error_Handler() {
         printf("In Error_Handler()\n");
         while (1) {
             // sleep_ms(1000);
         }
     }
-    Result MonochromaticGait::GoForeward() {
+    Result MetachromaticGait::GoForeward() {
         typedef enum {
             LIFT_LEG_AND_MOVE_FORWARD = 0,
             LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION = 1,
@@ -113,14 +113,14 @@ namespace logic::gait {
             break;
         }
         default:
-            printf("ERROR: MonochromaticGait::GoForeward() - step is undefined\n");
+            printf("ERROR: MetachromaticGait::GoForeward() - step is undefined\n");
             Error_Handler();
             return RESULT_UNDEFINED_ERROR;
         }
         return RESULT_OK;
     }
 
-    Result MonochromaticGait::GoBackward() {
+    Result MetachromaticGait::GoBackward() {
         // typedef enum {
         //     LIFT_FRONT_LEGS_AND_MOVE_THEM_BACKWARD,
         //     LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_HALFWAY,
@@ -176,17 +176,17 @@ namespace logic::gait {
         //     break;
         // }
         // default:
-        //     printf("ERROR: MonochromaticGait::GoBackward() - step is undefined\n");
+        //     printf("ERROR: MetachromaticGait::GoBackward() - step is undefined\n");
         //     Error_Handler();
         //     return RESULT_UNDEFINED_ERROR;
         // }
         // return RESULT_OK;
     }
 
-    Result MonochromaticGait::TurnRight() { printf("TurnRight\n"); return RESULT_OK; }
-    Result MonochromaticGait::TurnLeft() { printf("TurnLeft\n"); return RESULT_OK; }
+    Result MetachromaticGait::TurnRight() { printf("TurnRight\n"); return RESULT_OK; }
+    Result MetachromaticGait::TurnLeft() { printf("TurnLeft\n"); return RESULT_OK; }
 
-    leg::SingleCoordinate MonochromaticGait::CalculateXTargetPosition(uint8_t step) {
+    leg::SingleCoordinate MetachromaticGait::CalculateXTargetPosition(uint8_t step) {
         const uint8_t numberOfSteps = 6;
         leg::SingleCoordinate xStep = (xForeward - xBackwards) / (numberOfSteps - 1);
         leg::SingleCoordinate result = xForeward - xStep * step;
@@ -196,7 +196,7 @@ namespace logic::gait {
         return result;
     }
 
-    // Result MonochromaticGait::GoToTheDefaultPosition() { printf("GoToTheDefaultPosition\n"); return RESULT_OK; }
+    // Result MetachromaticGait::GoToTheDefaultPosition() { printf("GoToTheDefaultPosition\n"); return RESULT_OK; }
     //     typedef enum {
     //         MOVE_LIFTED_LEGS_TO_THE_DEFAULT_X_POSITION,
     //         LIFT_LEGS_IN_INCORRECT_POSITION,
@@ -249,14 +249,14 @@ namespace logic::gait {
     //     case LEGS_IN_DEFAULT_POSITION:
     //         return RESULT_LEG_IN_TARGET_POSITION;
     //     default:
-    //         printf("ERROR: MonochromaticGait::GoToTheDefaultPosition() - step is undefined\n");
+    //         printf("ERROR: MetachromaticGait::GoToTheDefaultPosition() - step is undefined\n");
     //         Error_Handler();
     //         return RESULT_UNDEFINED_ERROR;
     //     }
 
     //     return RESULT_OK;
     // }
-    // std::array<float, 2> MonochromaticGait::GetChangingStepValues() {
+    // std::array<float, 2> MetachromaticGait::GetChangingStepValues() {
     //     return { changingStepValues[0], changingStepValues[1] };
     // }
 

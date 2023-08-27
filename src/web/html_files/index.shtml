@@ -126,7 +126,7 @@
         <select id="gaitSelect" onchange="changeGait()">
           <option value="tripod">Tripod</option>
           <option value="caterpillar">Caterpillar</option>
-          <option value="monochromatic">Monochromatic</option>
+          <option value="metachromatic">Metachromatic</option>
         </select>
       </div>
       <div class="speed-slider-container">
@@ -177,8 +177,8 @@
           sendRequest("/gait.cgi?gait=tripod");
         } else if (selectedGait === "caterpillar") {
           sendRequest("/gait.cgi?gait=caterpillar");
-        } else if (selectedGait === "monochromatic") {
-          sendRequest("/gait.cgi?gait=monochromatic");
+        } else if (selectedGait === "metachromatic") {
+          sendRequest("/gait.cgi?gait=metachromatic");
         }
       }
 

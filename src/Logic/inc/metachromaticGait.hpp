@@ -6,16 +6,16 @@
 #include <array>
 
 namespace logic::gait {
-    class MonochromaticGait : public GaitInterface {
+    class MetachromaticGait : public GaitInterface {
     public:
         void Error_Handler();
-        MonochromaticGait();
+        MetachromaticGait();
         Result GoForeward() override;
         Result GoBackward() override;
         Result TurnRight() override;
         Result TurnLeft() override;
         // Result GoToTheDefaultPosition() override;
-        Gait GetCurrentGait() override { return MONOCHROMATIC; };
+        Gait GetCurrentGait() override { return METACHROMATIC; };
     private:
         leg::SingleCoordinate xForeward = Constants::X_ABSOLUTE_RANGE[1];
         leg::SingleCoordinate xBackwards = Constants::X_ABSOLUTE_RANGE[0];

@@ -10,7 +10,7 @@ namespace logic::gait {
         DEFAULT_POSITION,
         TRIPOD,
         CATERPILLAR,
-        MONOCHROMATIC
+        METACHROMATIC
     }GaitType;
 
     class GaitInterface {

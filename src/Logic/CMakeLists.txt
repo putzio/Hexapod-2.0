@@ -11,7 +11,7 @@ target_sources(LOGIC PUBLIC
     ./src/Servo.cpp
     ./src/tripodGait.cpp
     ./src/caterpillarGait.cpp
-    ./src/monochromaticGait.cpp
+    ./src/metachromaticGait.cpp
 )
 
     
