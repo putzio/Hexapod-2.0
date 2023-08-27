@@ -122,7 +122,7 @@ const char* cgi_gait_handler(int iIndex, int iNumParams, char* pcParam[], char* 
             led.Write(0);
         else if (strcmp(pcValue[0], "caterpillar") == 0)
             led.Write(1);
-        else if (strcmp(pcValue[0], "monochromatic") == 0)
+        else if (strcmp(pcValue[0], "metachromatic") == 0)
             led.Write(0);
     }
 

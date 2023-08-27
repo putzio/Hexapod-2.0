@@ -54,11 +54,12 @@ int main() {
         sleep_ms(50);
         // printf("Hello, world!\n");
         led.Toggle();
-        printf("PP Result: %d\r\n", gaitController.PeriodicProcess());
-        printf("X coordiante leg0: %f\r\n", gaitController.legs[0].p_controller.GetCoordinates().x.GetCoordinate_mm());
+        std::array<bool, 6> groundDetected;
+        printf("PP Result: %d\r\n", gaitController.PeriodicProcess(groundDetected));
+        printf("X coordiante leg0: %f\r\n", gaitController.legs[0].m_controller.GetCoordinates().x.GetCoordinate_mm());
         legsController.UpdateServos(gaitController.GetSerovAngles());
-        printf("upper angle: %f \r\n", gaitController.legs[0].p_servos.GetCurrentServoPositions().upperServoAngle);
-        printf("lower angle: %f \r\n", gaitController.legs[0].p_servos.GetCurrentServoPositions().lowerServoAngle);
+        printf("upper angle: %f \r\n", gaitController.legs[0].m_servos.GetCurrentServoPositions().upperServoAngle);
+        printf("lower angle: %f \r\n", gaitController.legs[0].m_servos.GetCurrentServoPositions().lowerServoAngle);
         printf("Get gait: %d\r\n", gaitController.p_ptr_gaitInterface->GetCurrentGait());
         // printf("Get direction: %d\r\n", gaitController.p_ptr_gaitInterface-);
         printf("x: %f mm\r\n", gaitController.targetLegsPositions->legs[0].x.GetCoordinate_mm());

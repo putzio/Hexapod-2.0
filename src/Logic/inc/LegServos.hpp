@@ -21,7 +21,8 @@ namespace logic::leg {
         
         Result SetTargetAngle(float upperServoTargetAngle, float upperServoAngleChangingStep, float lowerServoTargetAngle, float lowerServoAngleChangingStep);
 
-        Result GoToTargetAngle();
+        Result GoToTargetAngles();
         ServosPositions GetCurrentServoPositions();
+        ServosPositions GetTargetServoPositions();
     }LegServos;
 }

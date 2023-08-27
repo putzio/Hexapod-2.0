@@ -7,7 +7,7 @@ namespace logic::leg {
         return (lowerServo.SetTargetAngle(lowerServoTargetAngle, lowerServoAngleChangingStep));
     }
 
-    Result LegServos::GoToTargetAngle() {
+    Result LegServos::GoToTargetAngles() {
         Result upperResult = upperServo.GoToTargetAngle();
         Result lowerResult = lowerServo.GoToTargetAngle();
         if (upperResult == RESULT_SERVO_IN_TARGET_POSITION && lowerResult == RESULT_SERVO_IN_TARGET_POSITION) {
@@ -23,6 +23,13 @@ namespace logic::leg {
         ServosPositions servos;
         servos.lowerServoAngle = lowerServo.GetCurrentAngle();
         servos.upperServoAngle = upperServo.GetCurrentAngle();
+        return servos;
+    }
+
+    ServosPositions LegServos::GetTargetServoPositions() {
+        ServosPositions servos;
+        servos.lowerServoAngle = lowerServo.GetTargetAngle();
+        servos.upperServoAngle = upperServo.GetTargetAngle();
         return servos;
     }
 }

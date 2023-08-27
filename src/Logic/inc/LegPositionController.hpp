@@ -101,6 +101,7 @@ namespace logic::leg {
     Result SetDefaultPosition();
     Result SetLegRange(const LegRange& legRange);
     void SetFootHights(std::array<SingleCoordinate, 2> hights);
+    void SetCurrentHightAsFootHightOnGround(const ServosPositions& servosPositions);
 
   private:
     Result SetX(SingleCoordinate xNew);

@@ -16,6 +16,8 @@ Hexapod::Hexapod() :current_sensors(currentSensorsChannels,
     pico_drivers::Gpio cs2 = pico_drivers::Gpio(SPI_CS_FLASH_PIN, pico_drivers::Gpio::OUTPUT);
     cs2.Write(1);
     // add_repeating_timer_ms(5, GetCurrentSensorCallback(), &this->current_sensors, &adc_timer);
+    // gaitController.groundDetectionEnabled[0] = true;
+    // gaitController.groundDetectionEnabled[1] = true;
 }
 
 void Hexapod::AdcPeriodicProcess() {
@@ -24,6 +26,14 @@ void Hexapod::AdcPeriodicProcess() {
             Result::RESULT_ALL_ADC_CHANNELS_READ_FINISHED) {
             current_sensors.CalculateRMS();
             PrintDataInTeleplotFormat();
+            std::array<float, 12> adcRms = current_sensors.GetCurrentSensorRMS();
+            for (int i = 0; i < currentSensorRmsQueue.size(); i++) {
+                currentSensorRmsQueue[i].push(adcRms[i] + adcRms[i + 6]);
+                if (currentSensorRmsQueue[i].size() > CURRENT_SENSOR_RMS_QUEUE_SIZE) {
+                    currentSensorRmsQueue[i].pop();
+                }
+            }
+
             // std::string data = ">step:" + std::to_string(gaitController.p_ptr_gaitInterface->step) + "\n";
             // uart.SendData(data.data());
         }
@@ -32,7 +42,16 @@ void Hexapod::AdcPeriodicProcess() {
 }
 void Hexapod::GaitControllerPeriodicProcess() {
     if (previousCallTime["Update_Servos"] + maxTime["Update_Servos"] < GetTime()) {
-        gaitController.PeriodicProcess();
+        std::array<bool, 6> groundDetected;
+        for (int i = 0; i < 6; i++) {
+            if (gaitController.groundDetectionEnabled[i]) {
+                groundDetected[i] = IsGroundDetected(i);
+            }
+            else {
+                groundDetected[i] = false;
+            }
+        }
+        gaitController.PeriodicProcess(groundDetected);
         UpdateServos(gaitController.GetSerovAngles());
         previousCallTime["Update_Servos"] = GetTime();
     };
@@ -75,4 +94,28 @@ void Hexapod::PrintDataInTeleplotFormat() {
     }
     std::string data = ">step:" + std::to_string(gaitController.p_ptr_gaitInterface->step) + "\n";
     uart.SendData(data.c_str());
+}
+
+bool Hexapod::IsGroundDetected(uint8_t legIndex) {
+    if (currentSensorRmsQueue[legIndex].size() < CURRENT_SENSOR_RMS_QUEUE_SIZE
+        || currentSensorRmsQueue[legIndex].back() < currentSensorRmsQueue[legIndex].front()) {
+        return false;
+    }
+    float min = currentSensorRmsQueue[legIndex].front();
+    float max = currentSensorRmsQueue[legIndex].front();
+    std::queue<float> currentSensorRmsQueueCopy = currentSensorRmsQueue[legIndex];
+    while (!currentSensorRmsQueueCopy.empty()) {
+        float data = currentSensorRmsQueueCopy.front();
+        data > max ? max = data : max = max;
+        data < min ? min = data : min = min;
+        currentSensorRmsQueueCopy.pop();
+    }
+    // std::string data = ">IsGroundDetected:" + std::to_string(legFalling) + "\n";
+    // uart.SendData(data.c_str());
+    // std::string message = "max: " + std::to_string(max) + "/tmin: " + std::to_string(min) +
+    //     "/tmax-min: " + std::to_string(max - min) + "\tResult: "
+    //     + std::to_string(max - min > CURRENT_SENSOR_RMS_THRESHOLD) + "\n";
+    std::string message = ">IsGroundDetected:" + std::to_string(max - min > CURRENT_SENSOR_RMS_THRESHOLD) + "\n";
+    uart.SendData(message.c_str());
+    return max - min > CURRENT_SENSOR_RMS_THRESHOLD;
 }

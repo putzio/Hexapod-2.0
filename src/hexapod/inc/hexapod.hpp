@@ -9,6 +9,7 @@
 #include <string>
 #include "hardware/timer.h"
 #include <array>
+#include <queue>
 
 namespace pd = pico_drivers;
 class Hexapod {
@@ -22,7 +23,8 @@ public:
     void CalibrateServos(const std::array<int16_t, 12>& calibrationValues);
     clock_t GetTime();
     logic::GaitController::Direction GetDirection() { return gaitController.direction; };
-
+    bool IsGroundDetected(uint8_t legIndex);
+    uint8_t legFalling = false;
 
 private:
     void UpdateServos(std::array<logic::leg::ServosPositions, 6> newAnges);
@@ -42,4 +44,7 @@ private:
         {"Update_Servos", 0}
     };
     uint8_t currentSensorChannelIndex = 0;
+    std::array<std::queue<float>, 6> currentSensorRmsQueue;
+    const uint8_t CURRENT_SENSOR_RMS_QUEUE_SIZE = 25;
+    const uint8_t CURRENT_SENSOR_RMS_THRESHOLD = 20;
 };

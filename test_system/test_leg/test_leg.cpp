@@ -13,7 +13,7 @@ void UpdateLeg(std::array<std::shared_ptr<pico_drivers::Servo_Interface>, 2> ser
 }
 Result LegPeriodicProcess(std::array<std::shared_ptr<pico_drivers::Servo_Interface>, 2> servo_drivers, logic::leg::Leg* leg) {
 	Result r = leg->LegPeriodicProcess();
-	UpdateLeg(servo_drivers, leg->p_servos.GetCurrentServoPositions());
+	UpdateLeg(servo_drivers, leg->m_servos.GetCurrentServoPositions());
 	return r;
 }
 int main() {
@@ -29,9 +29,9 @@ int main() {
 	legRange.x[0] = 0;
 	printf("X: %f \r\n", leg.GetFootCoordinates().x.GetCoordinate());
 	printf("Y: %f \r\n", leg.GetFootCoordinates().y.GetCoordinate());
-	printf("X: %f \r\n", leg.p_controller.GetX().GetCoordinate());
-	printf("Y: %f \r\n", leg.p_controller.GetY().GetCoordinate());
-	UpdateLeg(servo_drivers, leg.p_servos.GetCurrentServoPositions());
+	printf("X: %f \r\n", leg.m_controller.GetX().GetCoordinate());
+	printf("Y: %f \r\n", leg.m_controller.GetY().GetCoordinate());
+	UpdateLeg(servo_drivers, leg.m_servos.GetCurrentServoPositions());
 	logic::leg::FootTargetPosition footTargetPosition;
 	footTargetPosition.x.SetCoordinate_mm(10);
 	footTargetPosition.footOnGround = false;
@@ -52,15 +52,15 @@ int main() {
 			}
 			leg.SetNewTargetPosition(footTargetPosition);
 		}
-		printf("upper angle: %f \r\n", leg.p_servos.GetCurrentServoPositions().upperServoAngle);
-		printf("lower angle: %f \r\n", leg.p_servos.GetCurrentServoPositions().lowerServoAngle);
+		printf("upper angle: %f \r\n", leg.m_servos.GetCurrentServoPositions().upperServoAngle);
+		printf("lower angle: %f \r\n", leg.m_servos.GetCurrentServoPositions().lowerServoAngle);
 		printf("target X: %f \r\n", leg.GetFootCoordinates().x.GetCoordinate());
 		printf("target Y: %f \r\n", leg.GetFootCoordinates().y.GetCoordinate());
 
-		printf("X: %f \r\n", leg.p_controller.GetX().GetCoordinate());
+		printf("X: %f \r\n", leg.m_controller.GetX().GetCoordinate());
 		printf("Changing step: %f \r\n", leg.GetChangingStep());
 		gpio.Toggle();
-		UpdateLeg(servo_drivers, leg.p_servos.GetCurrentServoPositions());
+		UpdateLeg(servo_drivers, leg.m_servos.GetCurrentServoPositions());
 		sleep_ms(100);
 	}
 }

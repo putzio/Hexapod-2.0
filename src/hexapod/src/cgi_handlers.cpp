@@ -36,8 +36,8 @@ const char* cgi_gait_handler(int iIndex, int iNumParams, char* pcParam[], char* 
             hexapod.SetGait(logic::gait::Gait::TRIPOD);
         else if (strcmp(pcValue[0], "caterpillar") == 0)
             hexapod.SetGait(logic::gait::Gait::CATERPILLAR);
-        else if (strcmp(pcValue[0], "monochromatic") == 0)
-            hexapod.SetGait(logic::gait::Gait::MONOCHROMATIC);
+        else if (strcmp(pcValue[0], "metachromatic") == 0)
+            hexapod.SetGait(logic::gait::Gait::METACHROMATIC);
         else if (strcmp(pcValue[0], "none") == 0)
             hexapod.SetGait(logic::gait::Gait::NONE);
         else {

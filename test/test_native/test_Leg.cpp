@@ -25,9 +25,9 @@ namespace logic::leg {
         ASSERT_EQ(coordinates.x, leg.GetFootCoordinates().x);
         ASSERT_EQ(coordinates.y.GetCoordinate(), leg.GetFootCoordinates().y.GetCoordinate());
         ASSERT_NEAR(Constants::DEFAULT_CHANGING_STEP, leg.GetChangingStep(), 0.0001);
-        ASSERT_NEAR(Constants::PI / 3.0f, leg.p_servos.GetCurrentServoPositions().upperServoAngle, 0.001);
-        ASSERT_NEAR(Constants::PI * 5.0f / 6.0f, leg.p_servos.GetCurrentServoPositions().lowerServoAngle, 0.001);
-        ASSERT_EQ(coordinates, leg.p_controller.GetCoordinates());
+        ASSERT_NEAR(Constants::PI / 3.0f, leg.m_servos.GetCurrentServoPositions().upperServoAngle, 0.001);
+        ASSERT_NEAR(Constants::PI * 5.0f / 6.0f, leg.m_servos.GetCurrentServoPositions().lowerServoAngle, 0.001);
+        ASSERT_EQ(coordinates, leg.m_controller.GetCoordinates());
         ASSERT_EQ(range.x[0].GetCoordinate_mm(), leg.GetRange().x[0].GetCoordinate_mm());
         ASSERT_EQ(range.x[1].GetCoordinate_mm(), leg.GetRange().x[1].GetCoordinate_mm());
         ASSERT_EQ(range.y[0].GetCoordinate_mm(), leg.GetRange().y[0].GetCoordinate_mm());
@@ -42,7 +42,7 @@ namespace logic::leg {
         LegRange range = leg.GetRange();
         range.y[1] = 2;
         leg.SetLegRange(range);
-        ServosPositions currentPositions = leg.p_servos.GetCurrentServoPositions();
+        ServosPositions currentPositions = leg.m_servos.GetCurrentServoPositions();
         ASSERT_EQ(Result::RESULT_OK, leg.MoveJServos(positions));
         PeriodicProcess(leg, positions);
         ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
@@ -54,8 +54,8 @@ namespace logic::leg {
         coordinates.x.SetCoordinate_mm(7);
         coordinates.footOnGround = true;
         ASSERT_EQ(RESULT_OK, leg.SetNewTargetPosition(coordinates));
-        ServosPositions positions = leg.p_servos.GetCurrentServoPositions();
-        ServosPositions targetPositions = leg.p_controller.CalculateServoPositions(leg.p_controller.GetCoordinates());
+        ServosPositions positions = leg.m_servos.GetCurrentServoPositions();
+        ServosPositions targetPositions = leg.m_controller.CalculateServoPositions(leg.m_controller.GetCoordinates());
         FullPeriodicProcess(leg);
     }
 
@@ -68,9 +68,9 @@ namespace logic::leg {
         range.x[1].SetCoordinate_mm(20);
         leg.SetLegRange(range);
         ASSERT_EQ(RESULT_OK, leg.SetChangingStep(Constants::PI * 2.0 / 180.0f, Constants::PI * 2.0 / 180.0f));
-        ASSERT_EQ(2.0 * Constants::LEG_LENGTH, leg.p_controller.GetY().GetCoordinate_mm());
-        ASSERT_LE(target.x.GetCoordinate(), leg.p_controller.GetLegRange().x[1].GetCoordinate());
-        ASSERT_LT(leg.p_controller.GetLegRange().x[0].GetCoordinate(), target.x.GetCoordinate());
+        ASSERT_EQ(2.0 * Constants::LEG_LENGTH, leg.m_controller.GetY().GetCoordinate_mm());
+        ASSERT_LE(target.x.GetCoordinate(), leg.m_controller.GetLegRange().x[1].GetCoordinate());
+        ASSERT_LT(leg.m_controller.GetLegRange().x[0].GetCoordinate(), target.x.GetCoordinate());
         ASSERT_EQ(RESULT_OK, leg.SetNewTargetPosition(target));
         FullPeriodicProcess(leg);
         // ASSERT_EQ(Result::RESULT_LEG_IN_TARGET_POSITION, leg.LegPeriodicProcess());
@@ -120,7 +120,7 @@ namespace logic::leg {
         }
     }
     void PeriodicProcess(Leg& leg, ServosPositions target) {
-        ServosPositions currentPositions = leg.p_servos.GetCurrentServoPositions();
+        ServosPositions currentPositions = leg.m_servos.GetCurrentServoPositions();
         float steps = CalculateNumberOfSteps(
             target,
             currentPositions,
@@ -130,12 +130,12 @@ namespace logic::leg {
             CalculateServoPosition(currentPositions, target, leg.GetChangingStep());
             Result r = leg.LegPeriodicProcess();
             ASSERT_EQ(Result::RESULT_LEG_MOVING, r);
-            ASSERT_NEAR(currentPositions.upperServoAngle, leg.p_servos.GetCurrentServoPositions().upperServoAngle, 0.001);
-            ASSERT_NEAR(currentPositions.lowerServoAngle, leg.p_servos.GetCurrentServoPositions().lowerServoAngle, 0.001);
+            ASSERT_NEAR(currentPositions.upperServoAngle, leg.m_servos.GetCurrentServoPositions().upperServoAngle, 0.001);
+            ASSERT_NEAR(currentPositions.lowerServoAngle, leg.m_servos.GetCurrentServoPositions().lowerServoAngle, 0.001);
         }
     }
     void PeriodicProcess(Leg& leg) {
-        ServosPositions target = leg.p_controller.CalculateServoPositions(leg.p_controller.GetCoordinates());
+        ServosPositions target = leg.m_controller.CalculateServoPositions(leg.m_controller.GetCoordinates());
         PeriodicProcess(leg, target);
     }
 

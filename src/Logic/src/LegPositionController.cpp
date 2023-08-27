@@ -23,9 +23,9 @@ namespace logic::leg {
     }
 
     Result LegPositionController::CalculateYPosition(const SingleCoordinate& xPos) {
-        if (!xPos.IsBetween(p_legRange.x)) {
-            return RESULT_COORDINATES_OUT_OF_RANGE;
-        }
+        // if (!xPos.IsBetween(p_legRange.x)) {
+        //     return RESULT_COORDINATES_OUT_OF_RANGE;
+        // }
         // SingleCoordinate DELTA_SENSING_Y;
         // DELTA_SENSING_Y.SetCoordinate_mm(8);
         SingleCoordinate xMapped = MapXInRange(xPos);
@@ -125,6 +125,10 @@ namespace logic::leg {
         p_footOnGroundY[1] = hights[1];
     }
 
+    void LegPositionController::SetCurrentHightAsFootHightOnGround(const ServosPositions& servosPositions) {
+        p_footOnGroundY[1].SetCoordinate_mm(FindXYPosition(servosPositions).y.GetCoordinate_mm() - 10);
+    }
+
     Result LegPositionController::SetStandUp() {
         p_coordinates.x = 0;
         p_coordinates.y = p_legRange.y[1];
@@ -143,16 +147,16 @@ namespace logic::leg {
     }
 
     Result LegPositionController::SetX(SingleCoordinate xNew) {
-        if (!xNew.IsBetween(p_legRange.x)) {
-            return RESULT_COORDINATES_OUT_OF_RANGE;
-        }
+        // if (!xNew.IsBetween(p_legRange.x)) {
+        //     return RESULT_COORDINATES_OUT_OF_RANGE;
+        // }
         p_coordinates.x = xNew;
         return RESULT_OK;
     }
     Result LegPositionController::SetY(SingleCoordinate yNew) {
-        if (!yNew.IsBetween(p_legRange.y)) {
-            return RESULT_COORDINATES_OUT_OF_RANGE;
-        }
+        // if (!yNew.IsBetween(p_legRange.y)) {
+        //     return RESULT_COORDINATES_OUT_OF_RANGE;
+        // }
         p_coordinates.y = yNew;
 
         return RESULT_OK;

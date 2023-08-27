@@ -12,11 +12,11 @@ namespace logic {
     }
 
 
-    Result GaitController::PeriodicProcess() {
+    Result GaitController::PeriodicProcess(std::array<bool, 6> isGroundDetected) {
         if (p_ptr_gaitInterface == nullptr) {
             return RESULT_WRONG_GAIT;
         }
-        Result result = GoToPosition();
+        Result result = GoToPosition(isGroundDetected);
         if (result == RESULT_LEG_IN_TARGET_POSITION && direction != STOP) {
             ReturnOnError(SetNewTarget());
         }
@@ -42,10 +42,19 @@ namespace logic {
         }
     }
 
-    Result GaitController::GoToPosition() {
+    Result GaitController::GoToPosition(std::array<bool, 6> isGroundDetected) {
         bool allLegsInPosition = true;
         for (int i = 0; i < (int)legs.size(); i++) {
-            if (legs[i].LegPeriodicProcess() != RESULT_LEG_IN_TARGET_POSITION) {
+            Result r = RESULT_UNDEFINED_ERROR;
+            if (groundDetectionEnabled[i]) {
+                legs[i].m_isGroundDetectionEnabled = true;
+                r = legs[i].PeriodicProcessWithGroundDetection(isGroundDetected[i]);
+            }
+            else {
+                legs[i].m_isGroundDetectionEnabled = false;
+                r = legs[i].LegPeriodicProcess();
+            }
+            if (r != RESULT_LEG_IN_TARGET_POSITION) {
                 allLegsInPosition = false;
             }
         }
@@ -129,8 +138,8 @@ namespace logic {
             p_ptr_gaitInterface = std::make_unique<gait::CaterpillarGait>();
             break;
         }
-        case gait::GaitType::MONOCHROMATIC: {
-            p_ptr_gaitInterface = std::make_unique<gait::MonochromaticGait>();
+        case gait::GaitType::METACHROMATIC: {
+            p_ptr_gaitInterface = std::make_unique<gait::MetachromaticGait>();
             break;
         }
         default:
@@ -159,7 +168,7 @@ namespace logic {
     std::array<leg::ServosPositions, 6> GaitController::GetSerovAngles() {
         std::array<leg::ServosPositions, 6> result;
         for (int i = 0; i < (int)legs.size(); i++) {
-            result[i] = legs[i].p_servos.GetCurrentServoPositions();
+            result[i] = legs[i].m_servos.GetCurrentServoPositions();
         }
         return result;
     }
