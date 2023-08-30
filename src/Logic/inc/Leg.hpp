@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LegPositionController.hpp"
-#include "FootCoordinates.hpp"
+#include "footCoordinates.hpp"
 #include "LegServos.hpp"
 #include "constants.hpp"
 #include <memory>

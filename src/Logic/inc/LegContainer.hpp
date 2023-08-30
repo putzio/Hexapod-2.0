@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 // #include "LegPositionController.hpp"
-#include "FootCoordinates.hpp"
+#include "footCoordinates.hpp"
 #include <array>
 
 namespace logic::leg {

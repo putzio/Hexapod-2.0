@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <cmath>
 #include "constants.hpp"
-#include "FootCoordinates.hpp"
+#include "footCoordinates.hpp"
 #include "Results.h"
 #include "ServoPositions.hpp"
 #include "LegRange.hpp"

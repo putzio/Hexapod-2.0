@@ -2,7 +2,7 @@
 #include "gaitInterface.hpp"
 #include "constants.hpp"
 #include "Results.h"
-#include "FootCoordinates.hpp"
+#include "footCoordinates.hpp"
 #include <array>
 
 namespace logic::gait {

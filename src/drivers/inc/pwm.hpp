@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\include\constants.hpp"
+#include "constants.hpp"
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"

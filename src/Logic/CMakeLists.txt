@@ -4,7 +4,7 @@ target_include_directories(LOGIC PUBLIC inc
 
 target_sources(LOGIC PUBLIC
     ./src/Leg.cpp
-    ./src/LegPositioncontroller.cpp
+    ./src/LegPositionController.cpp
     ./src/LegServos.cpp
     ./src/gaitController.cpp
     ./src/body.cpp

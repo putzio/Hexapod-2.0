@@ -52,7 +52,7 @@ add_subdirectory(src/web)
 add_library(DRIVERS)
 add_subdirectory(src/drivers)
 add_library(LOGIC)
-add_subdirectory(src/logic)
+add_subdirectory(src/Logic)
 
 add_library(HEXAPOD)
 add_subdirectory(src/hexapod)
