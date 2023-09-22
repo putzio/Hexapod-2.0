@@ -22,9 +22,13 @@ public:
     void SetDirection(logic::GaitController::Direction direction);
     void CalibrateServos(const std::array<int16_t, 12>& calibrationValues);
     clock_t GetTime();
+    clock_t GetTimeMs();
     logic::GaitController::Direction GetDirection() { return gaitController.direction; };
     bool IsGroundDetected(uint8_t legIndex);
     uint8_t legFalling = false;
+    void SetLegGroundDetectionState(uint8_t leg, bool groundDetectionEnabled);
+    void ResetGroundDetection(uint8_t leg);
+    bool IsLegGroundDetected(uint8_t leg){return groundDetected[leg];};
 
 private:
     void UpdateServos(std::array<logic::leg::ServosPositions, 6> newAnges);
@@ -36,7 +40,7 @@ private:
     uint8_t counter = 0;
     pd::Uart uart = pd::Uart(UART_ID, UART_BAUD_RATE, UART_TX_PIN, UART_RX_PIN);
     std::unordered_map<std::string, uint16_t> maxTime = {
-        {"Read_Current_Sensor", 100},
+        {"Read_Current_Sensor", 50},
         {"Update_Servos", 25000}
     };
     std::unordered_map<std::string, uint64_t> previousCallTime = {
@@ -45,6 +49,11 @@ private:
     };
     uint8_t currentSensorChannelIndex = 0;
     std::array<std::queue<float>, 6> currentSensorRmsQueue;
-    const uint8_t CURRENT_SENSOR_RMS_QUEUE_SIZE = 25;
-    const uint8_t CURRENT_SENSOR_RMS_THRESHOLD = 20;
+    const uint16_t CURRENT_SENSOR_RMS_QUEUE_SIZE = 15;// 150 ms / every 25 us = 6 // 25 us * 60 = 1.5 ms
+    const uint8_t CURRENT_SENSOR_RMS_THRESHOLD = 10;
+    std::array<bool, 6> groundDetected = { false, false, false, false, false, false };
 };
+
+    // Every 25 us new rms
+    // window_time: 150us
+    // lower_servo_threshold: 10

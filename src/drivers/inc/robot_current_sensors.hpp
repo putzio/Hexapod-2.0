@@ -14,8 +14,10 @@ namespace pico_drivers {
             uint8_t sckPin, uint8_t txPin, uint8_t rxPin, uint8_t cs0Pin, uint8_t cs1Pin);
         const std::array<float, 12>& GetCurrentSensorRMS() { return currentSensorsRms; };
         Result UpdateCurrentSensors();
+        // Result UpdateCurrentSensors(std::array<bool, 6> groundDetectionEnabled);
         uint16_t GetBufferSize() { return BUFFER_SIZE; };
         const std::array<float, 12>& CalculateRMS();
+        // const std::array<float, 12>& CalculateRMS(std::array<bool, 6> groundDetectionEnabled);
         std::array<MCP3008, 2> extern_adc = {
                     MCP3008(SPI_INSTANCE, SPI_BAUD_RATE, SPI_CLK_PIN, SPI_MOSI_PIN, SPI_MISO_PIN, SPI_CS_ADC0_PIN),
                     MCP3008(SPI_INSTANCE, SPI_BAUD_RATE, SPI_CLK_PIN, SPI_MOSI_PIN, SPI_MISO_PIN, SPI_CS_ADC1_PIN)
@@ -24,7 +26,7 @@ namespace pico_drivers {
     private:
 
         Result FillCurrentSensorsBuffer_blocking();
-        const uint8_t BUFFER_SIZE = 100;
+        const uint8_t BUFFER_SIZE = 150;
         uint8_t buffer_index = 0;
         // std::array<MCP3008, 2> extern_adc;
         std::array<float, 12> currentSensorsRms;

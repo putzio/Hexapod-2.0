@@ -83,6 +83,15 @@
         background-color: #af00c3;
         padding: 5px 20px; /* Adjust padding for better visual appearance */
       }
+
+      .ground-detection-buttons {
+        display: block;
+      }
+      .ground-detection-buttons  input[type="checkbox"] {
+        margin: 20px; /* Adjust this value to control the spacing */
+        transform: scale(2);
+    }
+</style>
     </style>
   </head>
   <body>
@@ -142,6 +151,15 @@
         />
       </div>
       <p id="currentSpeed">Current Speed: 5</p>
+      <div class="ground-detection-buttons">
+        <h3>Ground detection</h3>
+        Leg 1 <input type="checkbox" id="leg0_checkbox" onclick="handleCheckboxClick()"> 
+        Leg 2 <input type="checkbox" id="leg1_checkbox" onclick="handleCheckboxClick()"><br>
+        Leg 3 <input type="checkbox" id="leg2_checkbox" onclick="handleCheckboxClick()"> 
+        Leg 4 <input type="checkbox" id="leg3_checkbox" onclick="handleCheckboxClick()"><br>
+        Leg 5 <input type="checkbox" id="leg4_checkbox" onclick="handleCheckboxClick()"> 
+        Leg 6 <input type="checkbox" id="leg5_checkbox" onclick="handleCheckboxClick()"><br>
+      </div>
     </div>
 
     <script>
@@ -190,6 +208,15 @@
         console.log(`Current Speed: ${currentSpeed}`);
         // You would send the current speed to the robot's backend server here
         sendRequest(`/speed.cgi?speed=${currentSpeed}`);
+      }
+
+      // Function to handle checkbox click
+      function handleCheckboxClick() {
+        for (var i = 0; i < 6; i++) {
+          var checkbox = document.getElementById("leg" + i + "_checkbox");
+          sendRequest(`/ground_detection.cgi?leg${i}=${checkbox.checked}`);
+          console.log(`Leg ${i} ground detection: ${checkbox.checked}`);
+        }
       }
 
       // Function to send the HTTP request to the server

@@ -33,6 +33,7 @@ namespace logic::leg {
             printf("> x: %f\n", m_controller.GetCoordinates().GetX_mm());
             printf("> x_target: %f\n", m_finalTargetPostion.x.GetCoordinate_mm());
             printf("> m_detectingGround: %d\n", m_detectingGround);
+            printf("> HasLegReachedHalfOfRange: %d\n", HasLegReachedHalfOfRange());
         }
         Result r = m_servos.GoToTargetAngles();
         switch (r) {
@@ -42,14 +43,18 @@ namespace logic::leg {
             return RESULT_SERVO_VELOCITY_EQ_0;
         case RESULT_SERVO_IN_TARGET_POSITION: {
             if (m_controller.GetCoordinates().x == m_finalTargetPostion.x) {
-                if (!m_isGroundDetectionEnabled || m_finalTargetPostion.footOnGround || m_detectingGround || !HasLegReachedHalfOfRange()) {
+                //Find new target position
+                if (!m_isGroundDetectionEnabled || m_finalTargetPostion.footOnGround) {
                     m_detectingGround = false;
                     return RESULT_LEG_IN_TARGET_POSITION;
                 }
-                printf("> SetGroundDetecingPosition: %d\n", SetGroundDetecingPosition());
-                m_detectingGround = true;
-                return RESULT_LEG_NEW_CONTROLLER_POSITION;
+                if(!m_detectingGround && HasLegReachedHalfOfRange()){
+                    printf("> SetGroundDetecingPosition: %d\n", SetGroundDetecingPosition());
+                    m_detectingGround = true;
+                    return RESULT_LEG_NEW_CONTROLLER_POSITION;
+                }
             }
+            //Find coordinates on the way to the chosen target position
             printf("> NEW_CONTROLLER_POSITION: %f\n", m_servos.GetCurrentServoPositions().upperServoAngle);
             m_controller.FindNextCoordinates(m_finalTargetPostion.x, m_finalTargetPostion.footOnGround);
             MoveJServos();
@@ -170,7 +175,7 @@ namespace logic::leg {
         return m_controller.GetLegRange();
     }
     Result Leg::SetGroundDetecingPosition() {
-        if (m_controller.GetCoordinates().x < 0) {
+        if (m_controller.GetCoordinates().x * 2.0 < GetRange().x[1] + GetRange().x[0]) {
             return m_servos.SetTargetAngle(Constants::PI * 80.0 / 180.0, m_servosChangingStepInAir, Constants::PI / 2.0, m_servosChangingStepInAir);
         }
         return m_servos.SetTargetAngle(Constants::PI * 100.0 / 180.0, m_servosChangingStepInAir, Constants::PI / 2.0, m_servosChangingStepInAir);

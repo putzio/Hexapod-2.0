@@ -59,6 +59,24 @@ const char* cgi_speed_handler(int iIndex, int iNumParams, char* pcParam[], char*
     return "/index.shtml";
 }
 
+const char* cgi_ground_detection(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]) {
+    printf("cgi_ground_detection\n");
+    for (int i = 0; i < 6; i ++){
+        char legSymbol[5];
+        sprintf(legSymbol, "leg%d\0", i);
+        if (strcmp(pcParam[0], legSymbol) == 0) {
+            if (strcmp(pcValue[0], "True") == 0){
+                hexapod.SetLegGroundDetectionState(i, true);
+            }
+            else{
+                hexapod.SetLegGroundDetectionState(i, false);
+            }
+        }
+    }
+    // Send the index page back to the user
+    return "/index.shtml";
+}
+
 const char* cgi_calibration_handler(int iIndex, int iNumParams, char* pcParam[], char* pcValue[]) {
     printf("cgi_calibration_handler\n");
 
