@@ -30,85 +30,31 @@ namespace logic::gait {
         switch (step) {
         case LIFT_LEG_AND_MOVE_FORWARD: {
             printf("LIFT_LEG_AND_MOVE_FORWARD\n");
-            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
-                if ((i + step) % 6 == 0) {
-                    targetLegsPositions.legs[i].footOnGround = false;
-                }
-                else {
-                    targetLegsPositions.legs[i].footOnGround = true;
-                }
-            }
             step = LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION;
             break;
         }
         case LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION: {
             printf("LOWER_LEG_AND_MOVE_IT_BACK_TO_THE_1ST_POSITION\n");
-            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
-                if ((i + step) % 6 == 0) {
-                    targetLegsPositions.legs[i].footOnGround = false;
-                }
-                else {
-                    targetLegsPositions.legs[i].footOnGround = true;
-                }
-            }
             step = MOVE_LEG_BACK_TO_THE_2ND_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_2ND_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_2ND_POSITION\n");
-            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
-                if ((i + step) % 6 == 0) {
-                    targetLegsPositions.legs[i].footOnGround = false;
-                }
-                else {
-                    targetLegsPositions.legs[i].footOnGround = true;
-                }
-            }
             step = MOVE_LEG_BACK_TO_THE_3RD_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_3RD_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_3RD_POSITION\n");
-            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
-                if ((i + step) % 6 == 0) {
-                    targetLegsPositions.legs[i].footOnGround = false;
-                }
-                else {
-                    targetLegsPositions.legs[i].footOnGround = true;
-                }
-            }
             step = MOVE_LEG_BACK_TO_THE_4TH_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_4TH_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_4TH_POSITION\n");
-            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
-                if ((i + step) % 6 == 0) {
-                    targetLegsPositions.legs[i].footOnGround = false;
-                }
-                else {
-                    targetLegsPositions.legs[i].footOnGround = true;
-                }
-            }
             step = MOVE_LEG_BACK_TO_THE_5TH_POSITION;
             break;
         }
         case MOVE_LEG_BACK_TO_THE_5TH_POSITION: {
             printf("MOVE_LEG_BACK_TO_THE_5TH_POSITION\n");
-            for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
-                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
-                if ((i + step) % 6 == 0) {
-                    targetLegsPositions.legs[i].footOnGround = false;
-                }
-                else {
-                    targetLegsPositions.legs[i].footOnGround = true;
-                }
-            }
             step = LIFT_LEG_AND_MOVE_FORWARD;
             break;
         }
@@ -117,70 +63,69 @@ namespace logic::gait {
             Error_Handler();
             return RESULT_UNDEFINED_ERROR;
         }
+        for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == LIFT_LEG_AND_MOVE_FORWARD) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
+            }
         return RESULT_OK;
     }
 
     Result MetachromaticGait::GoBackward() {
-        // typedef enum {
-        //     LIFT_FRONT_LEGS_AND_MOVE_THEM_BACKWARD,
-        //     LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_HALFWAY,
-        //     LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_FULLY
-        // } FrontLegsSteps;
-        // switch (step) {
-        // case LIFT_FRONT_LEGS_AND_MOVE_THEM_BACKWARD: {
-        //     for (int i : frontLegs) {
-        //         targetLegsPositions.legs[i].x = xBackwards;
-        //         targetLegsPositions.legs[i].footOnGround = false;
-        //     }
-        //     for (int i : middleLegs) {
-        //         targetLegsPositions.legs[i].x = xHalfway;
-        //         targetLegsPositions.legs[i].footOnGround = true;
-        //     }
-        //     for (int i : backLegs) {
-        //         targetLegsPositions.legs[i].x = xForeward;
-        //         targetLegsPositions.legs[i].footOnGround = true;
-        //     }
-        //     step = LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_HALFWAY;
-        //     break;
-        // }
-        // case LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_HALFWAY: {
-        //     for (int i : frontLegs) {
-        //         targetLegsPositions.legs[i].x = xHalfway;
-        //         targetLegsPositions.legs[i].footOnGround = true;
-        //     }
-        //     for (int i : middleLegs) {
-        //         targetLegsPositions.legs[i].x = xForeward;
-        //         targetLegsPositions.legs[i].footOnGround = true;
-        //     }
-        //     for (int i : backLegs) {
-        //         targetLegsPositions.legs[i].x = xBackwards;
-        //         targetLegsPositions.legs[i].footOnGround = false;
-        //     }
-        //     step = LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_FULLY;
-        //     break;
-        // }
-        // case LOWER_FRONT_LEGS_AND_MOVE_THEM_FORWARD_FULLY: {
-        //     for (int i : frontLegs) {
-        //         targetLegsPositions.legs[i].x = xForeward;
-        //         targetLegsPositions.legs[i].footOnGround = true;
-        //     }
-        //     for (int i : middleLegs) {
-        //         targetLegsPositions.legs[i].x = xBackwards;
-        //         targetLegsPositions.legs[i].footOnGround = false;
-        //     }
-        //     for (int i : backLegs) {
-        //         targetLegsPositions.legs[i].x = xHalfway;
-        //         targetLegsPositions.legs[i].footOnGround = true;
-        //     }
-        //     step = LIFT_FRONT_LEGS_AND_MOVE_THEM_BACKWARD;
-        //     break;
-        // }
-        // default:
-        //     printf("ERROR: MetachromaticGait::GoBackward() - step is undefined\n");
-        //     Error_Handler();
-        //     return RESULT_UNDEFINED_ERROR;
-        // }
-        // return RESULT_OK;
+        typedef enum {
+            MOVE_LEG_FOREWARD_TO_THE_0_POSITION = 0,
+            MOVE_LEG_FOREWARD_TO_THE_1ST_POSITION = 1,
+            MOVE_LEG_FOREWARD_TO_THE_2ND_POSITION = 2,
+            MOVE_LEG_FOREWARD_TO_THE_3RD_POSITION = 3,
+            MOVE_LEG_FOREWARD_TO_THE_4TH_POSITION = 4,
+            LIFT_LEG_AND_MOVE_BACKWARD = 5
+        } FrontLeftLegsSteps;
+
+        switch (step) {
+        case LIFT_LEG_AND_MOVE_BACKWARD: {
+            step = MOVE_LEG_FOREWARD_TO_THE_4TH_POSITION;
+            break;
+        }
+        case MOVE_LEG_FOREWARD_TO_THE_4TH_POSITION: {
+            step = MOVE_LEG_FOREWARD_TO_THE_3RD_POSITION;
+            break;
+        }
+        case MOVE_LEG_FOREWARD_TO_THE_3RD_POSITION: {
+            step = MOVE_LEG_FOREWARD_TO_THE_2ND_POSITION;
+            break;
+        }
+        case MOVE_LEG_FOREWARD_TO_THE_2ND_POSITION: {
+            step = MOVE_LEG_FOREWARD_TO_THE_1ST_POSITION;
+            break;
+        }
+        case MOVE_LEG_FOREWARD_TO_THE_1ST_POSITION: {
+            step = MOVE_LEG_FOREWARD_TO_THE_0_POSITION;
+            break;
+        }
+        case MOVE_LEG_FOREWARD_TO_THE_0_POSITION: {
+            step = LIFT_LEG_AND_MOVE_BACKWARD;
+            break;
+        }
+        
+        default:
+            printf("ERROR: MetachromaticGait::GoForeward() - step is undefined\n");
+            Error_Handler();
+            return RESULT_UNDEFINED_ERROR;
+        }
+        for (int i = 0; i < targetLegsPositions.legs.size(); i++) {
+                targetLegsPositions.legs[i].x = xPositions[(i + step) % 6];
+                if ((i + step) % 6 == LIFT_LEG_AND_MOVE_BACKWARD) {
+                    targetLegsPositions.legs[i].footOnGround = false;
+                }
+                else {
+                    targetLegsPositions.legs[i].footOnGround = true;
+                }
+            }
+        return RESULT_OK;
     }
 
     Result MetachromaticGait::TurnRight() { printf("TurnRight\n"); return RESULT_OK; }
